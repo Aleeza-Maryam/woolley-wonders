@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Woolley Wonders — Handmade Crochet, Made to Order</title>
+<meta name="description" content="Luxury handmade crochet, woven and stitched to order. Explore the collection or design your own." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream: '#FAF4EC',
+          blush: '#EFDCC7',
+          rose: '#C98D82',
+          'rose-deep': '#B4756A',
+          sage: '#9CAE8C',
+          'sage-deep': '#7E9670',
+          gold: '#C6A15B',
+          'gold-light': '#DCC08A',
+          ink: '#3A2E28',
+        },
+        fontFamily: {
+          display: ['"Playfair Display"', 'serif'],
+          body: ['"Manrope"', 'sans-serif'],
+        },
+        boxShadow: {
+          soft: '0 20px 60px -20px rgba(58, 46, 40, 0.25)',
+          glow: '0 0 30px rgba(198, 161, 91, 0.45)',
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-cream text-ink font-body antialiased overflow-x-hidden">
+
+<!-- ============ STITCH SCROLL PROGRESS (signature element) ============ -->
+<div id="stitch-thread" aria-hidden="true">
+  <svg id="stitch-svg" width="28" height="100%" viewBox="0 0 28 2000" preserveAspectRatio="none">
+    <path id="stitch-path-bg" d="M14,0 C24,40 4,80 14,120 C24,160 4,200 14,240" stroke="#EFDCC7" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path id="stitch-path-fg" d="M14,0 C24,40 4,80 14,120 C24,160 4,200 14,240" stroke="#C6A15B" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="1 1" stroke-dashoffset="1"/>
+  </svg>
+</div>
+
+<!-- ============ SCROLL-TRACKING 3D HOOK (inset in content area, never at the edge) ============ -->
+<div id="scroll-hook-canvas" aria-hidden="true"></div>
+
+<!-- ============ NAVBAR ============ -->
+<header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+  <nav class="mx-auto max-w-7xl px-6 lg:px-10">
+    <div id="nav-glass" class="mt-4 flex items-center justify-between rounded-full px-6 py-3 transition-all duration-500">
+      <a href="#home" class="flex items-center gap-2 group">
+        <span class="font-display text-xl md:text-2xl tracking-wide text-ink">Woolley <span class="italic text-rose-deep">Wonders</span></span>
+      </a>
+
+      <ul class="hidden md:flex items-center gap-9 font-medium text-sm tracking-wide text-ink/80">
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#collection" class="nav-link">Collection</a></li>
+        <li><a href="#bespoke" class="nav-link">Bespoke</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="flex items-center gap-3">
+        <button id="cart-toggle" class="relative flex items-center justify-center w-11 h-11 rounded-full bg-ink/5 hover:bg-gold/20 transition-colors duration-300" aria-label="Open cart">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6h15l-1.5 9h-12L5 3H2"/><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span id="cart-count" class="cart-badge">0</span>
+        </button>
+        <button id="mobile-menu-toggle" class="md:hidden w-11 h-11 flex items-center justify-center rounded-full bg-ink/5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-2 rounded-3xl glass px-6 py-6 flex flex-col gap-4 font-medium">
+      <a href="#home" class="nav-link-mobile">Home</a>
+      <a href="#collection" class="nav-link-mobile">Collection</a>
+      <a href="#bespoke" class="nav-link-mobile">Bespoke</a>
+      <a href="#about" class="nav-link-mobile">About</a>
+      <a href="#contact" class="nav-link-mobile">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="home" class="relative min-h-screen flex items-center pt-32 pb-16 lg:pt-0 overflow-hidden">
+  <div class="absolute inset-0 hero-bg-texture pointer-events-none"></div>
+
+  <div class="relative mx-auto max-w-7xl w-full px-6 lg:px-10 grid lg:grid-cols-2 gap-12 items-center">
+    <div data-reveal>
+      <span class="inline-block font-body text-xs tracking-[0.25em] uppercase text-rose-deep bg-rose/10 px-4 py-2 rounded-full mb-6">Handmade · Small Batch · Made to Order</span>
+      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-ink mb-6">
+        Every stitch,<br>
+        <span class="italic text-rose-deep">held by hand.</span>
+      </h1>
+      <p class="text-lg text-ink/70 max-w-md mb-9 leading-relaxed">
+        Woolley Wonders crafts one-of-a-kind crochet pieces — from cloud-soft cardigans to sculptural home accents — each looped, knotted, and finished by hand in small batches.
+      </p>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href="#collection" class="btn-glow">Explore the Collection</a>
+        <a href="#bespoke" class="btn-outline">Design Your Own</a>
+      </div>
+
+      <div class="flex items-center gap-8 mt-12 text-sm text-ink/60">
+        <div><span class="block font-display text-2xl text-ink">500+</span>pieces stitched</div>
+        <div><span class="block font-display text-2xl text-ink">100%</span>handcrafted</div>
+        <div><span class="block font-display text-2xl text-ink">48h</span>avg. turnaround</div>
+      </div>
+    </div>
+
+    <!-- 3D Canvas -->
+    <div class="relative h-[420px] sm:h-[520px] lg:h-[620px]" data-reveal>
+      <div id="hero-3d-canvas" class="w-full h-full"></div>
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span> move your cursor
+      </div>
+    </div>
+  </div>
+
+  <a href="#collection" class="hidden lg:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-ink/40 text-xs tracking-widest uppercase">
+    Scroll
+    <span class="w-px h-10 bg-ink/20 relative overflow-hidden"><span class="scroll-line"></span></span>
+  </a>
+</section>
+
+<!-- ============ COLLECTION / SHOP ============ -->
+<section id="collection" class="relative py-28 px-6 lg:px-10">
+  <div class="mx-auto max-w-7xl">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16" data-reveal>
+      <div>
+        <span class="eyebrow">The Collection</span>
+        <h2 class="font-display text-4xl sm:text-5xl mt-3">Pieces worth <span class="italic text-rose-deep">keeping.</span></h2>
+      </div>
+      <p class="max-w-sm text-ink/60">Each item is looped by hand — expect gentle variation, that's the mark of something made by a person, not a machine.</p>
+    </div>
+
+    <div id="product-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+  </div>
+</section>
+
+<!-- ============ BESPOKE STUDIO ============ -->
+<section id="bespoke" class="relative py-28 px-6 lg:px-10 bg-gradient-to-b from-transparent via-blush/40 to-transparent">
+  <div class="mx-auto max-w-7xl grid lg:grid-cols-2 gap-16 items-center">
+    <div data-reveal>
+      <span class="eyebrow">Bespoke Studio</span>
+      <h2 class="font-display text-4xl sm:text-5xl mt-3 mb-6 leading-tight">Design a piece <span class="italic text-rose-deep">only you</span> will own.</h2>
+      <p class="text-ink/70 leading-relaxed mb-8 max-w-lg">Pick your yarn, your palette, your fit. Tell us the silhouette you're dreaming of and our hands will bring it to life — no two bespoke pieces are ever the same.</p>
+
+      <div class="space-y-5 mb-10">
+        <div class="flex gap-4 items-start">
+          <span class="step-num">01</span>
+          <div><h4 class="font-semibold mb-1">Choose your palette</h4><p class="text-sm text-ink/60">Select yarn colors and textures from our swatch library.</p></div>
+        </div>
+        <div class="flex gap-4 items-start">
+          <span class="step-num">02</span>
+          <div><h4 class="font-semibold mb-1">Share your vision</h4><p class="text-sm text-ink/60">Send reference photos, sizing, and pattern ideas.</p></div>
+        </div>
+        <div class="flex gap-4 items-start">
+          <span class="step-num">03</span>
+          <div><h4 class="font-semibold mb-1">We stitch it by hand</h4><p class="text-sm text-ink/60">Your piece is made to order and shipped with care.</p></div>
+        </div>
+      </div>
+
+      <a id="bespoke-cta" href="#" target="_blank" class="btn-glow">Start a Custom Request</a>
+    </div>
+
+    <div class="glass rounded-[2rem] p-8 lg:p-10 shadow-soft" data-reveal>
+      <h3 class="font-display text-2xl mb-6">Quick Inquiry</h3>
+      <form id="bespoke-form" class="space-y-5">
+        <div>
+          <label class="form-label">Your name</label>
+          <input required type="text" name="name" class="form-input" placeholder="Amelia Rivera">
+        </div>
+        <div>
+          <label class="form-label">Instagram or email</label>
+          <input required type="text" name="contact" class="form-input" placeholder="@yourhandle or you@email.com">
+        </div>
+        <div>
+          <label class="form-label">Tell us your idea</label>
+          <textarea required name="details" rows="3" class="form-input resize-none" placeholder="Sage green cropped cardigan, size M, scalloped hem..."></textarea>
+        </div>
+        <button type="submit" class="btn-glow w-full justify-center">Send Inquiry</button>
+        <p id="bespoke-status" class="text-sm text-center hidden"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="relative py-28 px-6 lg:px-10">
+  <div class="mx-auto max-w-4xl text-center" data-reveal>
+    <span class="eyebrow">About the Maker</span>
+    <h2 class="font-display text-4xl sm:text-5xl mt-3 mb-8 leading-tight">A hook, some yarn,<br class="hidden sm:block"> and a lot of patience.</h2>
+    <p class="text-ink/70 leading-relaxed text-lg max-w-2xl mx-auto">
+      Woolley Wonders began as evenings spent looping yarn on a small couch — now it's a small studio devoted to slow, handmade craft. Every piece passes through one pair of hands, start to finish, using natural and eco-conscious fibers sourced with care.
+    </p>
+  </div>
+</section>
+
+<!-- ============ TRUST STRIP ============ -->
+<section class="px-6 lg:px-10 pb-10">
+  <div class="mx-auto max-w-7xl grid sm:grid-cols-3 gap-6" data-reveal>
+    <div class="trust-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l2.6 5.3L20.5 9l-4.25 4.15L17.2 19 12 16.1 6.8 19l0.95-5.85L3.5 9l5.9-0.7L12 3z"/></svg>
+      <div><h4 class="font-semibold">100% Handcrafted</h4><p class="text-sm text-ink/60">Every stitch made by hand, no machines involved.</p></div>
+    </div>
+    <div class="trust-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21c-4.4-2.1-8-6-8-11a8 8 0 0116 0c0 5-3.6 8.9-8 11z"/></svg>
+      <div><h4 class="font-semibold">Eco-Friendly Yarn</h4><p class="text-sm text-ink/60">Responsibly sourced natural & recycled fibers.</p></div>
+    </div>
+    <div class="trust-badge">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9z"/></svg>
+      <div><h4 class="font-semibold">Worldwide Shipping</h4><p class="text-sm text-ink/60">Domestic & international delivery, tracked door to door.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT / FOOTER ============ -->
+<footer id="contact" class="relative pt-24 pb-10 px-6 lg:px-10 bg-ink text-cream/80 rounded-t-[3rem] mt-10">
+  <div class="mx-auto max-w-7xl grid md:grid-cols-3 gap-12 mb-16">
+    <div>
+      <span class="font-display text-2xl text-cream">Woolley <span class="italic text-gold-light">Wonders</span></span>
+      <p class="mt-4 text-cream/50 text-sm leading-relaxed max-w-xs">Handmade crochet, stitched to order. Follow along or reach out — we'd love to make something for you.</p>
+    </div>
+    <div>
+      <h4 class="font-semibold text-cream mb-4 text-sm uppercase tracking-widest">Explore</h4>
+      <ul class="space-y-2 text-sm text-cream/50">
+        <li><a href="#collection" class="hover:text-gold-light transition-colors">Collection</a></li>
+        <li><a href="#bespoke" class="hover:text-gold-light transition-colors">Bespoke Studio</a></li>
+        <li><a href="#about" class="hover:text-gold-light transition-colors">About</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold text-cream mb-4 text-sm uppercase tracking-widest">Say hello</h4>
+      <ul class="space-y-3 text-sm text-cream/50">
+        <li>hello@woolleywonders.com</li>
+      </ul>
+      <div class="flex gap-3 mt-5">
+        <a href="https://instagram.com/woolleywonders" target="_blank" class="social-icon" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://pinterest.com" target="_blank" class="social-icon" aria-label="Pinterest">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9 17c1-3 1.5-5 1.5-6.5A2.5 2.5 0 0113 8c1.4 0 2.2 1 2.2 2.4 0 1.5-1 3.6-1.5 4.6"/></svg>
+        </a>
+        <a href="https://tiktok.com" target="_blank" class="social-icon" aria-label="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4v10.5a3.5 3.5 0 11-3-3.46V8.5"/><path d="M14 4c.4 2 2 3.4 4 3.6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="mx-auto max-w-7xl pt-8 border-t border-cream/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-cream/40">
+    <p>© <span id="year"></span> Woolley Wonders. All pieces made by hand.</p>
+    <p>Crafted with care, one loop at a time.</p>
+  </div>
+</footer>
+
+<!-- ============ CART DRAWER ============ -->
+<div id="cart-overlay" class="cart-overlay"></div>
+<aside id="cart-drawer" class="cart-drawer">
+  <div class="flex items-center justify-between px-6 py-6 border-b border-ink/10">
+    <h3 class="font-display text-2xl">Your Cart</h3>
+    <button id="cart-close" class="w-9 h-9 rounded-full hover:bg-ink/5 flex items-center justify-center transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+
+  <div id="cart-items" class="flex-1 overflow-y-auto px-6 py-4 space-y-4"></div>
+
+  <div id="cart-empty" class="hidden flex-1 flex flex-col items-center justify-center text-center px-6 text-ink/40">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 6h15l-1.5 9h-12L5 3H2"/></svg>
+    <p>Your cart is empty — go loop something lovely.</p>
+  </div>
+
+  <div class="px-6 py-6 border-t border-ink/10 space-y-4">
+    <div class="flex gap-2">
+      <input id="promo-input" type="text" placeholder="Promo code" class="form-input flex-1">
+      <button id="promo-apply" class="btn-outline !px-5 !py-3 text-sm">Apply</button>
+    </div>
+    <div class="space-y-1 text-sm">
+      <div class="flex justify-between text-ink/60"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
+      <div class="flex justify-between text-ink/60"><span>Discount</span><span id="cart-discount">-$0.00</span></div>
+      <div class="flex justify-between font-display text-lg text-ink pt-2 border-t border-ink/10 mt-2"><span>Total</span><span id="cart-total">$0.00</span></div>
+    </div>
+    <button id="checkout-open" class="btn-glow w-full justify-center">Checkout</button>
+  </div>
+</aside>
+
+<!-- ============ QUICK VIEW MODAL ============ -->
+<div id="quickview-modal" class="modal-overlay">
+  <div class="modal-panel max-w-4xl">
+    <button class="modal-close" data-close-modal>&times;</button>
+    <div class="grid md:grid-cols-2 gap-0">
+      <div class="relative aspect-square md:aspect-auto overflow-hidden rounded-l-[1.75rem]">
+        <img id="qv-image" src="" alt="" class="w-full h-full object-cover">
+        <div class="absolute top-4 left-4 flex gap-2" id="qv-badges"></div>
+      </div>
+      <div class="p-8 lg:p-10 flex flex-col">
+        <h3 id="qv-title" class="font-display text-3xl mb-2"></h3>
+        <p id="qv-price" class="text-rose-deep text-xl font-semibold mb-4"></p>
+        <p id="qv-desc" class="text-ink/60 mb-6 leading-relaxed"></p>
+
+        <div class="mb-5">
+          <label class="form-label">Color</label>
+          <div id="qv-colors" class="flex gap-2 mt-2"></div>
+        </div>
+        <div class="mb-8">
+          <label class="form-label">Size</label>
+          <div id="qv-sizes" class="flex gap-2 mt-2"></div>
+        </div>
+
+        <div class="mt-auto flex flex-col sm:flex-row gap-3">
+          <button id="qv-add-cart" class="btn-glow flex-1 justify-center">Add to Cart</button>
+          <button id="qv-custom" class="btn-outline flex-1 justify-center">Custom Request</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHECKOUT MODAL ============ -->
+<div id="checkout-modal" class="modal-overlay">
+  <div class="modal-panel max-w-lg">
+    <button class="modal-close" data-close-modal>&times;</button>
+    <div class="p-8 lg:p-10">
+      <h3 class="font-display text-3xl mb-1">Checkout</h3>
+      <p class="text-ink/50 text-sm mb-8">We'll email your order confirmation right after.</p>
+      <form id="checkout-form" class="space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div><label class="form-label">Full name</label><input required type="text" name="name" class="form-input"></div>
+          <div><label class="form-label">Phone</label><input required type="tel" name="phone" class="form-input"></div>
+        </div>
+        <div><label class="form-label">Email</label><input required type="email" name="email" class="form-input"></div>
+        <div><label class="form-label">Shipping address</label><textarea required name="address" rows="2" class="form-input resize-none"></textarea></div>
+        <div><label class="form-label">Customization notes (optional)</label><textarea name="notes" rows="2" class="form-input resize-none" placeholder="Color tweaks, sizing notes, gift message..."></textarea></div>
+
+        <div class="pt-2 border-t border-ink/10 mt-2 text-sm space-y-1">
+          <div class="flex justify-between text-ink/60"><span>Total due</span><span id="checkout-total" class="font-display text-lg text-ink">$0.00</span></div>
+        </div>
+
+        <button type="submit" id="confirm-order-btn" class="btn-glow w-full justify-center mt-2">Confirm Order</button>
+        <p id="checkout-status" class="text-sm text-center hidden"></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add-to-cart flying element target -->
+<div id="fly-layer" class="fly-layer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
