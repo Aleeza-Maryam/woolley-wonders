@@ -893,9 +893,6 @@ function setSubmitting(form, isSubmitting) {
     : "Send Inquiry";
 }
 
-/* ---------------------------------------------------------------------
-   16. INIT
-   --------------------------------------------------------------------- */
 document.getElementById("year").textContent = new Date().getFullYear();
 renderProducts();
 initHero3D();
