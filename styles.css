@@ -27,24 +27,6 @@ body {
 #stitch-svg { height: 100%; }
 #stitch-path-fg { transition: stroke-dashoffset 0.1s linear; }
 
-/* ===================== Scroll-tracking 3D hook overlay ===================== */
-/* Sits inside the content column with comfortable padding — never touches
-   the viewport edge, and stays clear of the stitch-thread indicator. */
-#scroll-hook-canvas {
-  position: fixed;
-  top: 0;
-  left: clamp(48px, 6vw, 110px);
-  width: clamp(90px, 8vw, 140px);
-  height: 100vh;
-  z-index: 35;
-  pointer-events: none;
-}
-#scroll-hook-canvas canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
-
 /* ===================== Navbar ===================== */
 #nav-glass {
   background: rgba(250, 244, 236, 0.55);

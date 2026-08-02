@@ -217,12 +217,13 @@ function initHero3D() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   container.appendChild(renderer.domElement);
 
-  // Lighting
-  scene.add(new THREE.AmbientLight(0xfaf4ec, 0.9));
-  const key = new THREE.PointLight(0xc6a15b, 1.4, 20);
+  // Lighting — pulled back significantly; the previous intensities were
+  // blowing the core out to near-white, washing out the strand colors.
+  scene.add(new THREE.AmbientLight(0xfaf4ec, 0.55));
+  const key = new THREE.PointLight(0xc6a15b, 0.75, 20);
   key.position.set(4, 4, 5);
   scene.add(key);
-  const fill = new THREE.PointLight(0xc98d82, 0.9, 20);
+  const fill = new THREE.PointLight(0xc98d82, 0.4, 20);
   fill.position.set(-4, -2, 3);
   scene.add(fill);
 
@@ -231,13 +232,15 @@ function initHero3D() {
   const coreGeo = new THREE.SphereGeometry(1.6, 32, 32);
   const coreMat = new THREE.MeshStandardMaterial({
     color: 0xc98d82,
-    roughness: 0.9,
-    metalness: 0.05,
+    roughness: 0.95,
+    metalness: 0,
   });
   const core = new THREE.Mesh(coreGeo, coreMat);
   group.add(core);
 
-  // Wrapped "yarn" strands using torus rings at varied rotations
+  // Wrapped "yarn" strands using torus rings at varied rotations —
+  // matte (higher roughness, no metalness) so they read as fiber and
+  // stay visible instead of catching a glare.
   const strandColors = [0xc6a15b, 0x9cae8c, 0xefdcc7, 0xb4756a];
   for (let i = 0; i < 26; i++) {
     const radius = 1.62 + Math.random() * 0.05;
@@ -245,7 +248,8 @@ function initHero3D() {
     const torusGeo = new THREE.TorusGeometry(radius, tube, 8, 64);
     const mat = new THREE.MeshStandardMaterial({
       color: strandColors[i % strandColors.length],
-      roughness: 0.7,
+      roughness: 0.88,
+      metalness: 0,
     });
     const torus = new THREE.Mesh(torusGeo, mat);
     torus.rotation.x = Math.random() * Math.PI;
@@ -256,9 +260,169 @@ function initHero3D() {
 
   scene.add(group);
 
-  // Mouse tracking — yarn ball drifts gently toward the cursor
+  // ---------------------------------------------------------------------
+  // Authentic ergonomic crochet hook — short metal head/hook portion
+  // (aluminium-style, polished) fused to a long tapered ergonomic grip
+  // (matte, dark warm tone), matching a real inline crochet hook rather
+  // than a plain rod. Lives in the same scene as the yarn ball and
+  // receives its own lagged cursor-driven motion.
+  // ---------------------------------------------------------------------
+  const hookGroup = new THREE.Group();
+
+  // Polished metal — the working head/hook portion
+  const metalMat = new THREE.MeshStandardMaterial({
+    color: 0xd8b56e,
+    roughness: 0.22,
+    metalness: 0.75,
+    emissive: 0x2a1a08,
+    emissiveIntensity: 0.05,
+  });
+  // Matte ergonomic grip — dark, on-brand warm tone, contrasts with the metal
+  const gripMat = new THREE.MeshStandardMaterial({
+    color: 0x3a2e28,
+    roughness: 0.75,
+    metalness: 0.08,
+  });
+  const threadMat = new THREE.MeshStandardMaterial({
+    color: 0xc98d82, // saturated rose, not white/cream — needs to stay visibly a thread
+    roughness: 0.9,
+    metalness: 0,
+  });
+
+  const gripLen = 1.55;
+  const bottomY = -gripLen; // grip tapers to a point at the very bottom
+  const collarY = 0; // where grip meets metal
+
+  // ---- Ergonomic grip: a continuous revolved profile that narrows to a
+  // point at the bottom, widens for a comfortable hold in the upper
+  // third, then narrows again into the metal collar — matching a real
+  // rubberized/aluminium ergonomic handle rather than a stacked rod. ----
+  const gripProfile = [
+    [0.0, bottomY],
+    [0.02, bottomY + 0.05],
+    [0.05, bottomY + 0.25],
+    [0.075, bottomY + 0.55],
+    [0.085, bottomY + 0.85], // widest point — the grip zone
+    [0.082, bottomY + 1.05],
+    [0.065, bottomY + 1.3],
+    [0.04, bottomY + 1.46],
+    [0.024, collarY], // narrows into the collar
+  ];
+  const gripGeo = new THREE.LatheGeometry(
+    gripProfile.map(([r, y]) => new THREE.Vector2(r, y)),
+    32
+  );
+  const grip = new THREE.Mesh(gripGeo, gripMat);
+  hookGroup.add(grip);
+
+  // Thumb rest — a distinct flat facet in the grip zone, where a hook is
+  // naturally held between thumb and forefinger.
+  const thumbFacet = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.34, 0.016), gripMat);
+  thumbFacet.position.set(0, bottomY + 0.85, 0.078);
+  hookGroup.add(thumbFacet);
+
+  // Metal collar/ferrule at the grip-to-metal transition
+  const collar = new THREE.Mesh(new THREE.TorusGeometry(0.026, 0.008, 12, 24), metalMat);
+  collar.position.y = collarY;
+  collar.rotation.x = Math.PI / 2;
+  hookGroup.add(collar);
+
+  // Smooth tapered metal neck rising from the collar to the head
+  const neckLen = 0.26;
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.022, neckLen, 20), metalMat);
+  neck.position.y = collarY + neckLen / 2;
+  hookGroup.add(neck);
+
+  const headY = collarY + neckLen;
+
+  // The head — a small bulge right before the throat/lip
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.026, 16, 16), metalMat);
+  head.position.y = headY;
+  hookGroup.add(head);
+
+  // Inline throat notch — the cut groove where the yarn sits
+  const throat = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.006, 10, 20), metalMat);
+  throat.position.y = headY + 0.018;
+  throat.rotation.x = Math.PI / 2;
+  hookGroup.add(throat);
+
+  // The hooked lip — small, tight curl that actually reads as a hook
+  const lip = new THREE.Mesh(new THREE.TorusGeometry(0.038, 0.013, 14, 28, Math.PI * 1.3), metalMat);
+  lip.position.set(0.008, headY + 0.038, 0);
+  lip.rotation.set(Math.PI / 2, 0, Math.PI * 0.52);
+  hookGroup.add(lip);
+
+  // Fine point beyond the lip
+  const point = new THREE.Mesh(new THREE.ConeGeometry(0.011, 0.04, 16), metalMat);
+  point.position.set(0.042, headY + 0.06, 0);
+  point.rotation.z = -0.35;
+  hookGroup.add(point);
+
+  const tipY = headY + 0.08;
+  const tipWorldLocal = new THREE.Vector3(0.045, tipY, 0); // local coords near the lip/throat, used to route the working thread
+
+  // A dedicated highlight + fill light keep the metal head glinting
+  const hookGlint = new THREE.PointLight(0xffffff, 1.6, 8);
+  hookGlint.position.set(-0.6, 1.0, 3.4);
+  scene.add(hookGlint);
+  const hookFill = new THREE.PointLight(0xefdcc7, 0.7, 8);
+  hookFill.position.set(-1.8, -0.6, 1.6);
+  scene.add(hookFill);
+
+  // Positioned so it clears the yarn ball's on-screen silhouette entirely
+  // (checked against the ball's projected edge, not just raw world
+  // position — being closer to the camera than the ball means a modest
+  // world-space offset isn't automatically enough) while also staying
+  // inside the camera's visible frustum at every breakpoint.
+  const HOOK_BASE_X = -1.4;
+  const HOOK_BASE_Y = 0.15;
+  const HOOK_BASE_Z = 1.85;
+  const HOOK_BASE_TILT = -0.314; // ~18°, gentle diagonal
+  hookGroup.position.set(HOOK_BASE_X, HOOK_BASE_Y, HOOK_BASE_Z);
+  hookGroup.rotation.z = HOOK_BASE_TILT;
+  hookGroup.scale.set(0.72, 0.72, 0.72);
+  scene.add(hookGroup);
+
+  // ---------------------------------------------------------------------
+  // Active working thread — a single strand that appears to come off the
+  // yarn ball, drapes with a natural sag rather than pulling taut in a
+  // straight line, threads through the throat notch, and forms a small
+  // working loop at the very tip, as if mid-stitch.
+  // ---------------------------------------------------------------------
+  const hookWorldMatrix = new THREE.Matrix4().compose(
+    hookGroup.position,
+    new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, HOOK_BASE_TILT)),
+    hookGroup.scale
+  );
+  const throatWorld = new THREE.Vector3(0.01, headY + 0.018, 0).applyMatrix4(hookWorldMatrix);
+  const tipWorld = tipWorldLocal.clone().applyMatrix4(hookWorldMatrix);
+
+  const ballStart = new THREE.Vector3(-0.35, -0.45, 1.52); // on the ball's near-left surface, facing the hook
+  const threadPoints = [
+    ballStart,
+    new THREE.Vector3(-0.75, -0.85, 1.65), // sags downward under its own weight
+    new THREE.Vector3(-1.15, -0.95, 1.75),
+    new THREE.Vector3(-1.35, -0.7, 1.8),
+    throatWorld.clone().add(new THREE.Vector3(-0.06, 0.015, 0.02)), // approaches the throat
+    throatWorld, // threads through the notch
+    tipWorld.clone().add(new THREE.Vector3(0.02, 0.025, 0.02)),
+    tipWorld.clone().add(new THREE.Vector3(0.055, 0.06, -0.02)), // small working loop at the tip
+    tipWorld.clone().add(new THREE.Vector3(0.025, 0.08, 0.022)),
+    tipWorld.clone().add(new THREE.Vector3(-0.018, 0.045, -0.014)),
+  ];
+  const workingThreadCurve = new THREE.CatmullRomCurve3(threadPoints, false, "catmullrom", 0.6);
+  const workingThread = new THREE.Mesh(
+    new THREE.TubeGeometry(workingThreadCurve, 80, 0.013, 8, false),
+    threadMat
+  );
+  scene.add(workingThread);
+
+  // Mouse tracking — the ball uses its own smoothing; the hook gets a
+  // separate, slightly slower-lerped target so it lags behind and drifts
+  // independently rather than moving in perfect lockstep with the ball.
   const mouse = { x: 0, y: 0 };
   const target = { x: 0, y: 0 };
+  const hookTarget = { x: 0, y: 0 };
   window.addEventListener("mousemove", (e) => {
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
@@ -268,10 +432,21 @@ function initHero3D() {
     requestAnimationFrame(animate);
     target.x += (mouse.x - target.x) * 0.04;
     target.y += (mouse.y - target.y) * 0.04;
+    hookTarget.x += (mouse.x - hookTarget.x) * 0.05; // subtle spring/lag
+    hookTarget.y += (mouse.y - hookTarget.y) * 0.05;
 
+    // Yarn ball
     group.rotation.y += 0.004 + target.x * 0.01;
     group.rotation.x = target.y * 0.35;
     group.position.y = Math.sin(Date.now() * 0.001) * 0.15;
+
+    // Hook — its own lagged target plus a phase-shifted bob, kept subtle
+    // so it reads as gently anchored near the ball rather than drifting
+    // freely in open space.
+    hookGroup.rotation.z = HOOK_BASE_TILT + hookTarget.x * 0.06;
+    hookGroup.rotation.x = hookTarget.y * 0.08;
+    hookGroup.position.y = HOOK_BASE_Y + Math.sin(Date.now() * 0.001 + 1.4) * 0.04;
+    hookGlint.position.y = 1.0 + Math.sin(Date.now() * 0.001 + 1.4) * 0.04;
 
     renderer.render(scene, camera);
   }
@@ -283,164 +458,6 @@ function initHero3D() {
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
-  });
-}
-
-/* ---------------------------------------------------------------------
-   8b. THREE.JS SCROLL HOOK — realistic wood-handled crochet hook,
-   positioned inside the content column (never at the viewport edge).
-
-   Uses an ORTHOGRAPHIC camera rather than perspective: the previous
-   version clipped because a perspective camera's horizontal frustum
-   shrinks to almost nothing on a narrow canvas, cutting off any part of
-   the hook that wasn't perfectly centered on the x-axis. An orthographic
-   frustum has a fixed world-space width regardless of canvas pixel size,
-   so the hook is guaranteed to stay fully in frame on every screen size.
-   --------------------------------------------------------------------- */
-function initScrollHook() {
-  const container = document.getElementById("scroll-hook-canvas");
-  if (!container || !window.THREE) return;
-
-  let width = container.clientWidth;
-  let height = container.clientHeight;
-
-  const scene = new THREE.Scene();
-
-  // Fixed world-space frustum — generous relative to the hook's size, so
-  // nothing is ever clipped regardless of the container's pixel width.
-  const FRUSTUM_HALF_W = 0.55;
-  const FRUSTUM_HALF_H = 1.3;
-  const camera = new THREE.OrthographicCamera(
-    -FRUSTUM_HALF_W, FRUSTUM_HALF_W, FRUSTUM_HALF_H, -FRUSTUM_HALF_H, 0.1, 100
-  );
-  camera.position.set(0, 0, 6);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(width, height);
-  container.appendChild(renderer.domElement);
-
-  scene.add(new THREE.AmbientLight(0xfaf4ec, 1.05));
-  const keyLight = new THREE.PointLight(0xffffff, 1.1, 10);
-  keyLight.position.set(1.5, 1, 3);
-  scene.add(keyLight);
-  const warmLight = new THREE.PointLight(0xc6a15b, 0.5, 10);
-  warmLight.position.set(-1.2, -1, 2);
-  scene.add(warmLight);
-
-  // ---- Materials: smooth matte pastel/wooden handle + soft rounded tip ----
-  const woodMat = new THREE.MeshStandardMaterial({
-    color: 0xdcbf94, // smooth pastel wood handle
-    roughness: 0.62,
-    metalness: 0.02,
-  });
-  const tipMat = new THREE.MeshStandardMaterial({
-    color: 0xcfa877, // warm, softly-brushed tip — matte rather than mirror-shiny
-    roughness: 0.4,
-    metalness: 0.45,
-  });
-  const threadMat = new THREE.MeshStandardMaterial({
-    color: 0xcdd3ba, // warm cream/sage yarn thread
-    roughness: 0.9,
-    metalness: 0,
-  });
-
-  const hook = new THREE.Group();
-
-  const handleLen = 0.36;
-  const neckLen = 0.215;
-  const totalLen = handleLen + neckLen;
-  const bottomY = -totalLen / 2;
-
-  // Ergonomic wood handle — slightly barrel-shaped for a comfortable grip
-  const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.017, 0.02, handleLen, 20), woodMat);
-  handle.position.y = bottomY + handleLen / 2;
-  hook.add(handle);
-
-  // Rounded end cap so the handle reads as a finished, ergonomic product
-  const endCap = new THREE.Mesh(new THREE.SphereGeometry(0.017, 16, 16), woodMat);
-  endCap.position.y = bottomY;
-  hook.add(endCap);
-
-  // Small ferrule ring where the wood meets the hook's neck
-  const ferrule = new THREE.Mesh(new THREE.TorusGeometry(0.019, 0.005, 12, 24), tipMat);
-  ferrule.position.y = bottomY + handleLen;
-  ferrule.rotation.x = Math.PI / 2;
-  hook.add(ferrule);
-
-  // Thin neck rising to the hook tip
-  const neckY = bottomY + handleLen + neckLen / 2;
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.011, neckLen, 16), tipMat);
-  neck.position.y = neckY;
-  hook.add(neck);
-
-  // The rounded curved hook tip itself
-  const tipY = bottomY + totalLen;
-  const curve = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.013, 16, 32, Math.PI * 1.35), tipMat);
-  curve.position.set(0, tipY, 0);
-  curve.rotation.set(Math.PI / 2, 0, Math.PI * 0.62);
-  hook.add(curve);
-
-  // A subtle loop of warm cream/sage yarn thread caught in the hook's tip
-  const threadPoints = [
-    new THREE.Vector3(0.018, tipY - 0.01, 0.012),
-    new THREE.Vector3(0.05, tipY + 0.018, -0.01),
-    new THREE.Vector3(0.03, tipY + 0.045, 0.014),
-    new THREE.Vector3(-0.012, tipY + 0.02, -0.012),
-  ];
-  const threadCurve = new THREE.CatmullRomCurve3(threadPoints, true);
-  const thread = new THREE.Mesh(new THREE.TubeGeometry(threadCurve, 32, 0.003, 8, true), threadMat);
-  hook.add(thread);
-
-  const REST_TILT = -0.09; // gentle resting lean, as if propped mid-stitch
-  hook.rotation.z = REST_TILT;
-
-  // Modest, subtle scale — reads like a small stylized accent, not a prop
-  hook.scale.set(0.62, 0.62, 0.62);
-  scene.add(hook);
-
-  // ---- Scroll-driven vertical tracking (scrub animation) ----
-  // Position is expressed as a fraction of the page's total scroll depth
-  // (0 = top of page, 1 = bottom), so the hook glides down as the user
-  // scrolls down and eases back up as they scroll up.
-  let scrollFraction = 0;
-  function readScrollFraction() {
-    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-    scrollFraction = scrollable > 0 ? window.scrollY / scrollable : 0;
-  }
-  window.addEventListener("scroll", readScrollFraction, { passive: true });
-  readScrollFraction();
-
-  const VERTICAL_RANGE = FRUSTUM_HALF_H * 0.72; // keep hook comfortably inside its lane
-  let currentY = VERTICAL_RANGE; // start near the top of the viewport
-  let prevY = currentY;
-
-  const MAX_TILT = THREE.MathUtils.degToRad(13); // gentle 10-15° hand-stitching sway
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    const targetY = VERTICAL_RANGE - scrollFraction * VERTICAL_RANGE * 2; // top -> bottom
-
-    currentY += (targetY - currentY) * 0.08; // smooth scrub, slightly weighted
-    hook.position.y = currentY;
-
-    const velocity = currentY - prevY;
-    const dynamicTilt = THREE.MathUtils.clamp(velocity * 6, -MAX_TILT, MAX_TILT);
-    hook.rotation.z = REST_TILT + dynamicTilt;
-    hook.rotation.y = Math.sin(Date.now() * 0.0006) * 0.08; // subtle idle sway
-    prevY = currentY;
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener("resize", () => {
-    width = container.clientWidth;
-    height = container.clientHeight;
-    renderer.setSize(width, height);
-    // Frustum stays fixed in world units — no aspect recalculation needed,
-    // which is exactly what keeps the hook from ever clipping on resize.
   });
 }
 
@@ -882,5 +899,4 @@ function setSubmitting(form, isSubmitting) {
 document.getElementById("year").textContent = new Date().getFullYear();
 renderProducts();
 initHero3D();
-initScrollHook();
 renderCart();
