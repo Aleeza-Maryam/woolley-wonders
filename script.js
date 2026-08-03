@@ -672,9 +672,7 @@ document.getElementById("promo-apply").addEventListener("click", () => {
   renderCart();
 });
 
-/* ---------------------------------------------------------------------
-   11. QUICK VIEW MODAL
-   --------------------------------------------------------------------- */
+
 const quickviewModal = document.getElementById("quickview-modal");
 
 function openQuickView(productId) {
@@ -730,9 +728,6 @@ document.getElementById("qv-custom").addEventListener("click", () => {
   if (state.activeProduct) openCustomRequest(state.activeProduct);
 });
 
-/* ---------------------------------------------------------------------
-   12. CUSTOM REQUEST -> Instagram DM prefill
-   --------------------------------------------------------------------- */
 function openCustomRequest(product) {
   const text = `Hi! I'd love a custom version of the "${product.name}" (${fmt(product.price)}). Here's what I'm thinking: `;
   const url = `https://ig.me/m/${CONFIG.instagramHandle}?text=${encodeURIComponent(text)}`;
