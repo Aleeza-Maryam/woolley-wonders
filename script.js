@@ -745,9 +745,7 @@ document.getElementById("bespoke-cta").addEventListener("click", (e) => {
   window.open(url, "_blank");
 });
 
-/* ---------------------------------------------------------------------
-   13. MODAL HELPERS
-   --------------------------------------------------------------------- */
+
 function openModal(modalEl) {
   modalEl.classList.add("active");
 }
@@ -777,9 +775,7 @@ document.getElementById("checkout-open").addEventListener("click", () => {
   openModal(checkoutModal);
 });
 
-/* ---------------------------------------------------------------------
-   14. BESPOKE INQUIRY FORM (EmailJS)
-   --------------------------------------------------------------------- */
+
 document.getElementById("bespoke-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const form = e.target;
