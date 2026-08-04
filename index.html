@@ -100,7 +100,7 @@
 </header>
 
 <!-- ============ HERO SLIDER (full-bleed, swap slide images in script.js) ============ -->
-<section id="home" class="relative h-screen min-h-[560px] w-full overflow-hidden">
+<section id="home" class="relative min-h-[560px] lg:min-h-screen w-full flex flex-col justify-center overflow-hidden">
   <!-- Slides -->
   <div id="hero-slider" class="absolute inset-0"></div>
 
@@ -108,13 +108,13 @@
   <div class="absolute inset-0 hero-slide-overlay pointer-events-none"></div>
 
   <!-- Overlaid content -->
-  <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-    <span class="inline-block font-body text-xs tracking-[0.25em] uppercase text-cream bg-cream/15 backdrop-blur-sm px-4 py-2 rounded-full mb-6" data-reveal>Handmade · Small Batch · Made to Order</span>
-    <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-cream mb-6 drop-shadow-sm" data-reveal>
+  <div class="relative z-10 text-center px-6 py-14 lg:py-20">
+    <span class="inline-block font-body text-xs tracking-[0.25em] uppercase text-cream bg-cream/15 backdrop-blur-sm px-4 py-2 rounded-full mb-4" data-reveal>Handmade · Small Batch · Made to Order</span>
+    <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.08] text-cream mb-4 drop-shadow-sm" data-reveal>
       Every stitch,<br>
       <span class="italic text-blush">held by hand.</span>
     </h1>
-    <p class="text-lg text-cream/85 max-w-md mb-9 leading-relaxed" data-reveal>
+    <p class="text-base sm:text-lg text-cream/85 max-w-md mx-auto mb-6 leading-relaxed" data-reveal>
       Woolley Wonders crafts one-of-a-kind crochet pieces — from cloud-soft cardigans to sculptural home accents — each looped, knotted, and finished by hand in small batches.
     </p>
     <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
@@ -122,21 +122,30 @@
       <a href="#bespoke" class="btn-outline !text-cream !border-cream/40 hover:!bg-cream/10">Design Your Own</a>
     </div>
 
-    <div class="flex items-center justify-center gap-8 mt-12 text-sm text-cream/75" data-reveal>
-      <div><span class="block font-display text-2xl text-cream">500+</span>pieces stitched</div>
-      <div><span class="block font-display text-2xl text-cream">100%</span>handcrafted</div>
-      <div><span class="block font-display text-2xl text-cream">48h</span>avg. turnaround</div>
+    <div class="flex items-center justify-center gap-8 mt-8 text-sm text-cream/75" data-reveal>
+      <div><span class="block font-display text-xl text-cream">500+</span>pieces stitched</div>
+      <div><span class="block font-display text-xl text-cream">100%</span>handcrafted</div>
+      <div><span class="block font-display text-xl text-cream">48h</span>avg. turnaround</div>
     </div>
+
+    <!-- Slide dots — in normal flow, right under the stats, so it can never
+         collide with them regardless of how tall the content above is -->
+    <div id="hero-dots" class="flex items-center justify-center gap-2 mt-8 z-20"></div>
   </div>
 
-  <!-- Slide dots -->
-  <div id="hero-dots" class="absolute bottom-24 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2"></div>
-
-  <a href="#collection" class="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-cream/60 text-xs tracking-widest uppercase z-20">
+  <a href="#collection" class="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-cream/60 text-xs tracking-widest uppercase z-20">
     Scroll
     <span class="w-px h-10 bg-cream/30 relative overflow-hidden"><span class="scroll-line"></span></span>
   </a>
 </section>
+<style>
+  /* Extra headroom on short/landscape screens so content never has to
+     compete with the min-height for space — the section simply grows
+     taller than one viewport there instead of clipping anything. */
+  @media (orientation: landscape) and (max-height: 500px) {
+    #home { min-height: 640px; }
+  }
+</style>
 
 <!-- ============ COLLECTION / SHOP ============ -->
 <section id="collection" class="relative py-28 px-6 lg:px-10">

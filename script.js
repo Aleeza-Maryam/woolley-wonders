@@ -94,9 +94,16 @@ const PRODUCTS = [
    2b. HERO SLIDER IMAGES — replace these with your own photos any time
    --------------------------------------------------------------------- */
 const HERO_SLIDES = [
-  "tie.jpeg",
+  "keychain_bookeh.jpeg",
+  "pearl_gajra.jpeg",
+  "gloves.jpeg",
   "headphones_plusshie.jpeg",
-  "https://images.unsplash.com/photo-1522771930-78848d9293e8?q=80&w=1800&auto=format&fit=crop",
+  "rose_boquet.jpeg",
+  "sunflower_keychain.jpeg",
+  "plushie_chick.jpeg",
+  "gajra.jpeg",
+  "red_rose.jpeg",
+  "keychain_octopus.jpeg",
 ];
 
 
@@ -670,7 +677,7 @@ function initHeroSlider() {
   function startAutoplay() {
     clearInterval(timer);
     if (HERO_SLIDES.length > 1) {
-      timer = setInterval(() => goTo(current + 1), 5500);
+      timer = setInterval(() => goTo(current + 1), 2000);
     }
   }
 
