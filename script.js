@@ -91,6 +91,16 @@ const PRODUCTS = [
 ];
 
 /* ---------------------------------------------------------------------
+   2b. HERO SLIDER IMAGES — replace these with your own photos any time
+   --------------------------------------------------------------------- */
+const HERO_SLIDES = [
+  "tie.jpeg",
+  "headphones_plusshie.jpeg",
+  "https://images.unsplash.com/photo-1522771930-78848d9293e8?q=80&w=1800&auto=format&fit=crop",
+];
+
+
+/* ---------------------------------------------------------------------
    3. STATE
    --------------------------------------------------------------------- */
 const state = {
@@ -198,268 +208,6 @@ function attachTilt(card) {
   });
 }
 
-/* ---------------------------------------------------------------------
-   8. THREE.JS HERO — procedural yarn ball, reacts to cursor
-   --------------------------------------------------------------------- */
-function initHero3D() {
-  const container = document.getElementById("hero-3d-canvas");
-  if (!container || !window.THREE) return;
-
-  const width = container.clientWidth;
-  const height = container.clientHeight;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-  camera.position.set(0, 0, 7);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  container.appendChild(renderer.domElement);
-
-  // Lighting — pulled back significantly; the previous intensities were
-  // blowing the core out to near-white, washing out the strand colors.
-  scene.add(new THREE.AmbientLight(0xfaf4ec, 0.55));
-  const key = new THREE.PointLight(0xc6a15b, 0.75, 20);
-  key.position.set(4, 4, 5);
-  scene.add(key);
-  const fill = new THREE.PointLight(0xc98d82, 0.4, 20);
-  fill.position.set(-4, -2, 3);
-  scene.add(fill);
-
-  // Yarn ball core
-  const group = new THREE.Group();
-  const coreGeo = new THREE.SphereGeometry(1.6, 32, 32);
-  const coreMat = new THREE.MeshStandardMaterial({
-    color: 0xc98d82,
-    roughness: 0.95,
-    metalness: 0,
-  });
-  const core = new THREE.Mesh(coreGeo, coreMat);
-  group.add(core);
-
-  // Wrapped "yarn" strands using torus rings at varied rotations —
-  // matte (higher roughness, no metalness) so they read as fiber and
-  // stay visible instead of catching a glare.
-  const strandColors = [0xc6a15b, 0x9cae8c, 0xefdcc7, 0xb4756a];
-  for (let i = 0; i < 26; i++) {
-    const radius = 1.62 + Math.random() * 0.05;
-    const tube = 0.028;
-    const torusGeo = new THREE.TorusGeometry(radius, tube, 8, 64);
-    const mat = new THREE.MeshStandardMaterial({
-      color: strandColors[i % strandColors.length],
-      roughness: 0.88,
-      metalness: 0,
-    });
-    const torus = new THREE.Mesh(torusGeo, mat);
-    torus.rotation.x = Math.random() * Math.PI;
-    torus.rotation.y = Math.random() * Math.PI;
-    torus.rotation.z = Math.random() * Math.PI;
-    group.add(torus);
-  }
-
-  scene.add(group);
-
-  // ---------------------------------------------------------------------
-  // Authentic ergonomic crochet hook — short metal head/hook portion
-  // (aluminium-style, polished) fused to a long tapered ergonomic grip
-  // (matte, dark warm tone), matching a real inline crochet hook rather
-  // than a plain rod. Lives in the same scene as the yarn ball and
-  // receives its own lagged cursor-driven motion.
-  // ---------------------------------------------------------------------
-  const hookGroup = new THREE.Group();
-
-  // Polished metal — the working head/hook portion
-  const metalMat = new THREE.MeshStandardMaterial({
-    color: 0xd8b56e,
-    roughness: 0.22,
-    metalness: 0.75,
-    emissive: 0x2a1a08,
-    emissiveIntensity: 0.05,
-  });
-  // Matte ergonomic grip — dark, on-brand warm tone, contrasts with the metal
-  const gripMat = new THREE.MeshStandardMaterial({
-    color: 0x3a2e28,
-    roughness: 0.75,
-    metalness: 0.08,
-  });
-  const threadMat = new THREE.MeshStandardMaterial({
-    color: 0xc98d82, // saturated rose, not white/cream — needs to stay visibly a thread
-    roughness: 0.9,
-    metalness: 0,
-  });
-
-  const gripLen = 1.55;
-  const bottomY = -gripLen; // grip tapers to a point at the very bottom
-  const collarY = 0; // where grip meets metal
-
-  // ---- Ergonomic grip: a continuous revolved profile that narrows to a
-  // point at the bottom, widens for a comfortable hold in the upper
-  // third, then narrows again into the metal collar — matching a real
-  // rubberized/aluminium ergonomic handle rather than a stacked rod. ----
-  const gripProfile = [
-    [0.0, bottomY],
-    [0.02, bottomY + 0.05],
-    [0.05, bottomY + 0.25],
-    [0.075, bottomY + 0.55],
-    [0.085, bottomY + 0.85], // widest point — the grip zone
-    [0.082, bottomY + 1.05],
-    [0.065, bottomY + 1.3],
-    [0.04, bottomY + 1.46],
-    [0.024, collarY], // narrows into the collar
-  ];
-  const gripGeo = new THREE.LatheGeometry(
-    gripProfile.map(([r, y]) => new THREE.Vector2(r, y)),
-    32
-  );
-  const grip = new THREE.Mesh(gripGeo, gripMat);
-  hookGroup.add(grip);
-
-  // Thumb rest — a distinct flat facet in the grip zone, where a hook is
-  // naturally held between thumb and forefinger.
-  const thumbFacet = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.34, 0.016), gripMat);
-  thumbFacet.position.set(0, bottomY + 0.85, 0.078);
-  hookGroup.add(thumbFacet);
-
-  // Metal collar/ferrule at the grip-to-metal transition
-  const collar = new THREE.Mesh(new THREE.TorusGeometry(0.026, 0.008, 12, 24), metalMat);
-  collar.position.y = collarY;
-  collar.rotation.x = Math.PI / 2;
-  hookGroup.add(collar);
-
-  // Smooth tapered metal neck rising from the collar to the head
-  const neckLen = 0.26;
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.022, neckLen, 20), metalMat);
-  neck.position.y = collarY + neckLen / 2;
-  hookGroup.add(neck);
-
-  const headY = collarY + neckLen;
-
-  // The head — a small bulge right before the throat/lip
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.026, 16, 16), metalMat);
-  head.position.y = headY;
-  hookGroup.add(head);
-
-  // Inline throat notch — the cut groove where the yarn sits
-  const throat = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.006, 10, 20), metalMat);
-  throat.position.y = headY + 0.018;
-  throat.rotation.x = Math.PI / 2;
-  hookGroup.add(throat);
-
-  // The hooked lip — small, tight curl that actually reads as a hook
-  const lip = new THREE.Mesh(new THREE.TorusGeometry(0.038, 0.013, 14, 28, Math.PI * 1.3), metalMat);
-  lip.position.set(0.008, headY + 0.038, 0);
-  lip.rotation.set(Math.PI / 2, 0, Math.PI * 0.52);
-  hookGroup.add(lip);
-
-  // Fine point beyond the lip
-  const point = new THREE.Mesh(new THREE.ConeGeometry(0.011, 0.04, 16), metalMat);
-  point.position.set(0.042, headY + 0.06, 0);
-  point.rotation.z = -0.35;
-  hookGroup.add(point);
-
-  const tipY = headY + 0.08;
-  const tipWorldLocal = new THREE.Vector3(0.045, tipY, 0); // local coords near the lip/throat, used to route the working thread
-
-  // A dedicated highlight + fill light keep the metal head glinting
-  const hookGlint = new THREE.PointLight(0xffffff, 1.6, 8);
-  hookGlint.position.set(-0.6, 1.0, 3.4);
-  scene.add(hookGlint);
-  const hookFill = new THREE.PointLight(0xefdcc7, 0.7, 8);
-  hookFill.position.set(-1.8, -0.6, 1.6);
-  scene.add(hookFill);
-
-  // Positioned so it clears the yarn ball's on-screen silhouette entirely
-  // (checked against the ball's projected edge, not just raw world
-  // position — being closer to the camera than the ball means a modest
-  // world-space offset isn't automatically enough) while also staying
-  // inside the camera's visible frustum at every breakpoint.
-  const HOOK_BASE_X = -1.4;
-  const HOOK_BASE_Y = 0.15;
-  const HOOK_BASE_Z = 1.85;
-  const HOOK_BASE_TILT = -0.314; // ~18°, gentle diagonal
-  hookGroup.position.set(HOOK_BASE_X, HOOK_BASE_Y, HOOK_BASE_Z);
-  hookGroup.rotation.z = HOOK_BASE_TILT;
-  hookGroup.scale.set(0.72, 0.72, 0.72);
-  scene.add(hookGroup);
-
-  // ---------------------------------------------------------------------
-  // Active working thread — a single strand that appears to come off the
-  // yarn ball, drapes with a natural sag rather than pulling taut in a
-  // straight line, threads through the throat notch, and forms a small
-  // working loop at the very tip, as if mid-stitch.
-  // ---------------------------------------------------------------------
-  const hookWorldMatrix = new THREE.Matrix4().compose(
-    hookGroup.position,
-    new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, HOOK_BASE_TILT)),
-    hookGroup.scale
-  );
-  const throatWorld = new THREE.Vector3(0.01, headY + 0.018, 0).applyMatrix4(hookWorldMatrix);
-  const tipWorld = tipWorldLocal.clone().applyMatrix4(hookWorldMatrix);
-
-  const ballStart = new THREE.Vector3(-0.35, -0.45, 1.52); // on the ball's near-left surface, facing the hook
-  const threadPoints = [
-    ballStart,
-    new THREE.Vector3(-0.75, -0.85, 1.65), // sags downward under its own weight
-    new THREE.Vector3(-1.15, -0.95, 1.75),
-    new THREE.Vector3(-1.35, -0.7, 1.8),
-    throatWorld.clone().add(new THREE.Vector3(-0.06, 0.015, 0.02)), // approaches the throat
-    throatWorld, // threads through the notch
-    tipWorld.clone().add(new THREE.Vector3(0.02, 0.025, 0.02)),
-    tipWorld.clone().add(new THREE.Vector3(0.055, 0.06, -0.02)), // small working loop at the tip
-    tipWorld.clone().add(new THREE.Vector3(0.025, 0.08, 0.022)),
-    tipWorld.clone().add(new THREE.Vector3(-0.018, 0.045, -0.014)),
-  ];
-  const workingThreadCurve = new THREE.CatmullRomCurve3(threadPoints, false, "catmullrom", 0.6);
-  const workingThread = new THREE.Mesh(
-    new THREE.TubeGeometry(workingThreadCurve, 80, 0.013, 8, false),
-    threadMat
-  );
-  scene.add(workingThread);
-
-  // Mouse tracking — the ball uses its own smoothing; the hook gets a
-  // separate, slightly slower-lerped target so it lags behind and drifts
-  // independently rather than moving in perfect lockstep with the ball.
-  const mouse = { x: 0, y: 0 };
-  const target = { x: 0, y: 0 };
-  const hookTarget = { x: 0, y: 0 };
-  window.addEventListener("mousemove", (e) => {
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    target.x += (mouse.x - target.x) * 0.04;
-    target.y += (mouse.y - target.y) * 0.04;
-    hookTarget.x += (mouse.x - hookTarget.x) * 0.05; // subtle spring/lag
-    hookTarget.y += (mouse.y - hookTarget.y) * 0.05;
-
-    // Yarn ball
-    group.rotation.y += 0.004 + target.x * 0.01;
-    group.rotation.x = target.y * 0.35;
-    group.position.y = Math.sin(Date.now() * 0.001) * 0.15;
-
-    // Hook — its own lagged target plus a phase-shifted bob, kept subtle
-    // so it reads as gently anchored near the ball rather than drifting
-    // freely in open space.
-    hookGroup.rotation.z = HOOK_BASE_TILT + hookTarget.x * 0.06;
-    hookGroup.rotation.x = hookTarget.y * 0.08;
-    hookGroup.position.y = HOOK_BASE_Y + Math.sin(Date.now() * 0.001 + 1.4) * 0.04;
-    hookGlint.position.y = 1.0 + Math.sin(Date.now() * 0.001 + 1.4) * 0.04;
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener("resize", () => {
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
-  });
-}
 
 /* ---------------------------------------------------------------------
    9. RENDER PRODUCT GRID
@@ -672,7 +420,9 @@ document.getElementById("promo-apply").addEventListener("click", () => {
   renderCart();
 });
 
-
+/* ---------------------------------------------------------------------
+   11. QUICK VIEW MODAL
+   --------------------------------------------------------------------- */
 const quickviewModal = document.getElementById("quickview-modal");
 
 function openQuickView(productId) {
@@ -728,6 +478,9 @@ document.getElementById("qv-custom").addEventListener("click", () => {
   if (state.activeProduct) openCustomRequest(state.activeProduct);
 });
 
+/* ---------------------------------------------------------------------
+   12. CUSTOM REQUEST -> Instagram DM prefill
+   --------------------------------------------------------------------- */
 function openCustomRequest(product) {
   const text = `Hi! I'd love a custom version of the "${product.name}" (${fmt(product.price)}). Here's what I'm thinking: `;
   const url = `https://ig.me/m/${CONFIG.instagramHandle}?text=${encodeURIComponent(text)}`;
@@ -740,7 +493,9 @@ document.getElementById("bespoke-cta").addEventListener("click", (e) => {
   window.open(url, "_blank");
 });
 
-
+/* ---------------------------------------------------------------------
+   13. MODAL HELPERS
+   --------------------------------------------------------------------- */
 function openModal(modalEl) {
   modalEl.classList.add("active");
 }
@@ -770,7 +525,9 @@ document.getElementById("checkout-open").addEventListener("click", () => {
   openModal(checkoutModal);
 });
 
-
+/* ---------------------------------------------------------------------
+   14. BESPOKE INQUIRY FORM (EmailJS)
+   --------------------------------------------------------------------- */
 document.getElementById("bespoke-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const form = e.target;
@@ -884,7 +641,70 @@ function setSubmitting(form, isSubmitting) {
     : "Send Inquiry";
 }
 
+/* ---------------------------------------------------------------------
+   15b. HERO SLIDER — full-bleed banner with autoplay, dots, and swipe
+   --------------------------------------------------------------------- */
+function initHeroSlider() {
+  const sliderEl = document.getElementById("hero-slider");
+  const dotsEl = document.getElementById("hero-dots");
+  if (!sliderEl || !dotsEl || HERO_SLIDES.length === 0) return;
+
+  sliderEl.innerHTML = HERO_SLIDES.map(
+    (url, i) => `<div class="hero-slide${i === 0 ? " active" : ""}" style="background-image:url('${url}')"></div>`
+  ).join("");
+  dotsEl.innerHTML = HERO_SLIDES.map(
+    (_, i) => `<button class="hero-dot${i === 0 ? " active" : ""}" data-slide="${i}" aria-label="Go to slide ${i + 1}"></button>`
+  ).join("");
+
+  const slideEls = [...sliderEl.querySelectorAll(".hero-slide")];
+  const dotEls = [...dotsEl.querySelectorAll(".hero-dot")];
+  let current = 0;
+  let timer = null;
+
+  function goTo(index) {
+    current = (index + HERO_SLIDES.length) % HERO_SLIDES.length;
+    slideEls.forEach((el, i) => el.classList.toggle("active", i === current));
+    dotEls.forEach((el, i) => el.classList.toggle("active", i === current));
+  }
+
+  function startAutoplay() {
+    clearInterval(timer);
+    if (HERO_SLIDES.length > 1) {
+      timer = setInterval(() => goTo(current + 1), 5500);
+    }
+  }
+
+  dotEls.forEach((dot) =>
+    dot.addEventListener("click", () => {
+      goTo(Number(dot.dataset.slide));
+      startAutoplay(); // reset the timer so it doesn't jump right after a manual click
+    })
+  );
+
+  // Basic swipe support for mobile
+  let touchStartX = null;
+  sliderEl.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  sliderEl.addEventListener(
+    "touchend",
+    (e) => {
+      if (touchStartX === null) return;
+      const delta = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 40) {
+        goTo(current + (delta < 0 ? 1 : -1));
+        startAutoplay();
+      }
+      touchStartX = null;
+    },
+    { passive: true }
+  );
+
+  startAutoplay();
+}
+
+/* ---------------------------------------------------------------------
+   16. INIT
+   --------------------------------------------------------------------- */
 document.getElementById("year").textContent = new Date().getFullYear();
 renderProducts();
-initHero3D();
+initHeroSlider();
 renderCart();

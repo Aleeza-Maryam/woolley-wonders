@@ -83,12 +83,39 @@ body {
   100% { transform: scale(1); }
 }
 
-/* ===================== Hero texture ===================== */
-.hero-bg-texture {
+/* ===================== Hero slider ===================== */
+#hero-slider {
+  z-index: 0;
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.hero-slide.active {
+  opacity: 1;
+}
+.hero-slide-overlay {
+  z-index: 1;
   background:
-    radial-gradient(circle at 15% 20%, rgba(201,141,130,0.14), transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(156,174,140,0.16), transparent 45%),
-    radial-gradient(circle at 50% 100%, rgba(198,161,91,0.10), transparent 50%);
+    linear-gradient(180deg, rgba(58,46,40,0.45) 0%, rgba(58,46,40,0.25) 45%, rgba(58,46,40,0.55) 100%);
+}
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(250,244,236,0.45);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0;
+}
+.hero-dot.active {
+  background: #FAF4EC;
+  width: 22px;
 }
 
 .scroll-line {

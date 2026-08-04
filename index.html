@@ -42,7 +42,6 @@
 </script>
 
 <!-- Three.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -100,44 +99,42 @@
   </nav>
 </header>
 
-<!-- ============ HERO ============ -->
-<section id="home" class="relative min-h-screen flex items-center pt-32 pb-16 lg:pt-0 overflow-hidden">
-  <div class="absolute inset-0 hero-bg-texture pointer-events-none"></div>
+<!-- ============ HERO SLIDER (full-bleed, swap slide images in script.js) ============ -->
+<section id="home" class="relative h-screen min-h-[560px] w-full overflow-hidden">
+  <!-- Slides -->
+  <div id="hero-slider" class="absolute inset-0"></div>
 
-  <div class="relative mx-auto max-w-7xl w-full px-6 lg:px-10 grid lg:grid-cols-2 gap-12 items-center">
-    <div data-reveal>
-      <span class="inline-block font-body text-xs tracking-[0.25em] uppercase text-rose-deep bg-rose/10 px-4 py-2 rounded-full mb-6">Handmade · Small Batch · Made to Order</span>
-      <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-ink mb-6">
-        Every stitch,<br>
-        <span class="italic text-rose-deep">held by hand.</span>
-      </h1>
-      <p class="text-lg text-ink/70 max-w-md mb-9 leading-relaxed">
-        Woolley Wonders crafts one-of-a-kind crochet pieces — from cloud-soft cardigans to sculptural home accents — each looped, knotted, and finished by hand in small batches.
-      </p>
-      <div class="flex flex-wrap items-center gap-4">
-        <a href="#collection" class="btn-glow">Explore the Collection</a>
-        <a href="#bespoke" class="btn-outline">Design Your Own</a>
-      </div>
+  <!-- Darkening overlay so text stays legible over any photo -->
+  <div class="absolute inset-0 hero-slide-overlay pointer-events-none"></div>
 
-      <div class="flex items-center gap-8 mt-12 text-sm text-ink/60">
-        <div><span class="block font-display text-2xl text-ink">500+</span>pieces stitched</div>
-        <div><span class="block font-display text-2xl text-ink">100%</span>handcrafted</div>
-        <div><span class="block font-display text-2xl text-ink">48h</span>avg. turnaround</div>
-      </div>
+  <!-- Overlaid content -->
+  <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+    <span class="inline-block font-body text-xs tracking-[0.25em] uppercase text-cream bg-cream/15 backdrop-blur-sm px-4 py-2 rounded-full mb-6" data-reveal>Handmade · Small Batch · Made to Order</span>
+    <h1 class="font-display text-5xl sm:text-6xl lg:text-7xl leading-[1.05] text-cream mb-6 drop-shadow-sm" data-reveal>
+      Every stitch,<br>
+      <span class="italic text-blush">held by hand.</span>
+    </h1>
+    <p class="text-lg text-cream/85 max-w-md mb-9 leading-relaxed" data-reveal>
+      Woolley Wonders crafts one-of-a-kind crochet pieces — from cloud-soft cardigans to sculptural home accents — each looped, knotted, and finished by hand in small batches.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
+      <a href="#collection" class="btn-glow">Explore the Collection</a>
+      <a href="#bespoke" class="btn-outline !text-cream !border-cream/40 hover:!bg-cream/10">Design Your Own</a>
     </div>
 
-    <!-- 3D Canvas -->
-    <div class="relative h-[420px] sm:h-[520px] lg:h-[620px]" data-reveal>
-      <div id="hero-3d-canvas" class="w-full h-full"></div>
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span> move your cursor
-      </div>
+    <div class="flex items-center justify-center gap-8 mt-12 text-sm text-cream/75" data-reveal>
+      <div><span class="block font-display text-2xl text-cream">500+</span>pieces stitched</div>
+      <div><span class="block font-display text-2xl text-cream">100%</span>handcrafted</div>
+      <div><span class="block font-display text-2xl text-cream">48h</span>avg. turnaround</div>
     </div>
   </div>
 
-  <a href="#collection" class="hidden lg:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-ink/40 text-xs tracking-widest uppercase">
+  <!-- Slide dots -->
+  <div id="hero-dots" class="absolute bottom-24 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2"></div>
+
+  <a href="#collection" class="hidden lg:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-cream/60 text-xs tracking-widest uppercase z-20">
     Scroll
-    <span class="w-px h-10 bg-ink/20 relative overflow-hidden"><span class="scroll-line"></span></span>
+    <span class="w-px h-10 bg-cream/30 relative overflow-hidden"><span class="scroll-line"></span></span>
   </a>
 </section>
 
