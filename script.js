@@ -94,16 +94,14 @@ const PRODUCTS = [
    2b. HERO SLIDER IMAGES — replace these with your own photos any time
    --------------------------------------------------------------------- */
 const HERO_SLIDES = [
-  "keychain_bookeh.jpeg",
+  "sweater.jpeg",
+  "headphones_bunny.jpeg",
   "pearl_gajra.jpeg",
-  "gloves.jpeg",
-  "headphones_plusshie.jpeg",
+  "chick.jpeg",
   "rose_boquet.jpeg",
-  "sunflower_keychain.jpeg",
-  "plushie_chick.jpeg",
-  "gajra.jpeg",
-  "red_rose.jpeg",
-  "keychain_octopus.jpeg",
+  "tie2.jpeg",
+  "gajra2.jpeg",
+  "octopus_keychain2.jpeg",
 ];
 
 

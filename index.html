@@ -100,7 +100,8 @@
 </header>
 
 <!-- ============ HERO SLIDER (full-bleed, swap slide images in script.js) ============ -->
-<section id="home" class="relative min-h-[560px] lg:min-h-screen w-full flex flex-col justify-center overflow-hidden">
+<!-- ============ HERO SLIDER (full-bleed, swap slide images in script.js) ============ -->
+<section id="home" class="relative min-h-[560px] lg:min-h-screen w-full flex flex-col justify-center overflow-hidden pt-20 sm:pt-24 md:pt-28">
   <!-- Slides -->
   <div id="hero-slider" class="absolute inset-0"></div>
 
@@ -108,29 +109,29 @@
   <div class="absolute inset-0 hero-slide-overlay pointer-events-none"></div>
 
   <!-- Overlaid content -->
-  <div class="relative z-10 text-center px-6 py-14 lg:py-20">
-    <span class="inline-block font-body text-xs tracking-[0.25em] uppercase text-cream bg-cream/15 backdrop-blur-sm px-4 py-2 rounded-full mb-4" data-reveal>Handmade · Small Batch · Made to Order</span>
-    <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.08] text-cream mb-4 drop-shadow-sm" data-reveal>
+  <div class="relative z-10 text-center px-6 py-8 sm:py-14 lg:py-20">
+    <span class="inline-block font-body text-[10px] sm:text-xs tracking-[0.25em] uppercase text-cream bg-cream/15 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-3 sm:mb-4" data-reveal>Handmade · Small Batch · Made to Order</span>
+    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-cream mb-3 sm:mb-4 drop-shadow-sm" data-reveal>
       Every stitch,<br>
       <span class="italic text-blush">held by hand.</span>
     </h1>
-    <p class="text-base sm:text-lg text-cream/85 max-w-md mx-auto mb-6 leading-relaxed" data-reveal>
+    <p class="text-sm sm:text-base lg:text-lg text-cream/85 max-w-md mx-auto mb-5 sm:mb-6 leading-relaxed px-2" data-reveal>
       Woolley Wonders crafts one-of-a-kind crochet pieces — from cloud-soft cardigans to sculptural home accents — each looped, knotted, and finished by hand in small batches.
     </p>
-    <div class="flex flex-wrap items-center justify-center gap-4" data-reveal>
-      <a href="#collection" class="btn-glow">Explore the Collection</a>
-      <a href="#bespoke" class="btn-outline !text-cream !border-cream/40 hover:!bg-cream/10">Design Your Own</a>
+    <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4" data-reveal>
+      <a href="#collection" class="btn-glow text-sm sm:text-base px-4 sm:px-6 py-2.5 sm:py-3">Explore the Collection</a>
+      <a href="#bespoke" class="btn-outline !text-cream !border-cream/40 hover:!bg-cream/10 text-sm sm:text-base px-4 sm:px-6 py-2.5 sm:py-3">Design Your Own</a>
     </div>
 
-    <div class="flex items-center justify-center gap-8 mt-8 text-sm text-cream/75" data-reveal>
-      <div><span class="block font-display text-xl text-cream">500+</span>pieces stitched</div>
-      <div><span class="block font-display text-xl text-cream">100%</span>handcrafted</div>
-      <div><span class="block font-display text-xl text-cream">48h</span>avg. turnaround</div>
+    <div class="flex items-center justify-center gap-4 sm:gap-6 md:gap-8 mt-6 sm:mt-8 text-xs sm:text-sm text-cream/75" data-reveal>
+      <div><span class="block font-display text-lg sm:text-xl text-cream">500+</span>pieces stitched</div>
+      <div><span class="block font-display text-lg sm:text-xl text-cream">100%</span>handcrafted</div>
+      <div><span class="block font-display text-lg sm:text-xl text-cream">48h</span>avg. turnaround</div>
     </div>
 
     <!-- Slide dots — in normal flow, right under the stats, so it can never
          collide with them regardless of how tall the content above is -->
-    <div id="hero-dots" class="flex items-center justify-center gap-2 mt-8 z-20"></div>
+    <div id="hero-dots" class="flex items-center justify-center gap-2 mt-6 sm:mt-8 z-20"></div>
   </div>
 
   <a href="#collection" class="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-cream/60 text-xs tracking-widest uppercase z-20">
@@ -143,7 +144,13 @@
      compete with the min-height for space — the section simply grows
      taller than one viewport there instead of clipping anything. */
   @media (orientation: landscape) and (max-height: 500px) {
-    #home { min-height: 640px; }
+    #home { min-height: 640px; 
+    }
+  }
+  
+  /* Ensure hero content doesn't get hidden behind navbar on small screens */
+  @media (max-width: 640px) {
+    #home { min-height: 520px; padding-top: 80px; }
   }
 </style>
 
