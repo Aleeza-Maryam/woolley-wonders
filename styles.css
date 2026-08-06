@@ -184,7 +184,30 @@ body {
   flex-shrink: 0;
   width: 2.4rem;
 }
-
+/* ===================== Category Filters ===================== */
+.category-filter {
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(58,46,40,0.12);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: rgba(58,46,40,0.6);
+}
+.category-filter:hover {
+  border-color: #C6A15B;
+  color: #3A2E28;
+}
+.category-filter.active {
+  background: linear-gradient(135deg, #C98D82, #C6A15B);
+  color: #FAF4EC;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(201, 141, 130, 0.35);
+}
 /* ===================== Product cards ===================== */
 .product-card {
   perspective: 1200px;

@@ -25,68 +25,314 @@ if (window.emailjs && CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY") {
 }
 
 /* ---------------------------------------------------------------------
-   2. PRODUCT DATA — replace image URLs with your own product photos
+   2. PRODUCT DATA — organized by categories
    --------------------------------------------------------------------- */
 const PRODUCTS = [
+  // ========== WEARABLES (5 items) ==========
   {
     id: "p1",
-    name: "Blush Bloom Cardigan",
+    name: "Cozy Knit Sweater",
     price: 128,
-    image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?q=80&w=1000&auto=format&fit=crop",
+    image: "sweater.jpeg",
+    category: "Wearables",
     badges: ["Best Seller", "Handmade"],
-    desc: "A cropped, cloud-soft cardigan looped from brushed cotton yarn in a warm blush tone.",
+    desc: "A cloud-soft sweater hand-knitted from premium cotton yarn. Perfect for cozy days.",
     colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
     sizes: ["S", "M", "L"],
   },
   {
     id: "p2",
-    name: "Sage Trellis Tote",
-    price: 68,
-    image: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=1000&auto=format&fit=crop",
-    badges: ["Customizable"],
-    desc: "A structured market tote with an openwork trellis stitch, finished with leather straps.",
-    colors: ["#9CAE8C", "#3A2E28", "#C6A15B"],
-    sizes: ["One Size"],
+    name: "Warm Winter Gloves",
+    price: 48,
+    image: "gloves.jpeg",
+    category: "Wearables",
+    badges: ["Handmade"],
+    desc: "Hand-crocheted gloves with a textured pattern. Keep your hands warm in style.",
+    colors: ["#3A2E28", "#C6A15B", "#9CAE8C"],
+    sizes: ["S", "M", "L"],
   },
   {
     id: "p3",
-    name: "Golden Hour Beanie",
+    name: "Classic Knit Tie",
     price: 38,
-    image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?q=80&w=1000&auto=format&fit=crop",
+    image: "tie.jpeg",
+    category: "Wearables",
     badges: ["Handmade"],
-    desc: "A ribbed slouch beanie in a warm gold blend, lined for extra softness.",
-    colors: ["#C6A15B", "#3A2E28", "#EFDCC7"],
+    desc: "A sophisticated crocheted tie with a subtle texture. Adds a unique touch to any outfit.",
+    colors: ["#3A2E28", "#C98D82", "#9CAE8C"],
     sizes: ["One Size"],
   },
   {
     id: "p4",
-    name: "Cloud Nine Baby Blanket",
-    price: 96,
-    image: "https://images.unsplash.com/photo-1522771930-78848d9293e8?q=80&w=1000&auto=format&fit=crop",
-    badges: ["Customizable", "Best Seller"],
-    desc: "An heirloom-weight blanket in a gentle shell stitch — a sweet, lasting keepsake.",
-    colors: ["#EFDCC7", "#C98D82", "#9CAE8C"],
-    sizes: ["30x30\"", "36x36\""],
+    name: "Mesh Tie",
+    price: 42,
+    image: "tie2.jpeg",
+    category: "Wearables",
+    badges: ["Customizable"],
+    desc: "A lightweight mesh tie with open stitch work. Breathable and perfect for warmer days.",
+    colors: ["#C6A15B", "#3A2E28", "#EFDCC7"],
+    sizes: ["One Size"],
   },
   {
     id: "p5",
-    name: "Rosewater Scrunchie Set",
-    price: 24,
-    image: "https://images.unsplash.com/photo-1620921575117-2b6c0f4a7a6c?q=80&w=1000&auto=format&fit=crop",
-    badges: ["Handmade"],
-    desc: "A set of three textured scrunchies in tonal rose shades — soft on hair, gentle on the planet.",
+    name: "Cardigan",
+    price: 145,
+    image: "Cardigan.jpeg",
+    category: "Wearables",
+    badges: ["Best Seller", "Handmade"],
+    desc: "A beautifully crafted crochet cardigan. Soft, cozy, and perfect for layering.",
+    colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
+    sizes: ["S", "M", "L"],
+  },
+
+  // ========== FLORAL COLLECTION (6 items) ==========
+  {
+    id: "p6",
+    name: "Rose Bouquet",
+    price: 68,
+    image: "rose_boquet.jpeg",
+    category: "Floral Collection",
+    badges: ["Best Seller", "Handmade"],
+    desc: "A stunning hand-crocheted rose bouquet. Perfect as a gift or home decor.",
     colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
     sizes: ["One Size"],
   },
   {
-    id: "p6",
-    name: "Willow Home Basket",
-    price: 84,
-    image: "https://images.unsplash.com/photo-1567016526105-22da7c13161a?q=80&w=1000&auto=format&fit=crop",
+    id: "p7",
+    name: "Rose Baguette",
+    price: 45,
+    image: "rose_baguet_ineg",
+    category: "Floral Collection",
+    badges: ["Handmade"],
+    desc: "Elegant rose-inspired accessory with a baguette silhouette. A unique statement piece.",
+    colors: ["#C98D82", "#C6A15B", "#3A2E28"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p8",
+    name: "Pink Tulip",
+    price: 32,
+    image: "pink_tulip.jpeg",
+    category: "Floral Collection",
+    badges: ["Handmade"],
+    desc: "A delicate crocheted tulip in soft pink. Brings spring vibes all year round.",
+    colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p9",
+    name: "Red Rose",
+    price: 38,
+    image: "red_rose.jpeg",
+    category: "Floral Collection",
+    badges: ["Handmade"],
+    desc: "A classic crocheted red rose. Timeless beauty that never fades.",
+    colors: ["#C98D82", "#3A2E28", "#C6A15B"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p10",
+    name: "Red Rose II",
+    price: 38,
+    image: "red_rose2.jpeg",
+    category: "Floral Collection",
+    badges: ["Handmade"],
+    desc: "Another variation of our classic red rose with a slightly different stitch pattern.",
+    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p11",
+    name: "Single Rose",
+    price: 28,
+    image: "rose.jpeg",
+    category: "Floral Collection",
+    badges: ["Handmade"],
+    desc: "A simple yet elegant single crocheted rose. Perfect for any occasion.",
+    colors: ["#C98D82", "#C6A15B", "#3A2E28"],
+    sizes: ["One Size"],
+  },
+
+  // ========== KEYCHAINS (6 items) ==========
+  {
+    id: "p12",
+    name: "Chick Keychain",
+    price: 18,
+    image: "chick_keychain.jpeg",
+    category: "Keychains",
+    badges: ["Handmade"],
+    desc: "An adorable crocheted chick keychain. A cute companion for your keys or bag.",
+    colors: ["#EFDCC7", "#C6A15B", "#C98D82"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p13",
+    name: "Chick Keychain II",
+    price: 18,
+    image: "chick2_keychain.jpeg",
+    category: "Keychains",
+    badges: ["Handmade"],
+    desc: "Another cute chick keychain with a different expression and color.",
+    colors: ["#EFDCC7", "#9CAE8C", "#C6A15B"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p14",
+    name: "Bokeh Keychain",
+    price: 22,
+    image: "keychain_bookeh.jpeg",
+    category: "Keychains",
+    badges: ["Handmade"],
+    desc: "A unique keychain with bokeh-inspired design. Adds a pop of color to your accessories.",
+    colors: ["#C6A15B", "#C98D82", "#9CAE8C"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p15",
+    name: "Octopus Keychain",
+    price: 20,
+    image: "keychain_octopus.jpeg",
+    category: "Keychains",
+    badges: ["Handmade"],
+    desc: "A playful crocheted octopus keychain. With cute tentacles and a friendly smile.",
+    colors: ["#C98D82", "#3A2E28", "#C6A15B"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p16",
+    name: "Mini Octopus Keychain",
+    price: 16,
+    image: "octopus_keychain2.jpeg",
+    category: "Keychains",
+    badges: ["Handmade"],
+    desc: "A miniature version of our popular octopus keychain. Perfect for small bags.",
+    colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p17",
+    name: "Sunflower Keychain",
+    price: 20,
+    image: "sunflower_keychain.jpeg",
+    category: "Keychains",
+    badges: ["Handmade"],
+    desc: "A cheerful crocheted sunflower keychain. Brings sunshine wherever you go.",
+    colors: ["#C6A15B", "#C98D82", "#3A2E28"],
+    sizes: ["One Size"],
+  },
+
+  // ========== ACCESSORIES (6 items) ==========
+  {
+    id: "p18",
+    name: "Gajra - Traditional Garland",
+    price: 55,
+    image: "gajra.jpeg",
+    category: "Accessories",
+    badges: ["Handmade"],
+    desc: "A traditional crocheted gajra (flower garland). Perfect for special occasions and celebrations.",
+    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p19",
+    name: "Gajra - Delicate Garland",
+    price: 55,
+    image: "gajra2.jpeg",
+    category: "Accessories",
+    badges: ["Handmade"],
+    desc: "Another variation of our crocheted gajra with a more delicate stitch pattern.",
+    colors: ["#C98D82", "#9CAE8C", "#EFDCC7"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p20",
+    name: "Pearl Gajra",
+    price: 65,
+    image: "pearl_gajra.jpeg",
+    category: "Accessories",
+    badges: ["Best Seller", "Customizable"],
+    desc: "An elegant gajra adorned with crocheted pearls. A luxurious accessory for special events.",
+    colors: ["#EFDCC7", "#C6A15B", "#C98D82"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p21",
+    name: "Pearl Gajra II",
+    price: 65,
+    image: "pearl_gajra2.jpeg",
+    category: "Accessories",
     badges: ["Customizable"],
-    desc: "A sculptural storage basket in chunky cotton rope, holds its shape beautifully.",
-    colors: ["#3A2E28", "#9CAE8C", "#EFDCC7"],
-    sizes: ["S", "M"],
+    desc: "A second variation of our pearl gajra with a different arrangement of pearls.",
+    colors: ["#EFDCC7", "#9CAE8C", "#C98D82"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p22",
+    name: "2-Colors Combo Gajra",
+    price: 60,
+    image: "2_colors_combo_gajra.jpeg",
+    category: "Accessories",
+    badges: ["Customizable"],
+    desc: "A unique gajra featuring two color combinations. Fully customizable to your preference.",
+    colors: ["#C98D82", "#C6A15B", "#9CAE8C"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p23",
+    name: "Crochet Chick Plushie",
+    price: 30,
+    image: "plushie_chick.jpeg",
+    category: "Accessories",
+    badges: ["Handmade"],
+    desc: "A soft and cuddly crocheted chick plushie. Perfect for cuddling or decoration.",
+    colors: ["#EFDCC7", "#C6A15B", "#C98D82"],
+    sizes: ["One Size"],
+  },
+
+  // ========== BAGS (4 items) ==========
+  {
+    id: "p24",
+    name: "Daisy Dream Bag",
+    price: 78,
+    image: "Daisy Dream bag.jpeg",
+    category: "Bags",
+    badges: ["Handmade", "Customizable"],
+    desc: "A beautiful crocheted bag with daisy flower details. Perfect for summer days and brightening any outfit.",
+    colors: ["#EFDCC7", "#C6A15B", "#9CAE8C"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p25",
+    name: "Pink Mini Wallet",
+    price: 32,
+    image: "pink mini wallet.jpeg",
+    category: "Bags",
+    badges: ["Handmade"],
+    desc: "A cute mini wallet in soft pink. Compact and stylish for carrying your essentials.",
+    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p26",
+    name: "Red Bunny Wallet",
+    price: 38,
+    image: "red bunny wallet.jpeg",
+    category: "Bags",
+    badges: ["Handmade"],
+    desc: "An adorable red wallet with bunny ears detail. Makes a playful addition to your accessories.",
+    colors: ["#C98D82", "#3A2E28", "#C6A15B"],
+    sizes: ["One Size"],
+  },
+  {
+    id: "p27",
+    name: "Cherry Bow Bag",
+    price: 82,
+    image: "Cherry Bow bag.jpeg",
+    category: "Bags",
+    badges: ["Best Seller", "Handmade"],
+    desc: "A charming bag featuring cherry and bow details. Sweet, stylish, and completely handmade.",
+    colors: ["#C98D82", "#EFDCC7", "#3A2E28"],
+    sizes: ["One Size"],
   },
 ];
 
@@ -104,7 +350,6 @@ const HERO_SLIDES = [
   "octopus_keychain2.jpeg",
 ];
 
-
 /* ---------------------------------------------------------------------
    3. STATE
    --------------------------------------------------------------------- */
@@ -112,6 +357,7 @@ const state = {
   cart: [], // { id, name, price, image, qty, color, size }
   discount: 0,
   activeProduct: null,
+  currentCategory: "All", // for filtering
 };
 
 const fmt = (n) => `$${n.toFixed(2)}`;
@@ -213,6 +459,18 @@ function attachTilt(card) {
   });
 }
 
+/* ---------------------------------------------------------------------
+   8. CATEGORY FILTER
+   --------------------------------------------------------------------- */
+function getCategories() {
+  const cats = PRODUCTS.map(p => p.category);
+  return ["All", ...new Set(cats)];
+}
+
+function filterProductsByCategory(category) {
+  if (category === "All") return PRODUCTS;
+  return PRODUCTS.filter(p => p.category === category);
+}
 
 /* ---------------------------------------------------------------------
    9. RENDER PRODUCT GRID
@@ -223,9 +481,20 @@ const badgeClassMap = {
   Handmade: "badge-handmade",
 };
 
-function renderProducts() {
+function renderProducts(category = "All") {
   const grid = document.getElementById("product-grid");
-  grid.innerHTML = PRODUCTS.map(
+  const filtered = filterProductsByCategory(category);
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="col-span-full text-center py-12 text-ink/50">
+        <p class="text-lg">No products found in this category.</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(
     (p) => `
     <div class="product-card" data-id="${p.id}">
       <div class="product-card-inner">
@@ -266,6 +535,31 @@ function renderProducts() {
   );
 
   initReveals();
+}
+
+function renderCategoryFilters() {
+  const container = document.getElementById("category-filters");
+  const categories = getCategories();
+  
+  container.innerHTML = categories.map(cat => `
+    <button class="category-filter ${cat === "All" ? "active" : ""}" data-category="${cat}">
+      ${cat}
+    </button>
+  `).join("");
+
+  container.querySelectorAll(".category-filter").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const category = btn.dataset.category;
+      state.currentCategory = category;
+      
+      // Update active state
+      container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      
+      // Re-render products
+      renderProducts(category);
+    });
+  });
 }
 
 /* ---------------------------------------------------------------------
@@ -711,5 +1005,6 @@ function initHeroSlider() {
    --------------------------------------------------------------------- */
 document.getElementById("year").textContent = new Date().getFullYear();
 renderProducts();
+renderCategoryFilters();
 initHeroSlider();
 renderCart();
