@@ -8,7 +8,7 @@
    1. CONFIG — fill these in before going live
    --------------------------------------------------------------------- */
 const CONFIG = {
-  instagramHandle: "woolleywonders", // used for DM deep-links
+  instagramHandle: "woolley_wonderss", // ✅ Updated to your correct handle
   whatsappNumber: "10000000000",     // country code + number, digits only
 
   // EmailJS — see README for setup steps
@@ -156,7 +156,7 @@ const PRODUCTS = [
   // ========== KEYCHAINS (5 items) ==========
   {
     id: "p12",
-    name: "Chick Keychain ",
+    name: "Chick Keychain II",
     price: 18,
     image: "chick2_keychain.jpeg",
     category: "Keychains",
@@ -381,7 +381,6 @@ function updateStitchThread() {
 window.addEventListener("scroll", updateStitchThread);
 window.addEventListener("resize", updateStitchThread);
 window.addEventListener("load", () => {
-  // stretch the stitch path svg to full document height
   const svg = document.getElementById("stitch-svg");
   const totalHeight = document.documentElement.scrollHeight;
   svg.setAttribute("viewBox", `0 0 28 ${totalHeight}`);
@@ -396,7 +395,140 @@ window.addEventListener("load", () => {
 });
 
 /* ---------------------------------------------------------------------
-   6. GSAP SCROLL REVEALS
+   6. 3D PARALLAX HERO EFFECT
+   --------------------------------------------------------------------- */
+function init3DHero() {
+  const hero = document.getElementById("home");
+  const slides = document.querySelectorAll(".hero-slide");
+  
+  if (!hero || slides.length === 0) return;
+  
+  hero.addEventListener("mousemove", (e) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    
+    slides.forEach((slide, i) => {
+      const depth = (i + 1) * 0.02;
+      const moveX = x * 20 * depth;
+      const moveY = y * 20 * depth;
+      slide.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.02)`;
+    });
+  });
+  
+  hero.addEventListener("mouseleave", () => {
+    slides.forEach((slide) => {
+      slide.style.transform = "translate(0, 0) scale(1)";
+      slide.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
+    });
+  });
+}
+
+/* ---------------------------------------------------------------------
+   7. 3D FLOATING PARTICLES
+   --------------------------------------------------------------------- */
+function initParticles() {
+  const container = document.getElementById("particles-container");
+  if (!container) return;
+  
+  const colors = ["#C98D82", "#C6A15B", "#9CAE8C", "#EFDCC7"];
+  const particleCount = 20;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    const size = 3 + Math.random() * 6;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    particle.style.cssText = `
+      position: absolute;
+      width: ${size}px;
+      height: ${size}px;
+      background: ${color};
+      border-radius: 50%;
+      opacity: ${0.15 + Math.random() * 0.25};
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 100}%;
+      pointer-events: none;
+      box-shadow: 0 0 20px ${color}40;
+    `;
+    
+    container.appendChild(particle);
+    
+    const duration = 15 + Math.random() * 20;
+    const xMove = (Math.random() - 0.5) * 150;
+    const yMove = (Math.random() - 0.5) * 150;
+    
+    gsap.to(particle, {
+      x: xMove,
+      y: yMove,
+      duration: duration,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: Math.random() * 10,
+    });
+    
+    gsap.to(particle, {
+      scale: 1.5 + Math.random() * 1.5,
+      opacity: 0.1 + Math.random() * 0.15,
+      duration: 3 + Math.random() * 4,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: Math.random() * 3,
+    });
+  }
+}
+
+/* ---------------------------------------------------------------------
+   8. 3D TILT ON PRODUCT CARDS (Enhanced)
+   --------------------------------------------------------------------- */
+function attachTilt(card) {
+  const inner = card.querySelector(".product-card-inner");
+  const image = card.querySelector(".product-image-wrap img");
+  const maxTilt = 12;
+  
+  card.addEventListener("mousemove", (e) => {
+    if (window.innerWidth < 1024) return;
+    
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    
+    const rotateX = -y * maxTilt * 2;
+    const rotateY = x * maxTilt * 2;
+    
+    inner.style.transform = `
+      rotateY(${rotateY}deg) 
+      rotateX(${rotateX}deg) 
+      translateZ(15px)
+    `;
+    
+    if (image) {
+      const imgX = x * 8;
+      const imgY = y * 8;
+      image.style.transform = `translate(${imgX}px, ${imgY}px) scale(1.05)`;
+    }
+    
+    const glowX = (x + 0.5) * 100;
+    const glowY = (y + 0.5) * 100;
+    inner.style.setProperty('--glow-x', `${glowX}%`);
+    inner.style.setProperty('--glow-y', `${glowY}%`);
+  });
+  
+  card.addEventListener("mouseleave", () => {
+    inner.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
+    inner.style.transform = "rotateY(0) rotateX(0) translateZ(0)";
+    if (image) {
+      image.style.transition = "transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)";
+      image.style.transform = "translate(0, 0) scale(1)";
+    }
+  });
+}
+
+/* ---------------------------------------------------------------------
+   9. GSAP SCROLL REVEALS (Enhanced)
    --------------------------------------------------------------------- */
 gsap.registerPlugin(ScrollTrigger);
 
@@ -404,13 +536,24 @@ function initReveals() {
   document.querySelectorAll("[data-reveal]").forEach((el) => {
     gsap.fromTo(
       el,
-      { opacity: 0, y: 40 },
+      { 
+        opacity: 0, 
+        y: 60,
+        scale: 0.95,
+        rotationX: 5,
+      },
       {
         opacity: 1,
         y: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 85%" },
+        scale: 1,
+        rotationX: 0,
+        duration: 1.2,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
       }
     );
   });
@@ -418,38 +561,82 @@ function initReveals() {
   document.querySelectorAll(".product-card").forEach((el, i) => {
     gsap.fromTo(
       el,
-      { opacity: 0, y: 50 },
+      { 
+        opacity: 0, 
+        y: 80,
+        rotationX: 15,
+        scale: 0.9,
+      },
       {
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        delay: (i % 3) * 0.08,
+        rotationX: 0,
+        scale: 1,
+        duration: 1,
+        delay: (i % 3) * 0.1,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 90%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  });
+  
+  document.querySelectorAll(".category-filter").forEach((el, i) => {
+    const direction = i % 2 === 0 ? -50 : 50;
+    gsap.fromTo(
+      el,
+      { opacity: 0, x: direction, scale: 0.8 },
+      {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        duration: 0.6,
+        delay: i * 0.08,
         ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 90%" },
+        scrollTrigger: {
+          trigger: "#category-filters",
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
       }
     );
   });
 }
 
 /* ---------------------------------------------------------------------
-   7. 3D TILT ON PRODUCT CARDS
+   10. 3D FLOATING BADGE EFFECT
    --------------------------------------------------------------------- */
-function attachTilt(card) {
-  const inner = card.querySelector(".product-card-inner");
-  const maxTilt = 8;
-  card.addEventListener("mousemove", (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    inner.style.transform = `rotateY(${x * maxTilt * 2}deg) rotateX(${-y * maxTilt * 2}deg) translateZ(10px)`;
-  });
-  card.addEventListener("mouseleave", () => {
-    inner.style.transform = `rotateY(0) rotateX(0) translateZ(0)`;
+function initFloatingBadges() {
+  document.querySelectorAll(".badge").forEach((badge) => {
+    const randomDelay = Math.random() * 2;
+    const randomDuration = 2 + Math.random() * 2;
+    
+    gsap.to(badge, {
+      y: -3,
+      scale: 1.05,
+      duration: randomDuration,
+      delay: randomDelay,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+    
+    gsap.to(badge, {
+      rotation: 2,
+      duration: randomDuration * 1.5,
+      delay: randomDelay + 0.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
   });
 }
 
 /* ---------------------------------------------------------------------
-   8. CATEGORY FILTER
+   11. CATEGORY FILTER
    --------------------------------------------------------------------- */
 function getCategories() {
   const cats = PRODUCTS.map(p => p.category);
@@ -462,7 +649,7 @@ function filterProductsByCategory(category) {
 }
 
 /* ---------------------------------------------------------------------
-   9. RENDER PRODUCT GRID
+   12. RENDER PRODUCT GRID (Wishlist Removed)
    --------------------------------------------------------------------- */
 const badgeClassMap = {
   "Best Seller": "badge-bestseller",
@@ -486,19 +673,25 @@ function renderProducts(category = "All") {
   grid.innerHTML = filtered.map(
     (p) => `
     <div class="product-card" data-id="${p.id}">
-      <div class="product-card-inner">
+      <div class="product-card-inner" style="--glow-x: 50%; --glow-y: 50%;">
         <div class="product-image-wrap">
           <img src="${p.image}" alt="${p.name}" loading="lazy">
           <div class="absolute top-3 left-3 flex flex-wrap gap-1.5 max-w-[80%]">
             ${p.badges.map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`).join("")}
           </div>
-          <div class="quick-view-trigger" data-quickview="${p.id}">Quick View</div>
+          <div class="quick-view-trigger" data-quickview="${p.id}">
+            <span>Quick View</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
         </div>
         <div class="p-5">
           <h3 class="font-display text-lg mb-1">${p.name}</h3>
           <p class="text-rose-deep font-semibold mb-4">${fmt(p.price)}</p>
           <div class="flex gap-2">
-            <button class="btn-glow flex-1 justify-center !py-2.5 !text-xs" data-add-cart="${p.id}">Add to Cart</button>
+            <button class="btn-glow flex-1 justify-center !py-2.5 !text-xs" data-add-cart="${p.id}">
+              <span>Add to Cart</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
             <button class="btn-outline !py-2.5 !px-3.5" data-custom-request="${p.id}" aria-label="Custom Request">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20l7-11-7-6-7 6 7 11z"/></svg>
             </button>
@@ -508,22 +701,36 @@ function renderProducts(category = "All") {
     </div>`
   ).join("");
 
+  // Attach tilt effect
   grid.querySelectorAll(".product-card").forEach(attachTilt);
 
+  // Add to Cart buttons
   grid.querySelectorAll("[data-add-cart]").forEach((btn) =>
     btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const id = btn.dataset.addCart;
       addToCart(id, e);
     })
   );
+
+  // Quick View buttons
   grid.querySelectorAll("[data-quickview]").forEach((el) =>
-    el.addEventListener("click", () => openQuickView(el.dataset.quickview))
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openQuickView(el.dataset.quickview);
+    })
   );
+
+  // Custom Request buttons
   grid.querySelectorAll("[data-custom-request]").forEach((btn) =>
-    btn.addEventListener("click", () => openCustomRequest(PRODUCTS.find((p) => p.id === btn.dataset.customRequest)))
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openCustomRequest(PRODUCTS.find((p) => p.id === btn.dataset.customRequest));
+    })
   );
 
   initReveals();
+  initFloatingBadges();
 }
 
 function renderCategoryFilters() {
@@ -541,18 +748,92 @@ function renderCategoryFilters() {
       const category = btn.dataset.category;
       state.currentCategory = category;
       
-      // Update active state
-      container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      
-      // Re-render products
-      renderProducts(category);
+      const cards = document.querySelectorAll(".product-card");
+      if (cards.length > 0) {
+        gsap.to(cards, {
+          opacity: 0,
+          y: 30,
+          scale: 0.95,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => {
+            container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderProducts(category);
+            const newCards = document.querySelectorAll(".product-card");
+            gsap.fromTo(newCards, 
+              { opacity: 0, y: 30, scale: 0.95 },
+              { 
+                opacity: 1, 
+                y: 0, 
+                scale: 1, 
+                duration: 0.5, 
+                stagger: 0.08,
+                ease: "power2.out" 
+              }
+            );
+          }
+        });
+      } else {
+        container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderProducts(category);
+      }
     });
   });
 }
 
 /* ---------------------------------------------------------------------
-   10. CART LOGIC
+   13. NOTIFICATION SYSTEM
+   --------------------------------------------------------------------- */
+function showNotification(message) {
+  const existing = document.querySelector(".notification-toast");
+  if (existing) existing.remove();
+  
+  const toast = document.createElement("div");
+  toast.className = "notification-toast";
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #3A2E28;
+    color: #FAF4EC;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 10px 40px rgba(58, 46, 40, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 90%;
+  `;
+  
+  document.body.appendChild(toast);
+  
+  gsap.to(toast, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    ease: "power3.out",
+    delay: 0.1,
+  });
+  
+  setTimeout(() => {
+    gsap.to(toast, {
+      opacity: 0,
+      y: -20,
+      duration: 0.4,
+      ease: "power3.in",
+      onComplete: () => toast.remove(),
+    });
+  }, 2500);
+}
+
+/* ---------------------------------------------------------------------
+   14. CART LOGIC
    --------------------------------------------------------------------- */
 const cartDrawer = document.getElementById("cart-drawer");
 const cartOverlay = document.getElementById("cart-overlay");
@@ -581,6 +862,7 @@ function addToCart(productId, event, opts = {}) {
 
   renderCart();
   pulseCartBadge();
+  showNotification(`${product.name} added to cart 🛒`);
   if (event) flyToCart(event, product.image);
 }
 
@@ -654,7 +936,7 @@ function renderCart() {
 
 function pulseCartBadge() {
   cartCountEl.classList.remove("pulse");
-  void cartCountEl.offsetWidth; // restart animation
+  void cartCountEl.offsetWidth;
   cartCountEl.classList.add("pulse");
 }
 
@@ -671,6 +953,9 @@ function flyToCart(event, imageSrc) {
   img.style.top = `${startRect.top + startRect.height / 2 - 20}px`;
   img.style.width = "40px";
   img.style.height = "40px";
+  img.style.borderRadius = "50%";
+  img.style.boxShadow = "0 20px 60px rgba(198, 161, 91, 0.5)";
+  img.style.objectFit = "cover";
   flyLayer.appendChild(img);
 
   gsap.to(img, {
@@ -681,7 +966,13 @@ function flyToCart(event, imageSrc) {
     opacity: 0.4,
     duration: 0.7,
     ease: "power2.in",
-    onComplete: () => img.remove(),
+    onComplete: () => {
+      gsap.to(img, {
+        scale: 1.3,
+        duration: 0.2,
+        onComplete: () => img.remove(),
+      });
+    },
   });
 }
 
@@ -709,7 +1000,7 @@ document.getElementById("promo-apply").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   11. QUICK VIEW MODAL
+   15. QUICK VIEW MODAL
    --------------------------------------------------------------------- */
 const quickviewModal = document.getElementById("quickview-modal");
 
@@ -767,22 +1058,94 @@ document.getElementById("qv-custom").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   12. CUSTOM REQUEST -> Instagram DM prefill
+   16. CUSTOM REQUEST -> Instagram DM prefill
    --------------------------------------------------------------------- */
-function openCustomRequest(product) {
-  const text = `Hi! I'd love a custom version of the "${product.name}" (${fmt(product.price)}). Here's what I'm thinking: `;
-  const url = `https://ig.me/m/${CONFIG.instagramHandle}?text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank");
+/* ---------------------------------------------------------------------
+   16. CUSTOM REQUEST -> Instagram DM (copy-to-clipboard + modal)
+   --------------------------------------------------------------------- */
+/*
+   Instagram's ig.me deep links do NOT support prefilling the DM text box
+   for normal profile links — the ?text= param is silently ignored outside
+   Instagram's own ad Click-to-Message flow. There is no supported way to
+   auto-fill someone's DM composer from a plain web link.
+
+   Workaround: copy the message to the clipboard, show it in a modal, and
+   let the user open the DM and paste it in themselves.
+*/
+const customRequestModal = document.getElementById("custom-request-modal");
+const customRequestPreview = document.getElementById("custom-request-preview");
+const customRequestOpenDM = document.getElementById("custom-request-open-dm");
+const customRequestCopyAgain = document.getElementById("custom-request-copy-again");
+
+let pendingCustomRequestText = "";
+
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  // Fallback for older browsers / non-HTTPS contexts
+  return new Promise((resolve, reject) => {
+    try {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
+function openCustomRequestModal(text) {
+  pendingCustomRequestText = text;
+  customRequestPreview.textContent = text;
+
+  const igUrl = `https://ig.me/m/${CONFIG.instagramHandle}`;
+  const profileUrl = `https://www.instagram.com/${CONFIG.instagramHandle}/`;
+  customRequestOpenDM.href = igUrl;
+  customRequestOpenDM.dataset.fallback = profileUrl;
+
+  copyText(text)
+    .then(() => showNotification("Message copied to clipboard 📋"))
+    .catch(() => showNotification("Couldn't auto-copy — you can copy it from the box below."));
+
+  openModal(customRequestModal);
+}
+
+function openCustomRequest(product) {
+  const text = `Hi! I'd love a custom version of the "${product.name}" ($${product.price.toFixed(2)}). Here's what I'm thinking: `;
+  openCustomRequestModal(text);
+}
+
+// Bespoke CTA button
 document.getElementById("bespoke-cta").addEventListener("click", (e) => {
   e.preventDefault();
-  const url = `https://ig.me/m/${CONFIG.instagramHandle}?text=${encodeURIComponent("Hi! I'd love to design a custom Woolley Wonders piece. ")}`;
-  window.open(url, "_blank");
+  const text = `Hi! I'd love to design a custom Woolley Wonders piece. `;
+  openCustomRequestModal(text);
 });
 
+// "Open Instagram DM" link — try deep link, fall back to profile if popup blocked
+customRequestOpenDM.addEventListener("click", (e) => {
+  e.preventDefault();
+  const newWindow = window.open(customRequestOpenDM.href, "_blank");
+  if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+    window.open(customRequestOpenDM.dataset.fallback, "_blank");
+  }
+});
+
+// "Copy message again" button
+customRequestCopyAgain.addEventListener("click", () => {
+  copyText(pendingCustomRequestText)
+    .then(() => showNotification("Copied again 📋"))
+    .catch(() => showNotification("Copy failed — select the text manually."));
+});
 /* ---------------------------------------------------------------------
-   13. MODAL HELPERS
+   17. MODAL HELPERS
    --------------------------------------------------------------------- */
 function openModal(modalEl) {
   modalEl.classList.add("active");
@@ -814,7 +1177,7 @@ document.getElementById("checkout-open").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   14. BESPOKE INQUIRY FORM (EmailJS)
+   18. BESPOKE INQUIRY FORM (EmailJS)
    --------------------------------------------------------------------- */
 document.getElementById("bespoke-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -850,7 +1213,7 @@ document.getElementById("bespoke-form").addEventListener("submit", async (e) => 
 });
 
 /* ---------------------------------------------------------------------
-   15. CHECKOUT FORM -> EmailJS order email
+   19. CHECKOUT FORM -> EmailJS order email
    --------------------------------------------------------------------- */
 document.getElementById("checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -930,7 +1293,7 @@ function setSubmitting(form, isSubmitting) {
 }
 
 /* ---------------------------------------------------------------------
-   15b. HERO SLIDER — full-bleed banner with autoplay, dots, and swipe
+   20. HERO SLIDER — full-bleed banner with smooth crossfade + Ken Burns
    --------------------------------------------------------------------- */
 function initHeroSlider() {
   const sliderEl = document.getElementById("hero-slider");
@@ -938,7 +1301,8 @@ function initHeroSlider() {
   if (!sliderEl || !dotsEl || HERO_SLIDES.length === 0) return;
 
   sliderEl.innerHTML = HERO_SLIDES.map(
-    (url, i) => `<div class="hero-slide${i === 0 ? " active" : ""}" style="background-image:url('${url}')"></div>`
+    (url, i) =>
+      `<div class="hero-slide${i === 0 ? " active" : ""}" style="background-image:url('${url}')"></div>`
   ).join("");
   dotsEl.innerHTML = HERO_SLIDES.map(
     (_, i) => `<button class="hero-dot${i === 0 ? " active" : ""}" data-slide="${i}" aria-label="Go to slide ${i + 1}"></button>`
@@ -948,28 +1312,67 @@ function initHeroSlider() {
   const dotEls = [...dotsEl.querySelectorAll(".hero-dot")];
   let current = 0;
   let timer = null;
+  let animating = false;
 
-  function goTo(index) {
-    current = (index + HERO_SLIDES.length) % HERO_SLIDES.length;
-    slideEls.forEach((el, i) => el.classList.toggle("active", i === current));
-    dotEls.forEach((el, i) => el.classList.toggle("active", i === current));
+  // Initial state: first slide visible + slightly zoomed in (Ken Burns start),
+  // rest hidden and pre-scaled so they're ready to crossfade in.
+  gsap.set(slideEls, { opacity: 0, scale: 1.08 });
+  gsap.set(slideEls[0], { opacity: 1 });
+  gsap.to(slideEls[0], { scale: 1, duration: 6, ease: "sine.out" });
+
+  function goTo(index, direction = 1) {
+    const next = (index + HERO_SLIDES.length) % HERO_SLIDES.length;
+    if (next === current || animating) return;
+    animating = true;
+
+    const prevEl = slideEls[current];
+    const nextEl = slideEls[next];
+
+    gsap.killTweensOf([prevEl, nextEl]);
+
+    gsap.set(nextEl, { scale: 1.08, zIndex: 2 });
+    gsap.set(prevEl, { zIndex: 1 });
+
+    gsap.to(prevEl, {
+      opacity: 0,
+      duration: 1,
+      ease: "power2.inOut",
+    });
+
+    gsap.to(nextEl, {
+      opacity: 1,
+      duration: 1,
+      ease: "power2.inOut",
+      onComplete: () => {
+        animating = false; // unlock as soon as the crossfade finishes, not the zoom
+      },
+    });
+
+    gsap.to(nextEl, {
+      scale: 1,
+      duration: 6,
+      ease: "sine.out",
+      // no onComplete needed here anymore
+    });
+
+    dotEls.forEach((el, i) => el.classList.toggle("active", i === next));
+    slideEls.forEach((el, i) => el.classList.toggle("active", i === next));
+    current = next;
   }
-
   function startAutoplay() {
     clearInterval(timer);
     if (HERO_SLIDES.length > 1) {
-      timer = setInterval(() => goTo(current + 1), 2000);
+      timer = setInterval(() => goTo(current + 1), 2500);
     }
   }
 
   dotEls.forEach((dot) =>
     dot.addEventListener("click", () => {
       goTo(Number(dot.dataset.slide));
-      startAutoplay(); // reset the timer so it doesn't jump right after a manual click
+      startAutoplay();
     })
   );
 
-  // Basic swipe support for mobile
   let touchStartX = null;
   sliderEl.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
   sliderEl.addEventListener(
@@ -987,13 +1390,61 @@ function initHeroSlider() {
   );
 
   startAutoplay();
+  init3DHero();
 }
 
 /* ---------------------------------------------------------------------
-   16. INIT
+   21. SMOOTH PAGE TRANSITIONS
+   --------------------------------------------------------------------- */
+function initPageTransitions() {
+  document.body.style.opacity = "0";
+  gsap.to(document.body, {
+    opacity: 1,
+    duration: 0.8,
+    ease: "power3.inOut",
+  });
+  
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href === "#" || href === "") return;
+      
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 80;
+        gsap.to(window, {
+          scrollTo: { y: offsetTop },
+          duration: 1,
+          ease: "power3.inOut",
+        });
+      }
+    });
+  });
+}
+
+/* ---------------------------------------------------------------------
+   22. INIT
    --------------------------------------------------------------------- */
 document.getElementById("year").textContent = new Date().getFullYear();
+
+const hero = document.getElementById("home");
+if (hero) {
+  const particlesDiv = document.createElement("div");
+  particlesDiv.id = "particles-container";
+  particlesDiv.style.cssText = `
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+  `;
+  hero.appendChild(particlesDiv);
+}
+
 renderProducts();
 renderCategoryFilters();
 initHeroSlider();
 renderCart();
+initParticles();
+initPageTransitions();

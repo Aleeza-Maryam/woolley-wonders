@@ -350,7 +350,18 @@
     </div>
   </div>
 </div>
-
+<div id="custom-request-modal" class="modal-overlay">
+  <div class="modal-box" style="max-width: 420px; text-align: center; background: #FAF4EC; color: #3A2E28; padding: 32px 28px; border-radius: 16px; position: relative;">
+    <button data-close-modal aria-label="Close" style="position:absolute; top:12px; right:16px; font-size:1.5rem; background:none; border:none; cursor:pointer; color:#3A2E28;">&times;</button>
+    <h3 class="font-display text-xl mb-3" style="color:#3A2E28;">Message copied!</h3>
+    <p class="text-sm mb-4" style="color:#3A2E28; opacity:0.75;">We've copied your message to the clipboard. Tap below to open your Instagram DM, then just paste it in.</p>
+    <div id="custom-request-preview" style="background:#EFDCC7; border-radius:10px; padding:12px 14px; font-size:0.85rem; text-align:left; color:#3A2E28; margin-bottom:20px; white-space:pre-wrap;"></div>
+    <a id="custom-request-open-dm" href="#" target="_blank" class="btn-glow" style="width:100%; justify-content:center; margin-bottom:10px; background:#C98D82; color:#FAF4EC; padding:12px; border-radius:10px; display:flex; text-decoration:none; font-weight:600;">
+      <span>Open Instagram DM</span>
+    </a>
+    <button id="custom-request-copy-again" style="width:100%; justify-content:center; background:transparent; border:1.5px solid #C98D82; color:#3A2E28; padding:11px; border-radius:10px; cursor:pointer; font-weight:500;">Copy message again</button>
+  </div>
+</div>
 <!-- ============ CHECKOUT MODAL ============ -->
 <div id="checkout-modal" class="modal-overlay">
   <div class="modal-panel max-w-lg">

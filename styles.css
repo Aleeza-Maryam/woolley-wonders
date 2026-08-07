@@ -425,3 +425,72 @@ body {
 
 /* ===================== Reveal animation base state ===================== */
 [data-reveal] { opacity: 1; }
+/* ===================== Wishlist Button ===================== */
+.wishlist-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(58, 46, 40, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 4;
+  color: #3A2E28;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.product-card:hover .wishlist-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(58, 46, 40, 0.55); /* dark translucent backdrop */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-box {
+  box-shadow: 0 20px 60px rgba(58, 46, 40, 0.35);
+}
+
+
+/* ===================== Notification Toast ===================== */
+.notification-toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #3A2E28;
+  color: #FAF4EC;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 10px 40px rgba(58, 46, 40, 0.3);
+  z-index: 1000;
+  max-width: 90%;
+  border: 1px solid rgba(250, 244, 236, 0.1);
+}
+
+@media (max-width: 640px) {
+  .notification-toast {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: none;
+    text-align: center;
+  }
+}
