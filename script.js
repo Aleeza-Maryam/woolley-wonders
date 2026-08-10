@@ -8,10 +8,9 @@
    1. CONFIG — fill these in before going live
    --------------------------------------------------------------------- */
 const CONFIG = {
-  instagramHandle: "woolley_wonderss", // ✅ Updated to your correct handle
-  whatsappNumber: "10000000000",     // country code + number, digits only
+  instagramHandle: "woolley_wonderss",
+  whatsappNumber: "10000000000",
 
-  // EmailJS — see README for setup steps
   emailjs: {
     publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
     serviceId: "YOUR_EMAILJS_SERVICE_ID",
@@ -326,7 +325,7 @@ const PRODUCTS = [
 ];
 
 /* ---------------------------------------------------------------------
-   2b. HERO SLIDER IMAGES — replace these with your own photos any time
+   2b. HERO SLIDER IMAGES
    --------------------------------------------------------------------- */
 const HERO_SLIDES = [
   "sweater.jpeg",
@@ -343,10 +342,10 @@ const HERO_SLIDES = [
    3. STATE
    --------------------------------------------------------------------- */
 const state = {
-  cart: [], // { id, name, price, image, qty, color, size }
+  cart: [],
   discount: 0,
   activeProduct: null,
-  currentCategory: "All", // for filtering
+  currentCategory: "All",
 };
 
 const fmt = (n) => `$${n.toFixed(2)}`;
@@ -367,7 +366,7 @@ document.querySelectorAll("#mobile-menu a").forEach((a) =>
 );
 
 /* ---------------------------------------------------------------------
-   5. STITCH SCROLL PROGRESS (signature element)
+   5. STITCH SCROLL PROGRESS
    --------------------------------------------------------------------- */
 const stitchFg = document.getElementById("stitch-path-fg");
 function updateStitchThread() {
@@ -400,14 +399,11 @@ window.addEventListener("load", () => {
 function init3DHero() {
   const hero = document.getElementById("home");
   const slides = document.querySelectorAll(".hero-slide");
-  
   if (!hero || slides.length === 0) return;
-  
   hero.addEventListener("mousemove", (e) => {
     const rect = hero.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    
     slides.forEach((slide, i) => {
       const depth = (i + 1) * 0.02;
       const moveX = x * 20 * depth;
@@ -415,7 +411,6 @@ function init3DHero() {
       slide.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.02)`;
     });
   });
-  
   hero.addEventListener("mouseleave", () => {
     slides.forEach((slide) => {
       slide.style.transform = "translate(0, 0) scale(1)";
@@ -430,16 +425,13 @@ function init3DHero() {
 function initParticles() {
   const container = document.getElementById("particles-container");
   if (!container) return;
-  
   const colors = ["#C98D82", "#C6A15B", "#9CAE8C", "#EFDCC7"];
   const particleCount = 20;
-  
   for (let i = 0; i < particleCount; i++) {
     const particle = document.createElement("div");
     particle.className = "particle";
     const size = 3 + Math.random() * 6;
     const color = colors[Math.floor(Math.random() * colors.length)];
-    
     particle.style.cssText = `
       position: absolute;
       width: ${size}px;
@@ -452,13 +444,10 @@ function initParticles() {
       pointer-events: none;
       box-shadow: 0 0 20px ${color}40;
     `;
-    
     container.appendChild(particle);
-    
     const duration = 15 + Math.random() * 20;
     const xMove = (Math.random() - 0.5) * 150;
     const yMove = (Math.random() - 0.5) * 150;
-    
     gsap.to(particle, {
       x: xMove,
       y: yMove,
@@ -468,7 +457,6 @@ function initParticles() {
       ease: "sine.inOut",
       delay: Math.random() * 10,
     });
-    
     gsap.to(particle, {
       scale: 1.5 + Math.random() * 1.5,
       opacity: 0.1 + Math.random() * 0.15,
@@ -482,41 +470,30 @@ function initParticles() {
 }
 
 /* ---------------------------------------------------------------------
-   8. 3D TILT ON PRODUCT CARDS (Enhanced)
+   8. 3D TILT ON PRODUCT CARDS
    --------------------------------------------------------------------- */
 function attachTilt(card) {
   const inner = card.querySelector(".product-card-inner");
   const image = card.querySelector(".product-image-wrap img");
   const maxTilt = 12;
-  
   card.addEventListener("mousemove", (e) => {
     if (window.innerWidth < 1024) return;
-    
     const rect = card.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    
     const rotateX = -y * maxTilt * 2;
     const rotateY = x * maxTilt * 2;
-    
-    inner.style.transform = `
-      rotateY(${rotateY}deg) 
-      rotateX(${rotateX}deg) 
-      translateZ(15px)
-    `;
-    
+    inner.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(15px)`;
     if (image) {
       const imgX = x * 8;
       const imgY = y * 8;
       image.style.transform = `translate(${imgX}px, ${imgY}px) scale(1.05)`;
     }
-    
     const glowX = (x + 0.5) * 100;
     const glowY = (y + 0.5) * 100;
     inner.style.setProperty('--glow-x', `${glowX}%`);
     inner.style.setProperty('--glow-y', `${glowY}%`);
   });
-  
   card.addEventListener("mouseleave", () => {
     inner.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
     inner.style.transform = "rotateY(0) rotateX(0) translateZ(0)";
@@ -528,80 +505,28 @@ function attachTilt(card) {
 }
 
 /* ---------------------------------------------------------------------
-   9. GSAP SCROLL REVEALS (Enhanced)
+   9. GSAP SCROLL REVEALS
    --------------------------------------------------------------------- */
 gsap.registerPlugin(ScrollTrigger);
 
 function initReveals() {
   document.querySelectorAll("[data-reveal]").forEach((el) => {
-    gsap.fromTo(
-      el,
-      { 
-        opacity: 0, 
-        y: 60,
-        scale: 0.95,
-        rotationX: 5,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        rotationX: 0,
-        duration: 1.2,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      }
+    gsap.fromTo(el,
+      { opacity: 0, y: 60, scale: 0.95, rotationX: 5 },
+      { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" } }
     );
   });
-
   document.querySelectorAll(".product-card").forEach((el, i) => {
-    gsap.fromTo(
-      el,
-      { 
-        opacity: 0, 
-        y: 80,
-        rotationX: 15,
-        scale: 0.9,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        scale: 1,
-        duration: 1,
-        delay: (i % 3) * 0.1,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-      }
+    gsap.fromTo(el,
+      { opacity: 0, y: 80, rotationX: 15, scale: 0.9 },
+      { opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 1, delay: (i % 3) * 0.1, ease: "power4.out", scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none reverse" } }
     );
   });
-  
   document.querySelectorAll(".category-filter").forEach((el, i) => {
     const direction = i % 2 === 0 ? -50 : 50;
-    gsap.fromTo(
-      el,
+    gsap.fromTo(el,
       { opacity: 0, x: direction, scale: 0.8 },
-      {
-        opacity: 1,
-        x: 0,
-        scale: 1,
-        duration: 0.6,
-        delay: i * 0.08,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: "#category-filters",
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-      }
+      { opacity: 1, x: 0, scale: 1, duration: 0.6, delay: i * 0.08, ease: "power3.out", scrollTrigger: { trigger: "#category-filters", start: "top 85%", toggleActions: "play none none reverse" } }
     );
   });
 }
@@ -613,25 +538,8 @@ function initFloatingBadges() {
   document.querySelectorAll(".badge").forEach((badge) => {
     const randomDelay = Math.random() * 2;
     const randomDuration = 2 + Math.random() * 2;
-    
-    gsap.to(badge, {
-      y: -3,
-      scale: 1.05,
-      duration: randomDuration,
-      delay: randomDelay,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
-    
-    gsap.to(badge, {
-      rotation: 2,
-      duration: randomDuration * 1.5,
-      delay: randomDelay + 0.5,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
+    gsap.to(badge, { y: -3, scale: 1.05, duration: randomDuration, delay: randomDelay, repeat: -1, yoyo: true, ease: "sine.inOut" });
+    gsap.to(badge, { rotation: 2, duration: randomDuration * 1.5, delay: randomDelay + 0.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
   });
 }
 
@@ -649,7 +557,7 @@ function filterProductsByCategory(category) {
 }
 
 /* ---------------------------------------------------------------------
-   12. RENDER PRODUCT GRID (Wishlist Removed)
+   12. RENDER PRODUCT GRID
    --------------------------------------------------------------------- */
 const badgeClassMap = {
   "Best Seller": "badge-bestseller",
@@ -660,18 +568,11 @@ const badgeClassMap = {
 function renderProducts(category = "All") {
   const grid = document.getElementById("product-grid");
   const filtered = filterProductsByCategory(category);
-  
   if (filtered.length === 0) {
-    grid.innerHTML = `
-      <div class="col-span-full text-center py-12 text-ink/50">
-        <p class="text-lg">No products found in this category.</p>
-      </div>
-    `;
+    grid.innerHTML = `<div class="col-span-full text-center py-12 text-ink/50"><p class="text-lg">No products found in this category.</p></div>`;
     return;
   }
-
-  grid.innerHTML = filtered.map(
-    (p) => `
+  grid.innerHTML = filtered.map((p) => `
     <div class="product-card" data-id="${p.id}">
       <div class="product-card-inner" style="--glow-x: 50%; --glow-y: 50%;">
         <div class="product-image-wrap">
@@ -698,37 +599,19 @@ function renderProducts(category = "All") {
           </div>
         </div>
       </div>
-    </div>`
-  ).join("");
+    </div>
+  `).join("");
 
-  // Attach tilt effect
   grid.querySelectorAll(".product-card").forEach(attachTilt);
-
-  // Add to Cart buttons
   grid.querySelectorAll("[data-add-cart]").forEach((btn) =>
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.addCart;
-      addToCart(id, e);
-    })
+    btn.addEventListener("click", (e) => { e.stopPropagation(); const id = btn.dataset.addCart; addToCart(id, e); })
   );
-
-  // Quick View buttons
   grid.querySelectorAll("[data-quickview]").forEach((el) =>
-    el.addEventListener("click", (e) => {
-      e.stopPropagation();
-      openQuickView(el.dataset.quickview);
-    })
+    el.addEventListener("click", (e) => { e.stopPropagation(); openQuickView(el.dataset.quickview); })
   );
-
-  // Custom Request buttons
   grid.querySelectorAll("[data-custom-request]").forEach((btn) =>
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      openCustomRequest(PRODUCTS.find((p) => p.id === btn.dataset.customRequest));
-    })
+    btn.addEventListener("click", (e) => { e.stopPropagation(); openCustomRequest(PRODUCTS.find((p) => p.id === btn.dataset.customRequest)); })
   );
-
   initReveals();
   initFloatingBadges();
 }
@@ -736,44 +619,20 @@ function renderProducts(category = "All") {
 function renderCategoryFilters() {
   const container = document.getElementById("category-filters");
   const categories = getCategories();
-  
-  container.innerHTML = categories.map(cat => `
-    <button class="category-filter ${cat === "All" ? "active" : ""}" data-category="${cat}">
-      ${cat}
-    </button>
-  `).join("");
-
+  container.innerHTML = categories.map(cat => `<button class="category-filter ${cat === "All" ? "active" : ""}" data-category="${cat}">${cat}</button>`).join("");
   container.querySelectorAll(".category-filter").forEach(btn => {
     btn.addEventListener("click", () => {
       const category = btn.dataset.category;
       state.currentCategory = category;
-      
       const cards = document.querySelectorAll(".product-card");
       if (cards.length > 0) {
-        gsap.to(cards, {
-          opacity: 0,
-          y: 30,
-          scale: 0.95,
-          duration: 0.3,
-          ease: "power2.in",
-          onComplete: () => {
-            container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            renderProducts(category);
-            const newCards = document.querySelectorAll(".product-card");
-            gsap.fromTo(newCards, 
-              { opacity: 0, y: 30, scale: 0.95 },
-              { 
-                opacity: 1, 
-                y: 0, 
-                scale: 1, 
-                duration: 0.5, 
-                stagger: 0.08,
-                ease: "power2.out" 
-              }
-            );
-          }
-        });
+        gsap.to(cards, { opacity: 0, y: 30, scale: 0.95, duration: 0.3, ease: "power2.in", onComplete: () => {
+          container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderProducts(category);
+          const newCards = document.querySelectorAll(".product-card");
+          gsap.fromTo(newCards, { opacity: 0, y: 30, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.08, ease: "power2.out" });
+        }});
       } else {
         container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
@@ -789,46 +648,20 @@ function renderCategoryFilters() {
 function showNotification(message) {
   const existing = document.querySelector(".notification-toast");
   if (existing) existing.remove();
-  
   const toast = document.createElement("div");
   toast.className = "notification-toast";
   toast.textContent = message;
   toast.style.cssText = `
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #3A2E28;
-    color: #FAF4EC;
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    box-shadow: 0 10px 40px rgba(58, 46, 40, 0.3);
-    z-index: 1000;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: fixed; bottom: 30px; right: 30px; background: #3A2E28; color: #FAF4EC;
+    padding: 12px 24px; border-radius: 12px; font-size: 0.9rem; font-weight: 500;
+    box-shadow: 0 10px 40px rgba(58, 46, 40, 0.3); z-index: 1000;
+    opacity: 0; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     max-width: 90%;
   `;
-  
   document.body.appendChild(toast);
-  
-  gsap.to(toast, {
-    opacity: 1,
-    y: 0,
-    duration: 0.5,
-    ease: "power3.out",
-    delay: 0.1,
-  });
-  
+  gsap.to(toast, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", delay: 0.1 });
   setTimeout(() => {
-    gsap.to(toast, {
-      opacity: 0,
-      y: -20,
-      duration: 0.4,
-      ease: "power3.in",
-      onComplete: () => toast.remove(),
-    });
+    gsap.to(toast, { opacity: 0, y: -20, duration: 0.4, ease: "power3.in", onComplete: () => toast.remove() });
   }, 2500);
 }
 
@@ -842,24 +675,11 @@ const cartCountEl = document.getElementById("cart-count");
 function addToCart(productId, event, opts = {}) {
   const product = PRODUCTS.find((p) => p.id === productId);
   if (!product) return;
-
   const key = `${productId}-${opts.color || "default"}-${opts.size || "default"}`;
   const existing = state.cart.find((i) => i.key === key);
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    state.cart.push({
-      key,
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      qty: 1,
-      color: opts.color || null,
-      size: opts.size || null,
-    });
+  if (existing) { existing.qty += 1; } else {
+    state.cart.push({ key, id: product.id, name: product.name, price: product.price, image: product.image, qty: 1, color: opts.color || null, size: opts.size || null });
   }
-
   renderCart();
   pulseCartBadge();
   showNotification(`${product.name} added to cart 🛒`);
@@ -889,15 +709,12 @@ function cartTotals() {
 function renderCart() {
   const container = document.getElementById("cart-items");
   const emptyState = document.getElementById("cart-empty");
-
   if (state.cart.length === 0) {
     container.innerHTML = "";
     emptyState.classList.remove("hidden");
   } else {
     emptyState.classList.add("hidden");
-    container.innerHTML = state.cart
-      .map(
-        (i) => `
+    container.innerHTML = state.cart.map((i) => `
       <div class="cart-item" data-key="${i.key}">
         <img src="${i.image}" alt="${i.name}">
         <div class="flex-1">
@@ -915,21 +732,17 @@ function renderCart() {
             <span class="text-sm font-semibold text-rose-deep">${fmt(i.price * i.qty)}</span>
           </div>
         </div>
-      </div>`
-      )
-      .join("");
+      </div>
+    `).join("");
   }
-
   container.querySelectorAll("[data-qty-plus]").forEach((b) => b.addEventListener("click", () => updateQty(b.dataset.qtyPlus, 1)));
   container.querySelectorAll("[data-qty-minus]").forEach((b) => b.addEventListener("click", () => updateQty(b.dataset.qtyMinus, -1)));
   container.querySelectorAll("[data-remove]").forEach((b) => b.addEventListener("click", () => removeFromCart(b.dataset.remove)));
-
   const { subtotal, discountAmt, total } = cartTotals();
   document.getElementById("cart-subtotal").textContent = fmt(subtotal);
   document.getElementById("cart-discount").textContent = `-${fmt(discountAmt)}`;
   document.getElementById("cart-total").textContent = fmt(total);
   document.getElementById("checkout-total").textContent = fmt(total);
-
   const totalItems = state.cart.reduce((sum, i) => sum + i.qty, 0);
   cartCountEl.textContent = totalItems;
 }
@@ -945,7 +758,6 @@ function flyToCart(event, imageSrc) {
   const cartBtn = document.getElementById("cart-toggle");
   const startRect = event.currentTarget.getBoundingClientRect();
   const endRect = cartBtn.getBoundingClientRect();
-
   const img = document.createElement("img");
   img.src = imageSrc;
   img.className = "fly-item";
@@ -957,41 +769,20 @@ function flyToCart(event, imageSrc) {
   img.style.boxShadow = "0 20px 60px rgba(198, 161, 91, 0.5)";
   img.style.objectFit = "cover";
   flyLayer.appendChild(img);
-
   gsap.to(img, {
     left: endRect.left + endRect.width / 2 - 10,
     top: endRect.top + endRect.height / 2 - 10,
-    width: 16,
-    height: 16,
-    opacity: 0.4,
-    duration: 0.7,
-    ease: "power2.in",
-    onComplete: () => {
-      gsap.to(img, {
-        scale: 1.3,
-        duration: 0.2,
-        onComplete: () => img.remove(),
-      });
-    },
+    width: 16, height: 16, opacity: 0.4, duration: 0.7, ease: "power2.in",
+    onComplete: () => { gsap.to(img, { scale: 1.3, duration: 0.2, onComplete: () => img.remove() }); }
   });
 }
 
-function openCart() {
-  cartDrawer.classList.add("active");
-  cartOverlay.classList.add("active");
-}
-function closeCart() {
-  cartDrawer.classList.remove("active");
-  cartOverlay.classList.remove("active");
-}
+function openCart() { cartDrawer.classList.add("active"); cartOverlay.classList.add("active"); }
+function closeCart() { cartDrawer.classList.remove("active"); cartOverlay.classList.remove("active"); }
 document.getElementById("cart-toggle").addEventListener("click", openCart);
 document.getElementById("cart-close").addEventListener("click", closeCart);
-cartOverlay.addEventListener("click", () => {
-  closeCart();
-  closeAllModals();
-});
+cartOverlay.addEventListener("click", () => { closeCart(); closeAllModals(); });
 
-/* Promo code */
 document.getElementById("promo-apply").addEventListener("click", () => {
   const code = document.getElementById("promo-input").value.trim().toUpperCase();
   const validCodes = { WOOLLY10: 0.1, WELCOME15: 0.15 };
@@ -1008,23 +799,14 @@ function openQuickView(productId) {
   const p = PRODUCTS.find((pr) => pr.id === productId);
   if (!p) return;
   state.activeProduct = { ...p, selectedColor: p.colors[0], selectedSize: p.sizes[0] };
-
   document.getElementById("qv-image").src = p.image;
   document.getElementById("qv-image").alt = p.name;
   document.getElementById("qv-title").textContent = p.name;
   document.getElementById("qv-price").textContent = fmt(p.price);
   document.getElementById("qv-desc").textContent = p.desc;
-  document.getElementById("qv-badges").innerHTML = p.badges
-    .map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`)
-    .join("");
-
-  document.getElementById("qv-colors").innerHTML = p.colors
-    .map((c, i) => `<span class="swatch ${i === 0 ? "active" : ""}" style="background:${c}" data-color="${c}"></span>`)
-    .join("");
-  document.getElementById("qv-sizes").innerHTML = p.sizes
-    .map((s, i) => `<span class="size-pill ${i === 0 ? "active" : ""}" data-size="${s}">${s}</span>`)
-    .join("");
-
+  document.getElementById("qv-badges").innerHTML = p.badges.map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`).join("");
+  document.getElementById("qv-colors").innerHTML = p.colors.map((c, i) => `<span class="swatch ${i === 0 ? "active" : ""}" style="background:${c}" data-color="${c}"></span>`).join("");
+  document.getElementById("qv-sizes").innerHTML = p.sizes.map((s, i) => `<span class="size-pill ${i === 0 ? "active" : ""}" data-size="${s}">${s}</span>`).join("");
   document.querySelectorAll("#qv-colors .swatch").forEach((el) =>
     el.addEventListener("click", () => {
       document.querySelectorAll("#qv-colors .swatch").forEach((s) => s.classList.remove("active"));
@@ -1039,16 +821,12 @@ function openQuickView(productId) {
       state.activeProduct.selectedSize = el.dataset.size;
     })
   );
-
   openModal(quickviewModal);
 }
 
 document.getElementById("qv-add-cart").addEventListener("click", (e) => {
   if (!state.activeProduct) return;
-  addToCart(state.activeProduct.id, e, {
-    color: state.activeProduct.selectedColor,
-    size: state.activeProduct.selectedSize,
-  });
+  addToCart(state.activeProduct.id, e, { color: state.activeProduct.selectedColor, size: state.activeProduct.selectedSize });
   closeAllModals();
   openCart();
 });
@@ -1058,32 +836,18 @@ document.getElementById("qv-custom").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   16. CUSTOM REQUEST -> Instagram DM prefill
-   --------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------
    16. CUSTOM REQUEST -> Instagram DM (copy-to-clipboard + modal)
    --------------------------------------------------------------------- */
-/*
-   Instagram's ig.me deep links do NOT support prefilling the DM text box
-   for normal profile links — the ?text= param is silently ignored outside
-   Instagram's own ad Click-to-Message flow. There is no supported way to
-   auto-fill someone's DM composer from a plain web link.
-
-   Workaround: copy the message to the clipboard, show it in a modal, and
-   let the user open the DM and paste it in themselves.
-*/
 const customRequestModal = document.getElementById("custom-request-modal");
 const customRequestPreview = document.getElementById("custom-request-preview");
 const customRequestOpenDM = document.getElementById("custom-request-open-dm");
 const customRequestCopyAgain = document.getElementById("custom-request-copy-again");
-
 let pendingCustomRequestText = "";
 
 function copyText(text) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     return navigator.clipboard.writeText(text);
   }
-  // Fallback for older browsers / non-HTTPS contexts
   return new Promise((resolve, reject) => {
     try {
       const textarea = document.createElement("textarea");
@@ -1095,25 +859,18 @@ function copyText(text) {
       document.execCommand("copy");
       document.body.removeChild(textarea);
       resolve();
-    } catch (err) {
-      reject(err);
-    }
+    } catch (err) { reject(err); }
   });
 }
 
 function openCustomRequestModal(text) {
   pendingCustomRequestText = text;
   customRequestPreview.textContent = text;
-
   const igUrl = `https://ig.me/m/${CONFIG.instagramHandle}`;
   const profileUrl = `https://www.instagram.com/${CONFIG.instagramHandle}/`;
   customRequestOpenDM.href = igUrl;
   customRequestOpenDM.dataset.fallback = profileUrl;
-
-  copyText(text)
-    .then(() => showNotification("Message copied to clipboard 📋"))
-    .catch(() => showNotification("Couldn't auto-copy — you can copy it from the box below."));
-
+  copyText(text).then(() => showNotification("Message copied to clipboard 📋")).catch(() => showNotification("Couldn't auto-copy — you can copy it from the box below."));
   openModal(customRequestModal);
 }
 
@@ -1122,14 +879,12 @@ function openCustomRequest(product) {
   openCustomRequestModal(text);
 }
 
-// Bespoke CTA button
 document.getElementById("bespoke-cta").addEventListener("click", (e) => {
   e.preventDefault();
   const text = `Hi! I'd love to design a custom Woolley Wonders piece. `;
   openCustomRequestModal(text);
 });
 
-// "Open Instagram DM" link — try deep link, fall back to profile if popup blocked
 customRequestOpenDM.addEventListener("click", (e) => {
   e.preventDefault();
   const newWindow = window.open(customRequestOpenDM.href, "_blank");
@@ -1138,35 +893,18 @@ customRequestOpenDM.addEventListener("click", (e) => {
   }
 });
 
-// "Copy message again" button
 customRequestCopyAgain.addEventListener("click", () => {
-  copyText(pendingCustomRequestText)
-    .then(() => showNotification("Copied again 📋"))
-    .catch(() => showNotification("Copy failed — select the text manually."));
+  copyText(pendingCustomRequestText).then(() => showNotification("Copied again 📋")).catch(() => showNotification("Copy failed — select the text manually."));
 });
+
 /* ---------------------------------------------------------------------
    17. MODAL HELPERS
    --------------------------------------------------------------------- */
-function openModal(modalEl) {
-  modalEl.classList.add("active");
-}
-function closeAllModals() {
-  document.querySelectorAll(".modal-overlay").forEach((m) => m.classList.remove("active"));
-}
-document.querySelectorAll("[data-close-modal]").forEach((btn) =>
-  btn.addEventListener("click", closeAllModals)
-);
-document.querySelectorAll(".modal-overlay").forEach((overlay) =>
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeAllModals();
-  })
-);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeAllModals();
-    closeCart();
-  }
-});
+function openModal(modalEl) { modalEl.classList.add("active"); }
+function closeAllModals() { document.querySelectorAll(".modal-overlay").forEach((m) => m.classList.remove("active")); }
+document.querySelectorAll("[data-close-modal]").forEach((btn) => btn.addEventListener("click", closeAllModals));
+document.querySelectorAll(".modal-overlay").forEach((overlay) => overlay.addEventListener("click", (e) => { if (e.target === overlay) closeAllModals(); }));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeAllModals(); closeCart(); } });
 
 const checkoutModal = document.getElementById("checkout-modal");
 document.getElementById("checkout-open").addEventListener("click", () => {
@@ -1184,14 +922,12 @@ document.getElementById("bespoke-form").addEventListener("submit", async (e) => 
   const form = e.target;
   const status = document.getElementById("bespoke-status");
   const data = Object.fromEntries(new FormData(form).entries());
-
   if (!emailjsReady()) {
     status.textContent = "Email isn't configured yet — see README for EmailJS setup.";
     status.className = "text-sm text-center text-rose-deep";
     status.classList.remove("hidden");
     return;
   }
-
   try {
     setSubmitting(form, true);
     await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.inquiryTemplateId, {
@@ -1207,9 +943,7 @@ document.getElementById("bespoke-form").addEventListener("submit", async (e) => 
     status.textContent = "Something went wrong sending your inquiry. Please try again.";
     status.className = "text-sm text-center text-rose-deep";
     status.classList.remove("hidden");
-  } finally {
-    setSubmitting(form, false);
-  }
+  } finally { setSubmitting(form, false); }
 });
 
 /* ---------------------------------------------------------------------
@@ -1221,11 +955,7 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   const status = document.getElementById("checkout-status");
   const data = Object.fromEntries(new FormData(form).entries());
   const { subtotal, discountAmt, total } = cartTotals();
-
-  const itemsList = state.cart
-    .map((i) => `${i.qty} × ${i.name}${i.color ? ` (${i.color})` : ""}${i.size ? ` [${i.size}]` : ""} — ${fmt(i.price * i.qty)}`)
-    .join("\n");
-
+  const itemsList = state.cart.map((i) => `${i.qty} × ${i.name}${i.color ? ` (${i.color})` : ""}${i.size ? ` [${i.size}]` : ""} — ${fmt(i.price * i.qty)}`).join("\n");
   const orderPayload = {
     customer_name: data.name,
     customer_email: data.email,
@@ -1238,46 +968,32 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
     order_total: fmt(total),
     order_date: new Date().toLocaleString(),
   };
-
   if (!emailjsReady()) {
     status.textContent = "Email isn't configured yet — see README for EmailJS setup.";
     status.className = "text-sm text-center text-rose-deep";
     status.classList.remove("hidden");
     return;
   }
-
   try {
     setSubmitting(form, true);
     await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.orderTemplateId, orderPayload);
     status.textContent = "Order confirmed! A summary is on its way to your inbox.";
     status.className = "text-sm text-center text-sage-deep";
     status.classList.remove("hidden");
-
     state.cart = [];
     state.discount = 0;
     renderCart();
     form.reset();
-
-    setTimeout(() => {
-      closeAllModals();
-      closeCart();
-      status.classList.add("hidden");
-    }, 2200);
+    setTimeout(() => { closeAllModals(); closeCart(); status.classList.add("hidden"); }, 2200);
   } catch (err) {
     status.textContent = "Something went wrong sending your order. Please try again.";
     status.className = "text-sm text-center text-rose-deep";
     status.classList.remove("hidden");
-  } finally {
-    setSubmitting(form, false);
-  }
+  } finally { setSubmitting(form, false); }
 });
 
 function emailjsReady() {
-  return (
-    window.emailjs &&
-    CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY" &&
-    CONFIG.emailjs.serviceId !== "YOUR_EMAILJS_SERVICE_ID"
-  );
+  return window.emailjs && CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY" && CONFIG.emailjs.serviceId !== "YOUR_EMAILJS_SERVICE_ID";
 }
 
 function setSubmitting(form, isSubmitting) {
@@ -1285,28 +1001,21 @@ function setSubmitting(form, isSubmitting) {
   if (!btn) return;
   btn.disabled = isSubmitting;
   btn.style.opacity = isSubmitting ? 0.6 : 1;
-  btn.textContent = isSubmitting
-    ? "Sending..."
-    : btn.closest("#checkout-form")
-    ? "Confirm Order"
-    : "Send Inquiry";
+  btn.textContent = isSubmitting ? "Sending..." : btn.closest("#checkout-form") ? "Confirm Order" : "Send Inquiry";
 }
 
 /* ---------------------------------------------------------------------
-   20. HERO SLIDER — full-bleed banner with smooth crossfade + Ken Burns
+   20. HERO SLIDER — smooth crossfade with Ken Burns
    --------------------------------------------------------------------- */
 function initHeroSlider() {
   const sliderEl = document.getElementById("hero-slider");
   const dotsEl = document.getElementById("hero-dots");
   if (!sliderEl || !dotsEl || HERO_SLIDES.length === 0) return;
 
-  sliderEl.innerHTML = HERO_SLIDES.map(
-    (url, i) =>
-      `<div class="hero-slide${i === 0 ? " active" : ""}" style="background-image:url('${url}')"></div>`
+  sliderEl.innerHTML = HERO_SLIDES.map((url, i) =>
+    `<div class="hero-slide${i === 0 ? " active" : ""}" style="background-image:url('${url}')"></div>`
   ).join("");
-  dotsEl.innerHTML = HERO_SLIDES.map(
-    (_, i) => `<button class="hero-dot${i === 0 ? " active" : ""}" data-slide="${i}" aria-label="Go to slide ${i + 1}"></button>`
-  ).join("");
+  dotsEl.innerHTML = HERO_SLIDES.map((_, i) => `<button class="hero-dot${i === 0 ? " active" : ""}" data-slide="${i}" aria-label="Go to slide ${i + 1}"></button>`).join("");
 
   const slideEls = [...sliderEl.querySelectorAll(".hero-slide")];
   const dotEls = [...dotsEl.querySelectorAll(".hero-dot")];
@@ -1314,13 +1023,11 @@ function initHeroSlider() {
   let timer = null;
   let animating = false;
 
-  // Initial state: first slide visible + slightly zoomed in (Ken Burns start),
-  // rest hidden and pre-scaled so they're ready to crossfade in.
   gsap.set(slideEls, { opacity: 0, scale: 1.08 });
   gsap.set(slideEls[0], { opacity: 1 });
   gsap.to(slideEls[0], { scale: 1, duration: 6, ease: "sine.out" });
 
-  function goTo(index, direction = 1) {
+  function goTo(index) {
     const next = (index + HERO_SLIDES.length) % HERO_SLIDES.length;
     if (next === current || animating) return;
     animating = true;
@@ -1329,36 +1036,17 @@ function initHeroSlider() {
     const nextEl = slideEls[next];
 
     gsap.killTweensOf([prevEl, nextEl]);
-
     gsap.set(nextEl, { scale: 1.08, zIndex: 2 });
     gsap.set(prevEl, { zIndex: 1 });
-
-    gsap.to(prevEl, {
-      opacity: 0,
-      duration: 1,
-      ease: "power2.inOut",
-    });
-
-    gsap.to(nextEl, {
-      opacity: 1,
-      duration: 1,
-      ease: "power2.inOut",
-      onComplete: () => {
-        animating = false; // unlock as soon as the crossfade finishes, not the zoom
-      },
-    });
-
-    gsap.to(nextEl, {
-      scale: 1,
-      duration: 6,
-      ease: "sine.out",
-      // no onComplete needed here anymore
-    });
+    gsap.to(prevEl, { opacity: 0, duration: 1, ease: "power2.inOut" });
+    gsap.to(nextEl, { opacity: 1, duration: 1, ease: "power2.inOut", onComplete: () => { animating = false; } });
+    gsap.to(nextEl, { scale: 1, duration: 6, ease: "sine.out" });
 
     dotEls.forEach((el, i) => el.classList.toggle("active", i === next));
     slideEls.forEach((el, i) => el.classList.toggle("active", i === next));
     current = next;
   }
+
   function startAutoplay() {
     clearInterval(timer);
     if (HERO_SLIDES.length > 1) {
@@ -1366,58 +1054,60 @@ function initHeroSlider() {
     }
   }
 
-  dotEls.forEach((dot) =>
-    dot.addEventListener("click", () => {
-      goTo(Number(dot.dataset.slide));
-      startAutoplay();
-    })
-  );
+  dotEls.forEach((dot) => dot.addEventListener("click", () => { goTo(Number(dot.dataset.slide)); startAutoplay(); }));
 
   let touchStartX = null;
   sliderEl.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  sliderEl.addEventListener(
-    "touchend",
-    (e) => {
-      if (touchStartX === null) return;
-      const delta = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(delta) > 40) {
-        goTo(current + (delta < 0 ? 1 : -1));
-        startAutoplay();
-      }
-      touchStartX = null;
-    },
-    { passive: true }
-  );
+  sliderEl.addEventListener("touchend", (e) => {
+    if (touchStartX === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(delta) > 40) { goTo(current + (delta < 0 ? 1 : -1)); startAutoplay(); }
+    touchStartX = null;
+  }, { passive: true });
 
   startAutoplay();
   init3DHero();
 }
 
 /* ---------------------------------------------------------------------
-   21. SMOOTH PAGE TRANSITIONS
+   21. SMOOTH PAGE TRANSITIONS & NAVIGATION (FIXED)
    --------------------------------------------------------------------- */
 function initPageTransitions() {
+  // Fade in page on load
   document.body.style.opacity = "0";
   gsap.to(document.body, {
     opacity: 1,
     duration: 0.8,
     ease: "power3.inOut",
   });
-  
+
+  // Smooth scroll for all anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
-      if (href === "#" || href === "") return;
-      
+      if (href === "#" || href === "" || href === "#home") {
+        e.preventDefault();
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
       e.preventDefault();
-      const target = document.querySelector(href);
+      const targetId = href.substring(1);
+      const target = document.getElementById(targetId);
+
       if (target) {
-        const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 80;
-        gsap.to(window, {
-          scrollTo: { y: offsetTop },
-          duration: 1,
-          ease: "power3.inOut",
+        // Use native smooth scroll for reliability
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
+        // Update URL without jumping
+        if (history.pushState) {
+          history.pushState(null, null, href);
+        }
+      } else {
+        console.warn(`Target "#${targetId}" not found`);
       }
     });
   });
