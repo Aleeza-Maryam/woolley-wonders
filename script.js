@@ -24,14 +24,14 @@ if (window.emailjs && CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY") {
 }
 
 /* ---------------------------------------------------------------------
-   2. PRODUCT DATA — organized by categories (CUSTOM SIZES FOR WEARABLES)
+   2. PRODUCT DATA — organized by categories (UPDATED PRICES & NAMES)
    --------------------------------------------------------------------- */
 const PRODUCTS = [
   // ========== WEARABLES (5 items) - CUSTOM SIZES ==========
   {
     id: "p1",
     name: "Cozy Knit Sweater",
-    price: 128,
+    price: 5500,
     image: "sweater.jpeg",
     category: "Wearables",
     badges: ["Best Seller", "Handmade"],
@@ -39,12 +39,12 @@ const PRODUCTS = [
     colors: ["#B22222", "#1B1B4B", "#4A5D23", "#FFB6C1"],
     sizes: ["Custom"],
     hasCustomSize: true,
-    measurementFields: ["length", "width", "sleeve"], // Sweater needs all three
+    measurementFields: ["length", "width", "sleeve"],
   },
   {
     id: "p2",
     name: "Warm Winter Gloves",
-    price: 48,
+    price: 1000,
     image: "gloves.jpeg",
     category: "Wearables",
     badges: ["Handmade"],
@@ -52,12 +52,12 @@ const PRODUCTS = [
     colors: ["#B22222", "#1B1B4B", "#FFB6C1", "#8B4513"],
     sizes: ["Custom"],
     hasCustomSize: true,
-    measurementFields: ["length", "width"], // Gloves only need length and width
+    measurementFields: ["length", "width"],
   },
   {
     id: "p3",
     name: "Classic Knit Tie",
-    price: 38,
+    price: 1000,
     image: "tie.jpeg",
     category: "Wearables",
     badges: ["Handmade"],
@@ -69,7 +69,7 @@ const PRODUCTS = [
   {
     id: "p4",
     name: "Mesh Tie",
-    price: 42,
+    price: 850,
     image: "tie2.jpeg",
     category: "Wearables",
     badges: ["Customizable"],
@@ -81,7 +81,7 @@ const PRODUCTS = [
   {
     id: "p5",
     name: "Cardigan",
-    price: 145,
+    price: 6500,
     image: "Cardigan.jpeg",
     category: "Wearables",
     badges: ["Best Seller", "Handmade"],
@@ -89,14 +89,14 @@ const PRODUCTS = [
     colors: ["#8B4513", "#FFB6C1", "#FFF44F"],
     sizes: ["Custom"],
     hasCustomSize: true,
-    measurementFields: ["length", "width", "sleeve"], // Cardigan needs all three
+    measurementFields: ["length", "width", "sleeve"],
   },
 
-  // ========== FLORAL COLLECTION (6 items) ==========
+  // ========== FLORAL COLLECTION (7 items) ==========
   {
     id: "p6",
     name: "Rose Bouquet",
-    price: 68,
+    price: 800,
     image: "rose_boquet.jpeg",
     category: "Floral Collection",
     badges: ["Best Seller", "Handmade"],
@@ -108,7 +108,7 @@ const PRODUCTS = [
   {
     id: "p7",
     name: "Pink Tulip",
-    price: 32,
+    price: 350,
     image: "pink_tulip.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -119,12 +119,12 @@ const PRODUCTS = [
   },
   {
     id: "p8",
-    name: "Red Rose",
-    price: 38,
+    name: "3 Red Roses",
+    price: 800,
     image: "Roseee.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
-    desc: "A classic crocheted red rose. Timeless beauty that never fades.",
+    desc: "A beautiful set of 3 classic crocheted red roses. Perfect for gifting or decoration.",
     colors: ["#B22222"],
     sizes: ["One Size"],
     hasCustomSize: false,
@@ -132,7 +132,7 @@ const PRODUCTS = [
   {
     id: "p9",
     name: "Rose Pot",
-    price: 42,
+    price: 400,
     image: "red_rose2.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -144,7 +144,7 @@ const PRODUCTS = [
   {
     id: "p10",
     name: "Single Rose",
-    price: 28,
+    price: 300,
     image: "rose.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -156,7 +156,7 @@ const PRODUCTS = [
   {
     id: "p11",
     name: "Sunflower",
-    price: 35,
+    price: 300,
     image: "sunflower.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -169,8 +169,8 @@ const PRODUCTS = [
   // ========== KEYCHAINS (5 items) ==========
   {
     id: "p12",
-    name: "Chick Keychain II",
-    price: 18,
+    name: "Chick Keychain",
+    price: 350,
     image: "chick2_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -182,7 +182,7 @@ const PRODUCTS = [
   {
     id: "p13",
     name: "Mini Flower Bouquet",
-    price: 22,
+    price: 400,
     image: "keychain_bookeh.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -194,7 +194,7 @@ const PRODUCTS = [
   {
     id: "p14",
     name: "Mini Octopus Keychain",
-    price: 16,
+    price: 350,
     image: "octopus_keychain2.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -205,12 +205,12 @@ const PRODUCTS = [
   },
   {
     id: "p15",
-    name: "Sunflower Keychain",
-    price: 20,
+    name: "Sunflower and Bow Keychain",
+    price: 500,
     image: "sunflower_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
-    desc: "A cheerful crocheted sunflower keychain with red bow and yellow flower.",
+    desc: "A cheerful crocheted sunflower keychain with a cute red bow. Perfect for adding sunshine to your keys.",
     colors: ["#B22222", "#FFD700"],
     sizes: ["One Size"],
     hasCustomSize: false,
@@ -218,7 +218,7 @@ const PRODUCTS = [
   {
     id: "p16",
     name: "Daisy",
-    price: 18,
+    price: 100,
     image: "Daisy.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -232,7 +232,7 @@ const PRODUCTS = [
   {
     id: "p17",
     name: "Gajra - Traditional Garland",
-    price: 55,
+    price: 650,
     image: "gajra.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -243,12 +243,12 @@ const PRODUCTS = [
   },
   {
     id: "p18",
-    name: "Rose Puff Gajra",
-    price: 58,
+    name: "Rose Puff Gajra (Pair)",
+    price: 1500,
     image: "Rose puff gajra.jpeg",
     category: "Accessories",
     badges: ["Handmade", "Customizable"],
-    desc: "A beautiful rose puff gajra with white and red roses. Adds elegance to any traditional outfit.",
+    desc: "A beautiful pair of rose puff gajra with white and red roses. Adds elegance to any traditional outfit.",
     colors: ["#FFFFFF", "#B22222"],
     sizes: ["One Size"],
     hasCustomSize: false,
@@ -256,19 +256,23 @@ const PRODUCTS = [
   {
     id: "p19",
     name: "Paranda",
-    price: 45,
+    price: 900,
     image: "paranda.jpeg",
     category: "Accessories",
-    badges: ["Handmade"],
-    desc: "A traditional crocheted paranda (hair tassel) in vibrant multi-colors. Adds charm to your hairstyle.",
+    badges: ["Handmade", "Customizable"],
+    desc: "A traditional crocheted paranda (hair tassel) in vibrant multi-colors. Choose your desired length.",
     colors: ["#B22222", "#FFB6C1", "#FFD700", "#4A5D23"],
-    sizes: ["One Size"],
-    hasCustomSize: false,
+    sizes: ["Custom"],
+    hasCustomSize: true,
+    measurementFields: ["length"],
+    customLabel: "Paranda Length (inches)",
+    customPlaceholder: "e.g. 24",
+    customGuide: "Measure from the top of the paranda to the desired end point"
   },
   {
     id: "p20",
     name: "Red Tulip Headband",
-    price: 28,
+    price: 500,
     image: "tulip_headband.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -279,8 +283,8 @@ const PRODUCTS = [
   },
   {
     id: "p21",
-    name: "Hair Pins",
-    price: 22,
+    name: "Hair Pins (Pair)",
+    price: 200,
     image: "pins.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -292,7 +296,7 @@ const PRODUCTS = [
   {
     id: "p22",
     name: "Daisy Headband",
-    price: 28,
+    price: 500,
     image: "Daisy headband.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -306,7 +310,7 @@ const PRODUCTS = [
   {
     id: "p23",
     name: "Daisy Dream Bag",
-    price: 78,
+    price: 1200,
     image: "Daisy Dream bag.jpeg",
     category: "Bags",
     badges: ["Handmade", "Customizable"],
@@ -318,7 +322,7 @@ const PRODUCTS = [
   {
     id: "p24",
     name: "Pink Mini Wallet",
-    price: 32,
+    price: 650,
     image: "pink mini wallet.jpeg",
     category: "Bags",
     badges: ["Handmade"],
@@ -330,7 +334,7 @@ const PRODUCTS = [
   {
     id: "p25",
     name: "Red Bunny Wallet",
-    price: 38,
+    price: 650,
     image: "red bunny wallet.jpeg",
     category: "Bags",
     badges: ["Handmade"],
@@ -342,7 +346,7 @@ const PRODUCTS = [
   {
     id: "p26",
     name: "Cherry Bow Bag",
-    price: 82,
+    price: 900,
     image: "Cherry Bow bag.jpeg",
     category: "Bags",
     badges: ["Best Seller", "Handmade"],
@@ -377,7 +381,7 @@ const state = {
   currentCategory: "All",
 };
 
-const fmt = (n) => `$${n.toFixed(2)}`;
+const fmt = (n) => `Rs. ${n.toFixed(2)}`;
 
 /* ---------------------------------------------------------------------
    4. NAVBAR + MOBILE MENU
@@ -703,7 +707,7 @@ function showNotification(message) {
 }
 
 /* ---------------------------------------------------------------------
-   14. CART LOGIC (FIXED)
+   14. CART LOGIC
    --------------------------------------------------------------------- */
 const cartDrawer = document.getElementById("cart-drawer");
 const cartOverlay = document.getElementById("cart-overlay");
@@ -713,9 +717,8 @@ function addToCart(productId, event, opts = {}) {
   const product = PRODUCTS.find((p) => p.id === productId);
   if (!product) return;
   
-  // CRITICAL FIX: If product has custom size and no measurements yet, show measurement modal
+  // If product has custom size and no measurements yet, show measurement modal
   if (product.hasCustomSize && !opts.measurements) {
-    // Store the product and options for later use
     showMeasurementModal(product, event, opts);
     return;
   }
@@ -744,7 +747,7 @@ function addToCart(productId, event, opts = {}) {
 }
 
 /* ---------------------------------------------------------------------
-   14b. MEASUREMENT MODAL (FIXED - Shows different fields per product)
+   14b. MEASUREMENT MODAL (UPDATED FOR PARANDA)
    --------------------------------------------------------------------- */
 function showMeasurementModal(product, event, opts = {}) {
   // Create modal if it doesn't exist
@@ -773,7 +776,7 @@ function showMeasurementModal(product, event, opts = {}) {
             </div>
             <div>
               <label class="form-label">Additional Notes (optional)</label>
-              <textarea name="notes" rows="2" class="form-input resize-none" placeholder="Any other fit preferences..."></textarea>
+              <textarea name="notes" rows="2" class="form-input resize-none" placeholder="Any other preferences..."></textarea>
             </div>
             <button type="submit" class="btn-glow w-full justify-center">Add to Cart with Custom Size</button>
           </form>
@@ -797,16 +800,15 @@ function showMeasurementModal(product, event, opts = {}) {
   const fieldsContainer = document.getElementById("measurement-fields");
   const guideContainer = document.getElementById("measurement-guide");
   
-  // Clear previous fields
-  fieldsContainer.innerHTML = '';
+  // Clear previous fields  fieldsContainer.innerHTML = '';
   guideContainer.innerHTML = '';
   
   // Define field configurations
   const fieldConfigs = {
     length: {
-      label: 'Length (inches)',
-      placeholder: 'e.g. 24',
-      guide: 'Measure from shoulder to desired hem'
+      label: product.customLabel || 'Length (inches)',
+      placeholder: product.customPlaceholder || 'e.g. 24',
+      guide: product.customGuide || 'Measure from shoulder to desired hem'
     },
     width: {
       label: 'Width (inches)',
@@ -856,7 +858,12 @@ function showMeasurementModal(product, event, opts = {}) {
       const value = formData.get(fieldName);
       if (value) {
         measurements[fieldName] = value;
-        const label = fieldConfigs[fieldName]?.label.split(' ')[0] || fieldName;
+        let label = fieldName;
+        if (fieldName === 'length' && product.customLabel) {
+          label = 'Length';
+        } else {
+          label = fieldConfigs[fieldName]?.label.split(' ')[0] || fieldName;
+        }
         measurementsText += `${label}: ${value}", `;
       }
     });
@@ -994,7 +1001,7 @@ document.getElementById("promo-apply").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   15. QUICK VIEW MODAL (FIXED)
+   15. QUICK VIEW MODAL
    --------------------------------------------------------------------- */
 const quickviewModal = document.getElementById("quickview-modal");
 
@@ -1013,7 +1020,12 @@ function openQuickView(productId) {
   // Sizes - show Custom badge if hasCustomSize
   const sizeContainer = document.getElementById("qv-sizes");
   if (p.hasCustomSize) {
-    const fieldNames = p.measurementFields.map(f => f.charAt(0).toUpperCase() + f.slice(1)).join(', ');
+    const fieldNames = p.measurementFields.map(f => {
+      if (f === 'length' && p.customLabel) {
+        return 'Length';
+      }
+      return f.charAt(0).toUpperCase() + f.slice(1);
+    }).join(', ');
     sizeContainer.innerHTML = `
       <div class="flex items-center gap-2">
         <span class="text-sm font-medium text-ink/70">Custom Fit</span>
@@ -1041,17 +1053,13 @@ function openQuickView(productId) {
   openModal(quickviewModal);
 }
 
-// FIXED: Quick View Add to Cart - properly triggers measurement modal
 document.getElementById("qv-add-cart").addEventListener("click", (e) => {
   if (!state.activeProduct) return;
   const product = state.activeProduct;
-  
-  // For custom size products, this will trigger the measurement modal
   addToCart(product.id, e, { 
     color: product.selectedColor,
     size: product.hasCustomSize ? "Custom" : product.selectedSize
   });
-  // Don't close modal immediately - measurement modal will handle it
 });
 
 document.getElementById("qv-custom").addEventListener("click", () => {
@@ -1098,7 +1106,7 @@ function openCustomRequestModal(text) {
 }
 
 function openCustomRequest(product) {
-  const text = `Hi! I'd love a custom version of the "${product.name}" ($${product.price.toFixed(2)}). Here's what I'm thinking: `;
+  const text = `Hi! I'd love a custom version of the "${product.name}" (${fmt(product.price)}). Here's what I'm thinking: `;
   openCustomRequestModal(text);
 }
 
