@@ -24,10 +24,10 @@ if (window.emailjs && CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY") {
 }
 
 /* ---------------------------------------------------------------------
-   2. PRODUCT DATA — organized by categories
+   2. PRODUCT DATA — organized by categories (CUSTOM SIZES FOR WEARABLES)
    --------------------------------------------------------------------- */
 const PRODUCTS = [
-  // ========== WEARABLES (5 items) ==========
+  // ========== WEARABLES (5 items) - CUSTOM SIZES ==========
   {
     id: "p1",
     name: "Cozy Knit Sweater",
@@ -36,8 +36,10 @@ const PRODUCTS = [
     category: "Wearables",
     badges: ["Best Seller", "Handmade"],
     desc: "A cloud-soft sweater hand-knitted from premium cotton yarn. Perfect for cozy days.",
-    colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
-    sizes: ["S", "M", "L"],
+    colors: ["#B22222", "#1B1B4B", "#4A5D23", "#FFB6C1"],
+    sizes: ["Custom"],
+    hasCustomSize: true,
+    measurementFields: ["length", "width", "sleeve"], // Sweater needs all three
   },
   {
     id: "p2",
@@ -47,8 +49,10 @@ const PRODUCTS = [
     category: "Wearables",
     badges: ["Handmade"],
     desc: "Hand-crocheted gloves with a textured pattern. Keep your hands warm in style.",
-    colors: ["#3A2E28", "#C6A15B", "#9CAE8C"],
-    sizes: ["S", "M", "L"],
+    colors: ["#B22222", "#1B1B4B", "#FFB6C1", "#8B4513"],
+    sizes: ["Custom"],
+    hasCustomSize: true,
+    measurementFields: ["length", "width"], // Gloves only need length and width
   },
   {
     id: "p3",
@@ -58,8 +62,9 @@ const PRODUCTS = [
     category: "Wearables",
     badges: ["Handmade"],
     desc: "A sophisticated crocheted tie with a subtle texture. Adds a unique touch to any outfit.",
-    colors: ["#3A2E28", "#C98D82", "#9CAE8C"],
+    colors: ["#1B1B4B", "#4A5D23", "#FFFFFF"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p4",
@@ -69,8 +74,9 @@ const PRODUCTS = [
     category: "Wearables",
     badges: ["Customizable"],
     desc: "A lightweight mesh tie with open stitch work. Breathable and perfect for warmer days.",
-    colors: ["#C6A15B", "#3A2E28", "#EFDCC7"],
+    colors: ["#1B1B4B", "#4A5D23", "#FFFFFF"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p5",
@@ -80,8 +86,10 @@ const PRODUCTS = [
     category: "Wearables",
     badges: ["Best Seller", "Handmade"],
     desc: "A beautifully crafted crochet cardigan. Soft, cozy, and perfect for layering.",
-    colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
-    sizes: ["S", "M", "L"],
+    colors: ["#8B4513", "#FFB6C1", "#FFF44F"],
+    sizes: ["Custom"],
+    hasCustomSize: true,
+    measurementFields: ["length", "width", "sleeve"], // Cardigan needs all three
   },
 
   // ========== FLORAL COLLECTION (6 items) ==========
@@ -93,8 +101,9 @@ const PRODUCTS = [
     category: "Floral Collection",
     badges: ["Best Seller", "Handmade"],
     desc: "A stunning hand-crocheted rose bouquet. Perfect as a gift or home decor.",
-    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p7",
@@ -104,8 +113,9 @@ const PRODUCTS = [
     category: "Floral Collection",
     badges: ["Handmade"],
     desc: "A delicate crocheted tulip in soft pink. Brings spring vibes all year round.",
-    colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
+    colors: ["#FFB6C1"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p8",
@@ -115,8 +125,9 @@ const PRODUCTS = [
     category: "Floral Collection",
     badges: ["Handmade"],
     desc: "A classic crocheted red rose. Timeless beauty that never fades.",
-    colors: ["#C98D82", "#3A2E28", "#C6A15B"],
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p9",
@@ -126,8 +137,9 @@ const PRODUCTS = [
     category: "Floral Collection",
     badges: ["Handmade"],
     desc: "A beautiful crocheted rose in a pot. A charming addition to any space.",
-    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p10",
@@ -137,8 +149,9 @@ const PRODUCTS = [
     category: "Floral Collection",
     badges: ["Handmade"],
     desc: "A simple yet elegant single crocheted rose. Perfect for any occasion.",
-    colors: ["#C98D82", "#C6A15B", "#3A2E28"],
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p11",
@@ -148,8 +161,9 @@ const PRODUCTS = [
     category: "Floral Collection",
     badges: ["Handmade"],
     desc: "A cheerful crocheted sunflower. Brings warmth and brightness wherever it goes.",
-    colors: ["#C6A15B", "#C98D82", "#EFDCC7"],
+    colors: ["#FFD700"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
 
   // ========== KEYCHAINS (5 items) ==========
@@ -160,9 +174,10 @@ const PRODUCTS = [
     image: "chick2_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
-    desc: "A cute crocheted chick keychain with a cheerful expression and soft colors.",
-    colors: ["#EFDCC7", "#9CAE8C", "#C6A15B"],
+    desc: "A cute crocheted chick keychain with a cheerful expression and soft yellow color.",
+    colors: ["#FFD700"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p13",
@@ -172,8 +187,9 @@ const PRODUCTS = [
     category: "Keychains",
     badges: ["Handmade"],
     desc: "A charming mini flower bouquet keychain. Perfect for adding a touch of nature to your keys.",
-    colors: ["#C6A15B", "#C98D82", "#9CAE8C"],
+    colors: ["#FFB6C1"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p14",
@@ -182,9 +198,10 @@ const PRODUCTS = [
     image: "octopus_keychain2.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
-    desc: "A miniature crocheted octopus keychain. Perfect for small bags and backpacks.",
-    colors: ["#C98D82", "#EFDCC7", "#9CAE8C"],
+    desc: "A miniature crocheted octopus keychain in soft lavender. Perfect for small bags.",
+    colors: ["#E6E6FA"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p15",
@@ -193,9 +210,10 @@ const PRODUCTS = [
     image: "sunflower_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
-    desc: "A cheerful crocheted sunflower keychain. Brings sunshine wherever you go.",
-    colors: ["#C6A15B", "#C98D82", "#3A2E28"],
+    desc: "A cheerful crocheted sunflower keychain with red bow and yellow flower.",
+    colors: ["#B22222", "#FFD700"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p16",
@@ -204,9 +222,10 @@ const PRODUCTS = [
     image: "Daisy.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
-    desc: "A lovely crocheted daisy flower. Simple, elegant, and perfect for any occasion.",
-    colors: ["#EFDCC7", "#C6A15B", "#9CAE8C"],
+    desc: "A lovely crocheted daisy flower in bright yellow. Simple, elegant, and perfect for any occasion.",
+    colors: ["#FFD700"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
 
   // ========== ACCESSORIES (6 items) ==========
@@ -217,9 +236,10 @@ const PRODUCTS = [
     image: "gajra.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
-    desc: "A traditional crocheted gajra (flower garland). Perfect for special occasions and celebrations.",
-    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    desc: "A traditional crocheted gajra (flower garland) in rich red. Perfect for special occasions.",
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p18",
@@ -228,9 +248,10 @@ const PRODUCTS = [
     image: "Rose puff gajra.jpeg",
     category: "Accessories",
     badges: ["Handmade", "Customizable"],
-    desc: "A beautiful rose puff gajra with soft, textured roses. Adds elegance to any traditional outfit.",
-    colors: ["#C98D82", "#C6A15B", "#EFDCC7"],
+    desc: "A beautiful rose puff gajra with white and red roses. Adds elegance to any traditional outfit.",
+    colors: ["#FFFFFF", "#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p19",
@@ -239,9 +260,10 @@ const PRODUCTS = [
     image: "paranda.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
-    desc: "A traditional crocheted paranda (hair tassel). Adds a pop of color and charm to your hairstyle.",
-    colors: ["#C98D82", "#C6A15B", "#3A2E28"],
+    desc: "A traditional crocheted paranda (hair tassel) in vibrant multi-colors. Adds charm to your hairstyle.",
+    colors: ["#B22222", "#FFB6C1", "#FFD700", "#4A5D23"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p20",
@@ -251,8 +273,9 @@ const PRODUCTS = [
     category: "Accessories",
     badges: ["Handmade"],
     desc: "A beautiful headband featuring a red tulip. Comfortable, stylish, and perfect for any outfit.",
-    colors: ["#C98D82", "#EFDCC7", "#3A2E28"],
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p21",
@@ -261,9 +284,10 @@ const PRODUCTS = [
     image: "pins.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
-    desc: "A set of hand-crocheted hair pins. Perfect for adding a touch of handmade beauty to your hair.",
-    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    desc: "A set of hand-crocheted hair pins in pink and red. Perfect for adding a touch of handmade beauty.",
+    colors: ["#FFB6C1", "#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p22",
@@ -272,9 +296,10 @@ const PRODUCTS = [
     image: "Daisy headband.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
-    desc: "A charming headband adorned with crocheted daisies. Sweet, comfortable, and perfect for spring.",
-    colors: ["#EFDCC7", "#C6A15B", "#9CAE8C"],
+    desc: "A charming headband adorned with pink crocheted daisies. Sweet, comfortable, and perfect for spring.",
+    colors: ["#FFB6C1"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
 
   // ========== BAGS (4 items) ==========
@@ -285,9 +310,10 @@ const PRODUCTS = [
     image: "Daisy Dream bag.jpeg",
     category: "Bags",
     badges: ["Handmade", "Customizable"],
-    desc: "A beautiful crocheted bag with daisy flower details. Perfect for summer days and brightening any outfit.",
-    colors: ["#EFDCC7", "#C6A15B", "#9CAE8C"],
+    desc: "A beautiful crocheted bag with daisy flower details in pink and butter yellow.",
+    colors: ["#FFB6C1", "#FFF44F"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p24",
@@ -297,8 +323,9 @@ const PRODUCTS = [
     category: "Bags",
     badges: ["Handmade"],
     desc: "A cute mini wallet in soft pink. Compact and stylish for carrying your essentials.",
-    colors: ["#C98D82", "#EFDCC7", "#C6A15B"],
+    colors: ["#FFB6C1"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p25",
@@ -308,8 +335,9 @@ const PRODUCTS = [
     category: "Bags",
     badges: ["Handmade"],
     desc: "An adorable red wallet with bunny ears detail. Makes a playful addition to your accessories.",
-    colors: ["#C98D82", "#3A2E28", "#C6A15B"],
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
   {
     id: "p26",
@@ -318,9 +346,10 @@ const PRODUCTS = [
     image: "Cherry Bow bag.jpeg",
     category: "Bags",
     badges: ["Best Seller", "Handmade"],
-    desc: "A charming bag featuring cherry and bow details. Sweet, stylish, and completely handmade.",
-    colors: ["#C98D82", "#EFDCC7", "#3A2E28"],
+    desc: "A charming bag featuring cherry and bow details in rich red. Sweet, stylish, and completely handmade.",
+    colors: ["#B22222"],
     sizes: ["One Size"],
+    hasCustomSize: false,
   },
 ];
 
@@ -588,6 +617,14 @@ function renderProducts(category = "All") {
         <div class="p-5">
           <h3 class="font-display text-lg mb-1">${p.name}</h3>
           <p class="text-rose-deep font-semibold mb-4">${fmt(p.price)}</p>
+          ${p.hasCustomSize ? `
+            <div class="mb-3 text-xs text-ink/50">
+              <span class="inline-flex items-center gap-1 bg-ink/5 px-2 py-1 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Custom measurements
+              </span>
+            </div>
+          ` : ''}
           <div class="flex gap-2">
             <button class="btn-glow flex-1 justify-center !py-2.5 !text-xs" data-add-cart="${p.id}">
               <span>Add to Cart</span>
@@ -666,7 +703,7 @@ function showNotification(message) {
 }
 
 /* ---------------------------------------------------------------------
-   14. CART LOGIC
+   14. CART LOGIC (FIXED)
    --------------------------------------------------------------------- */
 const cartDrawer = document.getElementById("cart-drawer");
 const cartOverlay = document.getElementById("cart-overlay");
@@ -675,15 +712,181 @@ const cartCountEl = document.getElementById("cart-count");
 function addToCart(productId, event, opts = {}) {
   const product = PRODUCTS.find((p) => p.id === productId);
   if (!product) return;
+  
+  // CRITICAL FIX: If product has custom size and no measurements yet, show measurement modal
+  if (product.hasCustomSize && !opts.measurements) {
+    // Store the product and options for later use
+    showMeasurementModal(product, event, opts);
+    return;
+  }
+  
   const key = `${productId}-${opts.color || "default"}-${opts.size || "default"}`;
   const existing = state.cart.find((i) => i.key === key);
-  if (existing) { existing.qty += 1; } else {
-    state.cart.push({ key, id: product.id, name: product.name, price: product.price, image: product.image, qty: 1, color: opts.color || null, size: opts.size || null });
+  if (existing) { 
+    existing.qty += 1; 
+  } else {
+    state.cart.push({ 
+      key, 
+      id: product.id, 
+      name: product.name, 
+      price: product.price, 
+      image: product.image, 
+      qty: 1, 
+      color: opts.color || null, 
+      size: opts.size || null,
+      measurements: opts.measurements || null
+    });
   }
   renderCart();
   pulseCartBadge();
   showNotification(`${product.name} added to cart 🛒`);
   if (event) flyToCart(event, product.image);
+}
+
+/* ---------------------------------------------------------------------
+   14b. MEASUREMENT MODAL (FIXED - Shows different fields per product)
+   --------------------------------------------------------------------- */
+function showMeasurementModal(product, event, opts = {}) {
+  // Create modal if it doesn't exist
+  let modal = document.getElementById("measurement-modal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "measurement-modal";
+    modal.className = "modal-overlay";
+    modal.innerHTML = `
+      <div class="modal-panel max-w-md">
+        <button class="modal-close" id="measurement-close">&times;</button>
+        <div class="p-8 lg:p-10">
+          <h3 class="font-display text-2xl mb-2">Custom Measurements</h3>
+          <p class="text-ink/60 text-sm mb-6">Please provide your measurements for a perfect fit.</p>
+          
+          <div class="mb-4 bg-blush/20 rounded-xl p-4 text-sm text-ink/70">
+            <p class="font-semibold mb-2">📏 How to measure:</p>
+            <ul class="space-y-1 text-xs" id="measurement-guide">
+              <!-- Will be populated dynamically -->
+            </ul>
+          </div>
+          
+          <form id="measurement-form" class="space-y-4">
+            <div id="measurement-fields">
+              <!-- Will be populated dynamically -->
+            </div>
+            <div>
+              <label class="form-label">Additional Notes (optional)</label>
+              <textarea name="notes" rows="2" class="form-input resize-none" placeholder="Any other fit preferences..."></textarea>
+            </div>
+            <button type="submit" class="btn-glow w-full justify-center">Add to Cart with Custom Size</button>
+          </form>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Close button
+    document.getElementById("measurement-close").addEventListener("click", () => {
+      modal.classList.remove("active");
+    });
+  }
+  
+  // Store product and options for form submission
+  modal.dataset.productId = product.id;
+  modal.dataset.color = opts.color || product.colors[0];
+  modal.dataset.size = "Custom";
+  
+  // Populate measurement fields based on product type
+  const fieldsContainer = document.getElementById("measurement-fields");
+  const guideContainer = document.getElementById("measurement-guide");
+  
+  // Clear previous fields
+  fieldsContainer.innerHTML = '';
+  guideContainer.innerHTML = '';
+  
+  // Define field configurations
+  const fieldConfigs = {
+    length: {
+      label: 'Length (inches)',
+      placeholder: 'e.g. 24',
+      guide: 'Measure from shoulder to desired hem'
+    },
+    width: {
+      label: 'Width (inches)',
+      placeholder: 'e.g. 20',
+      guide: 'Measure across the chest from armpit to armpit'
+    },
+    sleeve: {
+      label: 'Sleeve Length (inches)',
+      placeholder: 'e.g. 22',
+      guide: 'Measure from shoulder to wrist'
+    }
+  };
+  
+  // Add fields based on product's measurementFields
+  product.measurementFields.forEach(fieldName => {
+    const config = fieldConfigs[fieldName];
+    if (config) {
+      // Add to guide
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="font-medium">${config.label.split(' ')[0]}:</span> ${config.guide}`;
+      guideContainer.appendChild(li);
+      
+      // Add to form
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <label class="form-label">${config.label}</label>
+        <input type="text" name="${fieldName}" class="form-input" placeholder="${config.placeholder}" required>
+      `;
+      fieldsContainer.appendChild(div);
+    }
+  });
+  
+  // Update form submit handler
+  const form = document.getElementById("measurement-form");
+  // Remove old handler by cloning and replacing
+  const newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
+  
+  newForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    
+    // Build measurements text based on fields
+    const measurements = {};
+    let measurementsText = '';
+    product.measurementFields.forEach(fieldName => {
+      const value = formData.get(fieldName);
+      if (value) {
+        measurements[fieldName] = value;
+        const label = fieldConfigs[fieldName]?.label.split(' ')[0] || fieldName;
+        measurementsText += `${label}: ${value}", `;
+      }
+    });
+    // Remove trailing comma and space
+    measurementsText = measurementsText.replace(/, $/, '');
+    
+    const notes = formData.get("notes") || "";
+    if (notes) {
+      measurementsText += `, Notes: ${notes}`;
+    }
+    
+    modal.classList.remove("active");
+    
+    // Get stored product info
+    const productId = modal.dataset.productId;
+    const color = modal.dataset.color;
+    
+    addToCart(productId, event, { 
+      color: color,
+      size: "Custom",
+      measurements: measurementsText
+    });
+  });
+  
+  // Re-attach close button
+  document.getElementById("measurement-close").addEventListener("click", () => {
+    modal.classList.remove("active");
+  });
+  
+  modal.classList.add("active");
 }
 
 function updateQty(key, delta) {
@@ -722,7 +925,7 @@ function renderCart() {
             <h4 class="font-semibold text-sm leading-tight">${i.name}</h4>
             <button class="text-ink/30 hover:text-rose-deep transition-colors" data-remove="${i.key}" aria-label="Remove">&times;</button>
           </div>
-          <p class="text-xs text-ink/50 mt-0.5">${[i.color, i.size].filter(Boolean).join(" · ") || "Standard"}</p>
+          <p class="text-xs text-ink/50 mt-0.5">${i.color ? i.color : ''}${i.measurements ? ` · ${i.measurements}` : ''}${i.size && i.size !== "Custom" ? ` · ${i.size}` : ''}</p>
           <div class="flex items-center justify-between mt-2">
             <div class="flex items-center gap-2">
               <button class="qty-btn" data-qty-minus="${i.key}">−</button>
@@ -791,7 +994,7 @@ document.getElementById("promo-apply").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   15. QUICK VIEW MODAL
+   15. QUICK VIEW MODAL (FIXED)
    --------------------------------------------------------------------- */
 const quickviewModal = document.getElementById("quickview-modal");
 
@@ -806,7 +1009,28 @@ function openQuickView(productId) {
   document.getElementById("qv-desc").textContent = p.desc;
   document.getElementById("qv-badges").innerHTML = p.badges.map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`).join("");
   document.getElementById("qv-colors").innerHTML = p.colors.map((c, i) => `<span class="swatch ${i === 0 ? "active" : ""}" style="background:${c}" data-color="${c}"></span>`).join("");
-  document.getElementById("qv-sizes").innerHTML = p.sizes.map((s, i) => `<span class="size-pill ${i === 0 ? "active" : ""}" data-size="${s}">${s}</span>`).join("");
+  
+  // Sizes - show Custom badge if hasCustomSize
+  const sizeContainer = document.getElementById("qv-sizes");
+  if (p.hasCustomSize) {
+    const fieldNames = p.measurementFields.map(f => f.charAt(0).toUpperCase() + f.slice(1)).join(', ');
+    sizeContainer.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-medium text-ink/70">Custom Fit</span>
+        <span class="text-xs bg-ink/5 px-2 py-1 rounded-full text-ink/50">${fieldNames}</span>
+      </div>
+    `;
+  } else {
+    sizeContainer.innerHTML = p.sizes.map((s, i) => `<span class="size-pill ${i === 0 ? "active" : ""}" data-size="${s}">${s}</span>`).join("");
+    document.querySelectorAll("#qv-sizes .size-pill").forEach((el) =>
+      el.addEventListener("click", () => {
+        document.querySelectorAll("#qv-sizes .size-pill").forEach((s) => s.classList.remove("active"));
+        el.classList.add("active");
+        state.activeProduct.selectedSize = el.dataset.size;
+      })
+    );
+  }
+  
   document.querySelectorAll("#qv-colors .swatch").forEach((el) =>
     el.addEventListener("click", () => {
       document.querySelectorAll("#qv-colors .swatch").forEach((s) => s.classList.remove("active"));
@@ -814,21 +1038,20 @@ function openQuickView(productId) {
       state.activeProduct.selectedColor = el.dataset.color;
     })
   );
-  document.querySelectorAll("#qv-sizes .size-pill").forEach((el) =>
-    el.addEventListener("click", () => {
-      document.querySelectorAll("#qv-sizes .size-pill").forEach((s) => s.classList.remove("active"));
-      el.classList.add("active");
-      state.activeProduct.selectedSize = el.dataset.size;
-    })
-  );
   openModal(quickviewModal);
 }
 
+// FIXED: Quick View Add to Cart - properly triggers measurement modal
 document.getElementById("qv-add-cart").addEventListener("click", (e) => {
   if (!state.activeProduct) return;
-  addToCart(state.activeProduct.id, e, { color: state.activeProduct.selectedColor, size: state.activeProduct.selectedSize });
-  closeAllModals();
-  openCart();
+  const product = state.activeProduct;
+  
+  // For custom size products, this will trigger the measurement modal
+  addToCart(product.id, e, { 
+    color: product.selectedColor,
+    size: product.hasCustomSize ? "Custom" : product.selectedSize
+  });
+  // Don't close modal immediately - measurement modal will handle it
 });
 
 document.getElementById("qv-custom").addEventListener("click", () => {
@@ -901,7 +1124,11 @@ customRequestCopyAgain.addEventListener("click", () => {
    17. MODAL HELPERS
    --------------------------------------------------------------------- */
 function openModal(modalEl) { modalEl.classList.add("active"); }
-function closeAllModals() { document.querySelectorAll(".modal-overlay").forEach((m) => m.classList.remove("active")); }
+function closeAllModals() { 
+  document.querySelectorAll(".modal-overlay").forEach((m) => m.classList.remove("active"));
+  const measurementModal = document.getElementById("measurement-modal");
+  if (measurementModal) measurementModal.classList.remove("active");
+}
 document.querySelectorAll("[data-close-modal]").forEach((btn) => btn.addEventListener("click", closeAllModals));
 document.querySelectorAll(".modal-overlay").forEach((overlay) => overlay.addEventListener("click", (e) => { if (e.target === overlay) closeAllModals(); }));
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeAllModals(); closeCart(); } });
@@ -955,7 +1182,9 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   const status = document.getElementById("checkout-status");
   const data = Object.fromEntries(new FormData(form).entries());
   const { subtotal, discountAmt, total } = cartTotals();
-  const itemsList = state.cart.map((i) => `${i.qty} × ${i.name}${i.color ? ` (${i.color})` : ""}${i.size ? ` [${i.size}]` : ""} — ${fmt(i.price * i.qty)}`).join("\n");
+  const itemsList = state.cart.map((i) => 
+    `${i.qty} × ${i.name}${i.color ? ` (${i.color})` : ""}${i.measurements ? ` [Measurements: ${i.measurements}]` : ""}${i.size && i.size !== "Custom" ? ` [${i.size}]` : ""} — ${fmt(i.price * i.qty)}`
+  ).join("\n");
   const orderPayload = {
     customer_name: data.name,
     customer_email: data.email,
@@ -1070,10 +1299,9 @@ function initHeroSlider() {
 }
 
 /* ---------------------------------------------------------------------
-   21. SMOOTH PAGE TRANSITIONS & NAVIGATION (FIXED)
+   21. SMOOTH PAGE TRANSITIONS & NAVIGATION
    --------------------------------------------------------------------- */
 function initPageTransitions() {
-  // Fade in page on load
   document.body.style.opacity = "0";
   gsap.to(document.body, {
     opacity: 1,
@@ -1081,13 +1309,11 @@ function initPageTransitions() {
     ease: "power3.inOut",
   });
 
-  // Smooth scroll for all anchor links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
       if (href === "#" || href === "" || href === "#home") {
         e.preventDefault();
-        // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
@@ -1097,12 +1323,10 @@ function initPageTransitions() {
       const target = document.getElementById(targetId);
 
       if (target) {
-        // Use native smooth scroll for reliability
         target.scrollIntoView({
           behavior: 'smooth',
           block: 'start'
         });
-        // Update URL without jumping
         if (history.pushState) {
           history.pushState(null, null, href);
         }
