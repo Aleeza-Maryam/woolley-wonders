@@ -9,7 +9,7 @@
    --------------------------------------------------------------------- */
 const CONFIG = {
   instagramHandle: "woolley_wonderss",
-  whatsappNumber: "10000000000",
+  whatsappNumber: "923308093981", // Your WhatsApp number
 
   emailjs: {
     publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
@@ -24,10 +24,7 @@ if (window.emailjs && CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY") {
 }
 
 /* ---------------------------------------------------------------------
-   2. PRODUCT DATA — organized by categories (UPDATED PRICES & NAMES)
-   --------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------
-   2. PRODUCT DATA — organized by categories (UPDATED PRICES & NAMES)
+   2. PRODUCT DATA — organized by categories
    --------------------------------------------------------------------- */
 const PRODUCTS = [
   // ========== WEARABLES (5 items) - CUSTOM SIZES ==========
@@ -99,7 +96,7 @@ const PRODUCTS = [
   {
     id: "p6",
     name: "Rose Bouquet",
-    price: 900,
+    price: 800,
     image: "rose_boquet.jpeg",
     category: "Floral Collection",
     badges: ["Best Seller", "Handmade"],
@@ -173,7 +170,7 @@ const PRODUCTS = [
   {
     id: "p12",
     name: "Chick Keychain",
-    price: 380,
+    price: 350,
     image: "chick2_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -197,7 +194,7 @@ const PRODUCTS = [
   {
     id: "p14",
     name: "Mini Octopus Keychain",
-    price: 400,
+    price: 350,
     image: "octopus_keychain2.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -209,7 +206,7 @@ const PRODUCTS = [
   {
     id: "p15",
     name: "Sunflower and Bow Keychain",
-    price: 550,
+    price: 500,
     image: "sunflower_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -732,7 +729,6 @@ function addToCart(productId, event, opts = {}) {
   const product = PRODUCTS.find((p) => p.id === productId);
   if (!product) return;
   
-  // If product has custom size and no measurements yet, show measurement modal
   if (product.hasCustomSize && !opts.measurements) {
     showMeasurementModal(product, event, opts);
     return;
@@ -762,10 +758,9 @@ function addToCart(productId, event, opts = {}) {
 }
 
 /* ---------------------------------------------------------------------
-   14b. MEASUREMENT MODAL (UPDATED FOR PARANDA)
+   14b. MEASUREMENT MODAL
    --------------------------------------------------------------------- */
 function showMeasurementModal(product, event, opts = {}) {
-  // Create modal if it doesn't exist
   let modal = document.getElementById("measurement-modal");
   if (!modal) {
     modal = document.createElement("div");
@@ -777,18 +772,12 @@ function showMeasurementModal(product, event, opts = {}) {
         <div class="p-8 lg:p-10">
           <h3 class="font-display text-2xl mb-2">Custom Measurements</h3>
           <p class="text-ink/60 text-sm mb-6">Please provide your measurements for a perfect fit.</p>
-          
           <div class="mb-4 bg-blush/20 rounded-xl p-4 text-sm text-ink/70">
             <p class="font-semibold mb-2">📏 How to measure:</p>
-            <ul class="space-y-1 text-xs" id="measurement-guide">
-              <!-- Will be populated dynamically -->
-            </ul>
+            <ul class="space-y-1 text-xs" id="measurement-guide"></ul>
           </div>
-          
           <form id="measurement-form" class="space-y-4">
-            <div id="measurement-fields">
-              <!-- Will be populated dynamically -->
-            </div>
+            <div id="measurement-fields"></div>
             <div>
               <label class="form-label">Additional Notes (optional)</label>
               <textarea name="notes" rows="2" class="form-input resize-none" placeholder="Any other preferences..."></textarea>
@@ -799,26 +788,20 @@ function showMeasurementModal(product, event, opts = {}) {
       </div>
     `;
     document.body.appendChild(modal);
-    
-    // Close button
     document.getElementById("measurement-close").addEventListener("click", () => {
       modal.classList.remove("active");
     });
   }
   
-  // Store product and options for form submission
   modal.dataset.productId = product.id;
   modal.dataset.color = opts.color || product.colors[0];
   modal.dataset.size = "Custom";
   
-  // Populate measurement fields based on product type
   const fieldsContainer = document.getElementById("measurement-fields");
   const guideContainer = document.getElementById("measurement-guide");
-  
-  // Clear previous fields  fieldsContainer.innerHTML = '';
+  fieldsContainer.innerHTML = '';
   guideContainer.innerHTML = '';
   
-  // Define field configurations
   const fieldConfigs = {
     length: {
       label: product.customLabel || 'Length (inches)',
@@ -837,16 +820,12 @@ function showMeasurementModal(product, event, opts = {}) {
     }
   };
   
-  // Add fields based on product's measurementFields
   product.measurementFields.forEach(fieldName => {
     const config = fieldConfigs[fieldName];
     if (config) {
-      // Add to guide
       const li = document.createElement('li');
       li.innerHTML = `<span class="font-medium">${config.label.split(' ')[0]}:</span> ${config.guide}`;
       guideContainer.appendChild(li);
-      
-      // Add to form
       const div = document.createElement('div');
       div.innerHTML = `
         <label class="form-label">${config.label}</label>
@@ -856,23 +835,17 @@ function showMeasurementModal(product, event, opts = {}) {
     }
   });
   
-  // Update form submit handler
   const form = document.getElementById("measurement-form");
-  // Remove old handler by cloning and replacing
   const newForm = form.cloneNode(true);
   form.parentNode.replaceChild(newForm, form);
   
   newForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    
-    // Build measurements text based on fields
-    const measurements = {};
     let measurementsText = '';
     product.measurementFields.forEach(fieldName => {
       const value = formData.get(fieldName);
       if (value) {
-        measurements[fieldName] = value;
         let label = fieldName;
         if (fieldName === 'length' && product.customLabel) {
           label = 'Length';
@@ -882,28 +855,15 @@ function showMeasurementModal(product, event, opts = {}) {
         measurementsText += `${label}: ${value}", `;
       }
     });
-    // Remove trailing comma and space
     measurementsText = measurementsText.replace(/, $/, '');
-    
     const notes = formData.get("notes") || "";
-    if (notes) {
-      measurementsText += `, Notes: ${notes}`;
-    }
-    
+    if (notes) measurementsText += `, Notes: ${notes}`;
     modal.classList.remove("active");
-    
-    // Get stored product info
     const productId = modal.dataset.productId;
     const color = modal.dataset.color;
-    
-    addToCart(productId, event, { 
-      color: color,
-      size: "Custom",
-      measurements: measurementsText
-    });
+    addToCart(productId, event, { color: color, size: "Custom", measurements: measurementsText });
   });
   
-  // Re-attach close button
   document.getElementById("measurement-close").addEventListener("click", () => {
     modal.classList.remove("active");
   });
@@ -967,7 +927,6 @@ function renderCart() {
   document.getElementById("cart-subtotal").textContent = fmt(subtotal);
   document.getElementById("cart-discount").textContent = `-${fmt(discountAmt)}`;
   document.getElementById("cart-total").textContent = fmt(total);
-  document.getElementById("checkout-total").textContent = fmt(total);
   const totalItems = state.cart.reduce((sum, i) => sum + i.qty, 0);
   cartCountEl.textContent = totalItems;
 }
@@ -1032,13 +991,10 @@ function openQuickView(productId) {
   document.getElementById("qv-badges").innerHTML = p.badges.map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`).join("");
   document.getElementById("qv-colors").innerHTML = p.colors.map((c, i) => `<span class="swatch ${i === 0 ? "active" : ""}" style="background:${c}" data-color="${c}"></span>`).join("");
   
-  // Sizes - show Custom badge if hasCustomSize
   const sizeContainer = document.getElementById("qv-sizes");
   if (p.hasCustomSize) {
     const fieldNames = p.measurementFields.map(f => {
-      if (f === 'length' && p.customLabel) {
-        return 'Length';
-      }
+      if (f === 'length' && p.customLabel) return 'Length';
       return f.charAt(0).toUpperCase() + f.slice(1);
     }).join(', ');
     sizeContainer.innerHTML = `
@@ -1082,7 +1038,7 @@ document.getElementById("qv-custom").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   16. CUSTOM REQUEST -> Instagram DM (copy-to-clipboard + modal)
+   16. CUSTOM REQUEST -> Instagram DM
    --------------------------------------------------------------------- */
 const customRequestModal = document.getElementById("custom-request-modal");
 const customRequestPreview = document.getElementById("custom-request-preview");
@@ -1146,26 +1102,164 @@ customRequestCopyAgain.addEventListener("click", () => {
 /* ---------------------------------------------------------------------
    17. MODAL HELPERS
    --------------------------------------------------------------------- */
-function openModal(modalEl) { modalEl.classList.add("active"); }
+function openModal(modalEl) { 
+  if (!modalEl) return;
+  modalEl.classList.add("active"); 
+}
+
 function closeAllModals() { 
   document.querySelectorAll(".modal-overlay").forEach((m) => m.classList.remove("active"));
   const measurementModal = document.getElementById("measurement-modal");
   if (measurementModal) measurementModal.classList.remove("active");
 }
+
 document.querySelectorAll("[data-close-modal]").forEach((btn) => btn.addEventListener("click", closeAllModals));
 document.querySelectorAll(".modal-overlay").forEach((overlay) => overlay.addEventListener("click", (e) => { if (e.target === overlay) closeAllModals(); }));
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeAllModals(); closeCart(); } });
 
+/* ---------------------------------------------------------------------
+   18. CHECKOUT OPEN - FIXED
+   --------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------
+   18. CHECKOUT OPEN - Full COD
+   --------------------------------------------------------------------- */
 const checkoutModal = document.getElementById("checkout-modal");
-document.getElementById("checkout-open").addEventListener("click", () => {
-  if (state.cart.length === 0) return;
-  const { total } = cartTotals();
-  document.getElementById("checkout-total").textContent = fmt(total);
+
+document.getElementById("checkout-open").addEventListener("click", function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  if (state.cart.length === 0) {
+    showNotification("Your cart is empty!");
+    return;
+  }
+  
+  const { subtotal, total } = cartTotals();
+  const deliveryFee = 250;
+  const codTotal = Math.max(total + deliveryFee, 0);
+  
+  const subtotalEl = document.getElementById("checkout-subtotal");
+  const totalEl = document.getElementById("checkout-total");
+  
+  if (subtotalEl) subtotalEl.textContent = fmt(subtotal);
+  if (totalEl) totalEl.textContent = fmt(codTotal);
+  
   openModal(checkoutModal);
 });
 
 /* ---------------------------------------------------------------------
-   18. BESPOKE INQUIRY FORM (EmailJS)
+   19. CHECKOUT FORM -> Full COD Order
+   --------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------
+   18. CHECKOUT OPEN - Full COD
+   --------------------------------------------------------------------- */
+const checkoutModal = document.getElementById("checkout-modal");
+
+document.getElementById("checkout-open").addEventListener("click", function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  
+  if (state.cart.length === 0) {
+    showNotification("Your cart is empty!");
+    return;
+  }
+  
+  const { subtotal, total } = cartTotals();
+  const deliveryFee = 250;
+  const codTotal = Math.max(total + deliveryFee, 0);
+  
+  const subtotalEl = document.getElementById("checkout-subtotal");
+  const totalEl = document.getElementById("checkout-total");
+  
+  if (subtotalEl) subtotalEl.textContent = fmt(subtotal);
+  if (totalEl) totalEl.textContent = fmt(codTotal);
+  
+  openModal(checkoutModal);
+});
+
+/* ---------------------------------------------------------------------
+   19. CHECKOUT FORM -> Full COD with Email Receipt
+   --------------------------------------------------------------------- */
+document.getElementById("checkout-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById("checkout-status");
+  const data = Object.fromEntries(new FormData(form).entries());
+  const { subtotal, discountAmt, total } = cartTotals();
+  
+  const deliveryFee = 250;
+  const codTotal = Math.max(total + deliveryFee, 0);
+  
+  const itemsList = state.cart.map((i) => 
+    `${i.qty} x ${i.name}${i.color ? ` (${i.color})` : ""}${i.measurements ? ` [Measurements: ${i.measurements}]` : ""}${i.size && i.size !== "Custom" ? ` [${i.size}]` : ""} — Rs. ${(i.price * i.qty).toFixed(2)}`
+  ).join("\n");
+  
+  const orderPayload = {
+    customer_name: data.name,
+    customer_email: data.email,
+    customer_phone: data.phone,
+    customer_address: data.address,
+    customer_city: data.city,
+    customer_province: data.province,
+    items_list: itemsList,
+    subtotal: fmt(subtotal),
+    discount: fmt(discountAmt),
+    delivery_fee: `Rs. ${deliveryFee.toFixed(2)}`,
+    cod_total: `Rs. ${codTotal.toFixed(2)}`,
+    order_date: new Date().toLocaleString('en-PK', { timeZone: 'Asia/Karachi' }),
+    payment_method: "Cash on Delivery",
+    delivery_note: `Customer will pay Rs. ${codTotal.toFixed(2)} on delivery (Product total: Rs. ${total.toFixed(2)} + Delivery Fee: Rs. ${deliveryFee}). Delivery within 7-8 business days.`
+  };
+
+  if (!emailjsReady()) {
+    status.textContent = "Email isn't configured yet. Please try again later.";
+    status.className = "text-sm text-center text-rose-deep";
+    status.classList.remove("hidden");
+    return;
+  }
+
+  try {
+    setSubmitting(form, true);
+    
+    // Send order email to you (admin)
+    await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.orderTemplateId, orderPayload);
+    
+    // Send receipt to customer
+    await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.receiptTemplateId, orderPayload);
+    
+    status.textContent = "Order placed successfully! A receipt has been sent to your email. We will contact you within 24 hours to confirm delivery.";
+    status.className = "text-sm text-center text-sage-deep";
+    status.classList.remove("hidden");
+
+    state.cart = [];
+    state.discount = 0;
+    renderCart();
+    form.reset();
+
+    setTimeout(() => { 
+      closeAllModals(); 
+      closeCart(); 
+      status.classList.add("hidden"); 
+    }, 5000);
+  } catch (err) {
+    console.error("EmailJS Error:", err);
+    status.textContent = "Something went wrong. Please try again or contact us on WhatsApp.";
+    status.className = "text-sm text-center text-rose-deep";
+    status.classList.remove("hidden");
+  } finally { 
+    setSubmitting(form, false); 
+  }
+});
+
+function setSubmitting(form, isSubmitting) {
+  const btn = form.querySelector('button[type="submit"]');
+  if (!btn) return;
+  btn.disabled = isSubmitting;
+  btn.style.opacity = isSubmitting ? 0.6 : 1;
+  btn.textContent = isSubmitting ? "Processing..." : "Place Order";
+}
+/* ---------------------------------------------------------------------
+   20. BESPOKE INQUIRY FORM (EmailJS)
    --------------------------------------------------------------------- */
 document.getElementById("bespoke-form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -1179,7 +1273,7 @@ document.getElementById("bespoke-form").addEventListener("submit", async (e) => 
     return;
   }
   try {
-    setSubmitting(form, true);
+    setSubmittingInquiry(form, true);
     await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.inquiryTemplateId, {
       customer_name: data.name,
       customer_contact: data.contact,
@@ -1193,71 +1287,19 @@ document.getElementById("bespoke-form").addEventListener("submit", async (e) => 
     status.textContent = "Something went wrong sending your inquiry. Please try again.";
     status.className = "text-sm text-center text-rose-deep";
     status.classList.remove("hidden");
-  } finally { setSubmitting(form, false); }
+  } finally { setSubmittingInquiry(form, false); }
 });
 
-/* ---------------------------------------------------------------------
-   19. CHECKOUT FORM -> EmailJS order email
-   --------------------------------------------------------------------- */
-document.getElementById("checkout-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const status = document.getElementById("checkout-status");
-  const data = Object.fromEntries(new FormData(form).entries());
-  const { subtotal, discountAmt, total } = cartTotals();
-  const itemsList = state.cart.map((i) => 
-    `${i.qty} × ${i.name}${i.color ? ` (${i.color})` : ""}${i.measurements ? ` [Measurements: ${i.measurements}]` : ""}${i.size && i.size !== "Custom" ? ` [${i.size}]` : ""} — ${fmt(i.price * i.qty)}`
-  ).join("\n");
-  const orderPayload = {
-    customer_name: data.name,
-    customer_email: data.email,
-    customer_phone: data.phone,
-    shipping_address: data.address,
-    customization_notes: data.notes || "None",
-    items_list: itemsList,
-    subtotal: fmt(subtotal),
-    discount: fmt(discountAmt),
-    order_total: fmt(total),
-    order_date: new Date().toLocaleString(),
-  };
-  if (!emailjsReady()) {
-    status.textContent = "Email isn't configured yet — see README for EmailJS setup.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    return;
-  }
-  try {
-    setSubmitting(form, true);
-    await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.orderTemplateId, orderPayload);
-    status.textContent = "Order confirmed! A summary is on its way to your inbox.";
-    status.className = "text-sm text-center text-sage-deep";
-    status.classList.remove("hidden");
-    state.cart = [];
-    state.discount = 0;
-    renderCart();
-    form.reset();
-    setTimeout(() => { closeAllModals(); closeCart(); status.classList.add("hidden"); }, 2200);
-  } catch (err) {
-    status.textContent = "Something went wrong sending your order. Please try again.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-  } finally { setSubmitting(form, false); }
-});
-
-function emailjsReady() {
-  return window.emailjs && CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY" && CONFIG.emailjs.serviceId !== "YOUR_EMAILJS_SERVICE_ID";
-}
-
-function setSubmitting(form, isSubmitting) {
+function setSubmittingInquiry(form, isSubmitting) {
   const btn = form.querySelector('button[type="submit"]');
   if (!btn) return;
   btn.disabled = isSubmitting;
   btn.style.opacity = isSubmitting ? 0.6 : 1;
-  btn.textContent = isSubmitting ? "Sending..." : btn.closest("#checkout-form") ? "Confirm Order" : "Send Inquiry";
+  btn.textContent = isSubmitting ? "Sending..." : "Send Inquiry";
 }
 
 /* ---------------------------------------------------------------------
-   20. HERO SLIDER — smooth crossfade with Ken Burns
+   21. HERO SLIDER — smooth crossfade with Ken Burns
    --------------------------------------------------------------------- */
 function initHeroSlider() {
   const sliderEl = document.getElementById("hero-slider");
@@ -1322,7 +1364,7 @@ function initHeroSlider() {
 }
 
 /* ---------------------------------------------------------------------
-   21. SMOOTH PAGE TRANSITIONS & NAVIGATION
+   22. SMOOTH PAGE TRANSITIONS & NAVIGATION
    --------------------------------------------------------------------- */
 function initPageTransitions() {
   document.body.style.opacity = "0";
@@ -1361,7 +1403,7 @@ function initPageTransitions() {
 }
 
 /* ---------------------------------------------------------------------
-   22. INIT
+   23. INIT
    --------------------------------------------------------------------- */
 document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -1379,9 +1421,16 @@ if (hero) {
   hero.appendChild(particlesDiv);
 }
 
-renderProducts();
-renderCategoryFilters();
-initHeroSlider();
-renderCart();
-initParticles();
-initPageTransitions();
+// Initialize everything
+document.addEventListener('DOMContentLoaded', function() {
+  renderProducts();
+  renderCategoryFilters();
+  initHeroSlider();
+  renderCart();
+  initParticles();
+  initPageTransitions();
+  
+  // Log to confirm
+  console.log('Woolley Wonders initialized successfully!');
+  console.log('Cart items:', state.cart.length);
+});
