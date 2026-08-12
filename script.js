@@ -26,6 +26,9 @@ if (window.emailjs && CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY") {
 /* ---------------------------------------------------------------------
    2. PRODUCT DATA — organized by categories (UPDATED PRICES & NAMES)
    --------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------
+   2. PRODUCT DATA — organized by categories (UPDATED PRICES & NAMES)
+   --------------------------------------------------------------------- */
 const PRODUCTS = [
   // ========== WEARABLES (5 items) - CUSTOM SIZES ==========
   {
@@ -96,7 +99,7 @@ const PRODUCTS = [
   {
     id: "p6",
     name: "Rose Bouquet",
-    price: 800,
+    price: 900,
     image: "rose_boquet.jpeg",
     category: "Floral Collection",
     badges: ["Best Seller", "Handmade"],
@@ -166,11 +169,11 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
 
-  // ========== KEYCHAINS (5 items) ==========
+  // ========== KEYCHAINS (6 items) ==========
   {
     id: "p12",
     name: "Chick Keychain",
-    price: 350,
+    price: 380,
     image: "chick2_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -194,7 +197,7 @@ const PRODUCTS = [
   {
     id: "p14",
     name: "Mini Octopus Keychain",
-    price: 350,
+    price: 400,
     image: "octopus_keychain2.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -206,7 +209,7 @@ const PRODUCTS = [
   {
     id: "p15",
     name: "Sunflower and Bow Keychain",
-    price: 500,
+    price: 550,
     image: "sunflower_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -227,12 +230,24 @@ const PRODUCTS = [
     sizes: ["One Size"],
     hasCustomSize: false,
   },
+  {
+    id: "p17",
+    name: "Mifi Keychain",
+    price: 500,
+    image: "headphones_bunny.jpeg",
+    category: "Keychains",
+    badges: ["Handmade"],
+    desc: "An adorable crocheted Mifi keychain with bunny ears. A cute companion for your keys or bag.",
+    colors: ["#FFB6C1", "#EFDCC7", "#C6A15B"],
+    sizes: ["One Size"],
+    hasCustomSize: false,
+  },
 
   // ========== ACCESSORIES (6 items) ==========
   {
-    id: "p17",
+    id: "p18",
     name: "Gajra - Traditional Garland",
-    price: 650,
+    price: 600,
     image: "gajra.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -242,7 +257,7 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
   {
-    id: "p18",
+    id: "p19",
     name: "Rose Puff Gajra (Pair)",
     price: 1500,
     image: "Rose puff gajra.jpeg",
@@ -254,7 +269,7 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
   {
-    id: "p19",
+    id: "p20",
     name: "Paranda",
     price: 900,
     image: "paranda.jpeg",
@@ -270,7 +285,7 @@ const PRODUCTS = [
     customGuide: "Measure from the top of the paranda to the desired end point"
   },
   {
-    id: "p20",
+    id: "p21",
     name: "Red Tulip Headband",
     price: 500,
     image: "tulip_headband.jpeg",
@@ -282,7 +297,7 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
   {
-    id: "p21",
+    id: "p22",
     name: "Hair Pins (Pair)",
     price: 200,
     image: "pins.jpeg",
@@ -294,7 +309,7 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
   {
-    id: "p22",
+    id: "p23",
     name: "Daisy Headband",
     price: 500,
     image: "Daisy headband.jpeg",
@@ -308,7 +323,7 @@ const PRODUCTS = [
 
   // ========== BAGS (4 items) ==========
   {
-    id: "p23",
+    id: "p24",
     name: "Daisy Dream Bag",
     price: 1200,
     image: "Daisy Dream bag.jpeg",
@@ -320,7 +335,7 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
   {
-    id: "p24",
+    id: "p25",
     name: "Pink Mini Wallet",
     price: 650,
     image: "pink mini wallet.jpeg",
@@ -332,7 +347,7 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
   {
-    id: "p25",
+    id: "p26",
     name: "Red Bunny Wallet",
     price: 650,
     image: "red bunny wallet.jpeg",
@@ -344,7 +359,7 @@ const PRODUCTS = [
     hasCustomSize: false,
   },
   {
-    id: "p26",
+    id: "p27",
     name: "Cherry Bow Bag",
     price: 900,
     image: "Cherry Bow bag.jpeg",

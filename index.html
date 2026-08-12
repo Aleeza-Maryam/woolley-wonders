@@ -266,20 +266,20 @@
     </div>
     <div>
       <h4 class="font-semibold text-cream mb-4 text-sm uppercase tracking-widest">Say hello</h4>
-      <ul class="space-y-3 text-sm text-cream/50">
-        <li>hello@woolleywonders.com</li>
-      </ul>
-      <div class="flex gap-3 mt-5">
-        <a href="https://instagram.com/woolleywonders" target="_blank" class="social-icon" aria-label="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        </a>
-        <a href="https://pinterest.com" target="_blank" class="social-icon" aria-label="Pinterest">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9 17c1-3 1.5-5 1.5-6.5A2.5 2.5 0 0113 8c1.4 0 2.2 1 2.2 2.4 0 1.5-1 3.6-1.5 4.6"/></svg>
-        </a>
-        <a href="https://tiktok.com" target="_blank" class="social-icon" aria-label="TikTok">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4v10.5a3.5 3.5 0 11-3-3.46V8.5"/><path d="M14 4c.4 2 2 3.4 4 3.6"/></svg>
-        </a>
-      </div>
+     
+     <!-- ... inside the footer ... -->
+<div class="flex gap-3 mt-5">
+  <!-- Instagram -->
+  <a href="https://www.instagram.com/woolley_wonderss?igsh=MTZqamhmZnFjazg5ag==" target="_blank" class="social-icon" aria-label="Instagram">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  
+  <!-- WhatsApp -->
+  <a href="https://wa.me/923308093981" target="_blank" class="social-icon" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M15.9 14.3c-.2.5-.8 1-1.3 1.1-.5.1-.9.1-1.3-.1a9.7 9.7 0 0 1-2.1-1.6 9.7 9.7 0 0 1-1.6-2.1c-.2-.4-.2-.8-.1-1.3.1-.5.6-1.1 1.1-1.3.5-.2.9-.3 1.3.2.2.3.7 1 .9 1.3.2.3.2.8 0 1.1-.2.3-.4.5-.6.7-.2.2-.3.4-.1.7.2.3.4.5.7.8.2.2.5.5.7.7.2.2.4.3.7.1.3-.2.5-.4.7-.6.2-.2.7-.2 1.1 0 .4.2.8.5 1 .7.1.2.1.5-.1.7z"/></svg>
+  </a>
+</div>
+<!-- ... rest of footer ... -->
     </div>
   </div>
   <div class="mx-auto max-w-7xl pt-8 border-t border-cream/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-cream/40">
@@ -363,35 +363,114 @@
   </div>
 </div>
 <!-- ============ CHECKOUT MODAL ============ -->
+<!-- ============ CHECKOUT MODAL ============ -->
 <div id="checkout-modal" class="modal-overlay">
   <div class="modal-panel max-w-lg">
     <button class="modal-close" data-close-modal>&times;</button>
     <div class="p-8 lg:p-10">
       <h3 class="font-display text-3xl mb-1">Checkout</h3>
-      <p class="text-ink/50 text-sm mb-8">We'll email your order confirmation right after.</p>
+      <p class="text-ink/50 text-sm mb-6">Pay delivery fee (PKR 250) via EasyPaisa to confirm your order. Pay product price on delivery.</p>
+      
+      <!-- EasyPaisa Payment Instructions -->
+      <div class="mb-6 bg-sage/10 rounded-xl p-4 border border-sage/20">
+        <h4 class="font-semibold text-sm mb-2">📱 EasyPaisa Payment Details</h4>
+        <div class="space-y-1 text-sm text-ink/70">
+          <p><span class="font-medium">Account Title:</span> [Your Full Name]</p>
+          <p><span class="font-medium">Account Number:</span> [Your EasyPaisa Number]</p>
+          <p><span class="font-medium">Amount:</span> PKR 250 (Delivery Fee)</p>
+        </div>
+        <div class="mt-3 text-xs text-ink/50 bg-cream/50 p-2 rounded-lg">
+          <span class="font-medium">📌 Note:</span> Pay PKR 250 delivery fee via EasyPaisa. The product amount will be paid at delivery.
+        </div>
+      </div>
+      
       <form id="checkout-form" class="space-y-4">
+        <!-- Personal Information -->
         <div class="grid sm:grid-cols-2 gap-4">
-          <div><label class="form-label">Full name</label><input required type="text" name="name" class="form-input"></div>
-          <div><label class="form-label">Phone</label><input required type="tel" name="phone" class="form-input"></div>
+          <div>
+            <label class="form-label">Full Name <span class="text-rose-deep">*</span></label>
+            <input required type="text" name="name" class="form-input" placeholder="Your full name">
+          </div>
+          <div>
+            <label class="form-label">Phone Number <span class="text-rose-deep">*</span></label>
+            <input required type="tel" name="phone" class="form-input" placeholder="03XX-XXXXXXX">
+          </div>
         </div>
-        <div><label class="form-label">Email</label><input required type="email" name="email" class="form-input"></div>
-        <div><label class="form-label">Shipping address</label><textarea required name="address" rows="2" class="form-input resize-none"></textarea></div>
-        <div><label class="form-label">Customization notes (optional)</label><textarea name="notes" rows="2" class="form-input resize-none" placeholder="Color tweaks, sizing notes, gift message..."></textarea></div>
-
+        
+        <!-- Address Information -->
+        <div>
+          <label class="form-label">Full Address <span class="text-rose-deep">*</span></label>
+          <textarea required name="address" rows="2" class="form-input resize-none" placeholder="House #, Street, Area, Landmark"></textarea>
+        </div>
+        
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="form-label">City <span class="text-rose-deep">*</span></label>
+            <input required type="text" name="city" class="form-input" placeholder="e.g. Lahore">
+          </div>
+          <div>
+            <label class="form-label">Province <span class="text-rose-deep">*</span></label>
+            <select required name="province" class="form-input">
+              <option value="">Select Province</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Sindh">Sindh</option>
+              <option value="Khyber Pakhtunkhwa">Khyber Pakhtunkhwa</option>
+              <option value="Balochistan">Balochistan</option>
+              <option value="Islamabad">Islamabad</option>
+              <option value="Gilgit-Baltistan">Gilgit-Baltistan</option>
+              <option value="Azad Kashmir">Azad Kashmir</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Payment Verification -->
+        <div class="border-t border-ink/10 pt-4 mt-2">
+          <label class="form-label">EasyPaisa Transaction ID (TRX ID) <span class="text-rose-deep">*</span></label>
+          <input required type="text" name="trx_id" class="form-input" placeholder="e.g. 1234567890">
+          <p class="text-xs text-ink/40 mt-1">Enter the transaction ID from your EasyPaisa payment confirmation.</p>
+        </div>
+        
+        <!-- Order Summary -->
         <div class="pt-2 border-t border-ink/10 mt-2 text-sm space-y-1">
-          <div class="flex justify-between text-ink/60"><span>Total due</span><span id="checkout-total" class="font-display text-lg text-ink">$0.00</span></div>
+          <div class="flex justify-between text-ink/60">
+            <span>Product Total</span>
+            <span id="checkout-subtotal" class="font-medium text-ink">Rs. 0.00</span>
+          </div>
+          <div class="flex justify-between text-ink/60">
+            <span>Delivery Fee (Advance)</span>
+            <span class="font-medium text-ink">Rs. 250.00</span>
+          </div>
+          <div class="flex justify-between text-ink/60">
+            <span>Amount to Pay at Delivery</span>
+            <span id="checkout-total" class="font-display text-lg text-ink">Rs. 0.00</span>
+          </div>
+          <div class="flex justify-between text-xs text-sage-deep bg-sage/10 px-2 py-1 rounded">
+            <span>✅ Delivery fee paid in advance</span>
+            <span>Rs. 250</span>
+          </div>
         </div>
 
-        <button type="submit" id="confirm-order-btn" class="btn-glow w-full justify-center mt-2">Confirm Order</button>
+        <button type="submit" id="confirm-order-btn" class="btn-glow w-full justify-center mt-2">Place Order</button>
         <p id="checkout-status" class="text-sm text-center hidden"></p>
       </form>
     </div>
   </div>
 </div>
-
 <!-- Add-to-cart flying element target -->
 <div id="fly-layer" class="fly-layer"></div>
-
+<!-- ============ FLOATING WHATSAPP BUTTON ============ -->
+<a href="https://wa.me/923308093981?text=Hi!%20I%20have%20a%20question%20about%20Woolley%20Wonders%20products." 
+   target="_blank" 
+   rel="noopener noreferrer"
+   id="whatsapp-float"
+   class="whatsapp-float"
+   aria-label="Chat on WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+    <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+  </svg>
+  <span class="whatsapp-tooltip">Chat with us on WhatsApp</span>
+</a>
 <script src="script.js"></script>
+
 </body>
 </html>
