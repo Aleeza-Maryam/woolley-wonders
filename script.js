@@ -9,13 +9,13 @@
    --------------------------------------------------------------------- */
 const CONFIG = {
   instagramHandle: "woolley_wonderss",
-  whatsappNumber: "923308093981", // Your WhatsApp number
+  whatsappNumber: "923308093981",
 
   emailjs: {
-    publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
-    serviceId: "YOUR_EMAILJS_SERVICE_ID",
-    orderTemplateId: "YOUR_EMAILJS_ORDER_TEMPLATE_ID",
-    inquiryTemplateId: "YOUR_EMAILJS_INQUIRY_TEMPLATE_ID",
+    publicKey: "Hx8dn6Pv4dsFGK-rU",
+    serviceId: "service_nmmhh7j",
+    orderTemplateId: "template_7wdp8zy",
+    receiptTemplateId: "template_l24ztrn", // NEW
   },
 };
 
@@ -753,7 +753,7 @@ function addToCart(productId, event, opts = {}) {
   }
   renderCart();
   pulseCartBadge();
-  showNotification(`${product.name} added to cart 🛒`);
+  showNotification(`${product.name} added to cart`);
   if (event) flyToCart(event, product.image);
 }
 
@@ -773,7 +773,7 @@ function showMeasurementModal(product, event, opts = {}) {
           <h3 class="font-display text-2xl mb-2">Custom Measurements</h3>
           <p class="text-ink/60 text-sm mb-6">Please provide your measurements for a perfect fit.</p>
           <div class="mb-4 bg-blush/20 rounded-xl p-4 text-sm text-ink/70">
-            <p class="font-semibold mb-2">📏 How to measure:</p>
+            <p class="font-semibold mb-2">How to measure:</p>
             <ul class="space-y-1 text-xs" id="measurement-guide"></ul>
           </div>
           <form id="measurement-form" class="space-y-4">
@@ -1038,7 +1038,7 @@ document.getElementById("qv-custom").addEventListener("click", () => {
 });
 
 /* ---------------------------------------------------------------------
-   16. CUSTOM REQUEST -> Instagram DM
+   16. CUSTOM REQUEST -> WhatsApp
    --------------------------------------------------------------------- */
 const customRequestModal = document.getElementById("custom-request-modal");
 const customRequestPreview = document.getElementById("custom-request-preview");
@@ -1068,11 +1068,14 @@ function copyText(text) {
 function openCustomRequestModal(text) {
   pendingCustomRequestText = text;
   customRequestPreview.textContent = text;
-  const igUrl = `https://ig.me/m/${CONFIG.instagramHandle}`;
-  const profileUrl = `https://www.instagram.com/${CONFIG.instagramHandle}/`;
-  customRequestOpenDM.href = igUrl;
-  customRequestOpenDM.dataset.fallback = profileUrl;
-  copyText(text).then(() => showNotification("Message copied to clipboard 📋")).catch(() => showNotification("Couldn't auto-copy — you can copy it from the box below."));
+  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
+  const instagramUrl = `https://www.instagram.com/${CONFIG.instagramHandle}/`;
+  
+  customRequestOpenDM.href = waUrl;
+  customRequestOpenDM.dataset.fallback = instagramUrl;
+  customRequestOpenDM.innerHTML = '<span>Open WhatsApp</span>';
+  
+  copyText(text).then(() => showNotification("Message copied to clipboard")).catch(() => showNotification("Couldn't auto-copy — you can copy it from the box below."));
   openModal(customRequestModal);
 }
 
@@ -1084,7 +1087,8 @@ function openCustomRequest(product) {
 document.getElementById("bespoke-cta").addEventListener("click", (e) => {
   e.preventDefault();
   const text = `Hi! I'd love to design a custom Woolley Wonders piece. `;
-  openCustomRequestModal(text);
+  const url = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
 });
 
 customRequestOpenDM.addEventListener("click", (e) => {
@@ -1096,7 +1100,7 @@ customRequestOpenDM.addEventListener("click", (e) => {
 });
 
 customRequestCopyAgain.addEventListener("click", () => {
-  copyText(pendingCustomRequestText).then(() => showNotification("Copied again 📋")).catch(() => showNotification("Copy failed — select the text manually."));
+  copyText(pendingCustomRequestText).then(() => showNotification("Copied again")).catch(() => showNotification("Copy failed — select the text manually."));
 });
 
 /* ---------------------------------------------------------------------
@@ -1118,10 +1122,7 @@ document.querySelectorAll(".modal-overlay").forEach((overlay) => overlay.addEven
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeAllModals(); closeCart(); } });
 
 /* ---------------------------------------------------------------------
-   18. CHECKOUT OPEN - FIXED
-   --------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------
-   18. CHECKOUT OPEN - Full COD
+   18. CHECKOUT OPEN
    --------------------------------------------------------------------- */
 const checkoutModal = document.getElementById("checkout-modal");
 
@@ -1148,44 +1149,65 @@ document.getElementById("checkout-open").addEventListener("click", function(e) {
 });
 
 /* ---------------------------------------------------------------------
-   19. CHECKOUT FORM -> Full COD Order
-   --------------------------------------------------------------------- */
-/* ---------------------------------------------------------------------
-   18. CHECKOUT OPEN - Full COD
-   --------------------------------------------------------------------- */
-const checkoutModal = document.getElementById("checkout-modal");
-
-document.getElementById("checkout-open").addEventListener("click", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  
-  if (state.cart.length === 0) {
-    showNotification("Your cart is empty!");
-    return;
-  }
-  
-  const { subtotal, total } = cartTotals();
-  const deliveryFee = 250;
-  const codTotal = Math.max(total + deliveryFee, 0);
-  
-  const subtotalEl = document.getElementById("checkout-subtotal");
-  const totalEl = document.getElementById("checkout-total");
-  
-  if (subtotalEl) subtotalEl.textContent = fmt(subtotal);
-  if (totalEl) totalEl.textContent = fmt(codTotal);
-  
-  openModal(checkoutModal);
-});
-
-/* ---------------------------------------------------------------------
-   19. CHECKOUT FORM -> Full COD with Email Receipt
+   19. CHECKOUT FORM -> Full COD with Email Receipt (FIXED)
    --------------------------------------------------------------------- */
 document.getElementById("checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
+  
   const form = e.target;
   const status = document.getElementById("checkout-status");
-  const data = Object.fromEntries(new FormData(form).entries());
-  const { subtotal, discountAmt, total } = cartTotals();
+  const checkoutBtn = form.querySelector('button[type="submit"]');
+  
+  if (!status) {
+    console.error("Checkout status element not found");
+    alert("There was an error with the checkout form. Please try again.");
+    return;
+  }
+  
+  const formData = new FormData(form);
+  const data = {};
+  for (let [key, value] of formData.entries()) {
+    data[key] = value.trim();
+  }
+  
+  if (!data.name || !data.email || !data.phone || !data.address || !data.city || !data.province) {
+    status.textContent = "Please fill in all required fields.";
+    status.className = "text-sm text-center text-rose-deep";
+    status.classList.remove("hidden");
+    return;
+  }
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(data.email)) {
+    status.textContent = "Please enter a valid email address.";
+    status.className = "text-sm text-center text-rose-deep";
+    status.classList.remove("hidden");
+    return;
+  }
+  
+  let subtotal = 0;
+  let discountAmt = 0;
+  let total = 0;
+  
+  try {
+    const totals = cartTotals();
+    subtotal = totals.subtotal;
+    discountAmt = totals.discountAmt;
+    total = totals.total;
+  } catch (err) {
+    console.error("Error calculating cart totals:", err);
+    status.textContent = "There was an error processing your cart. Please try again.";
+    status.className = "text-sm text-center text-rose-deep";
+    status.classList.remove("hidden");
+    return;
+  }
+  
+  if (state.cart.length === 0) {
+    status.textContent = "Your cart is empty. Please add items before checking out.";
+    status.className = "text-sm text-center text-rose-deep";
+    status.classList.remove("hidden");
+    return;
+  }
   
   const deliveryFee = 250;
   const codTotal = Math.max(total + deliveryFee, 0);
@@ -1212,20 +1234,39 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   };
 
   if (!emailjsReady()) {
-    status.textContent = "Email isn't configured yet. Please try again later.";
+    status.textContent = "Email service is not configured yet. Please contact us directly on WhatsApp.";
     status.className = "text-sm text-center text-rose-deep";
     status.classList.remove("hidden");
+    state.cart = [];
+    state.discount = 0;
+    renderCart();
+    form.reset();
+    setTimeout(() => { 
+      closeAllModals(); 
+      closeCart(); 
+      status.classList.add("hidden"); 
+    }, 4000);
     return;
   }
 
   try {
-    setSubmitting(form, true);
+    if (checkoutBtn) {
+      checkoutBtn.disabled = true;
+      checkoutBtn.style.opacity = 0.6;
+      checkoutBtn.textContent = "Processing...";
+    }
     
-    // Send order email to you (admin)
-    await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.orderTemplateId, orderPayload);
+    await emailjs.send(
+      CONFIG.emailjs.serviceId, 
+      CONFIG.emailjs.orderTemplateId, 
+      orderPayload
+    );
     
-    // Send receipt to customer
-    await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.receiptTemplateId, orderPayload);
+    await emailjs.send(
+      CONFIG.emailjs.serviceId, 
+      CONFIG.emailjs.receiptTemplateId, 
+      orderPayload
+    );
     
     status.textContent = "Order placed successfully! A receipt has been sent to your email. We will contact you within 24 hours to confirm delivery.";
     status.className = "text-sm text-center text-sage-deep";
@@ -1241,15 +1282,40 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
       closeCart(); 
       status.classList.add("hidden"); 
     }, 5000);
+    
   } catch (err) {
     console.error("EmailJS Error:", err);
-    status.textContent = "Something went wrong. Please try again or contact us on WhatsApp.";
+    status.textContent = "There was an issue sending your order. Please contact us on WhatsApp to complete your order.";
     status.className = "text-sm text-center text-rose-deep";
     status.classList.remove("hidden");
+    
+    state.cart = [];
+    state.discount = 0;
+    renderCart();
+    form.reset();
+    
+    setTimeout(() => { 
+      closeAllModals(); 
+      closeCart(); 
+      status.classList.add("hidden"); 
+    }, 5000);
+    
   } finally { 
-    setSubmitting(form, false); 
+    if (checkoutBtn) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.style.opacity = 1;
+      checkoutBtn.textContent = "Place Order";
+    }
   }
 });
+
+function emailjsReady() {
+  return window.emailjs && 
+         CONFIG.emailjs.publicKey && 
+         CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY" &&
+         CONFIG.emailjs.serviceId && 
+         CONFIG.emailjs.serviceId !== "YOUR_EMAILJS_SERVICE_ID";
+}
 
 function setSubmitting(form, isSubmitting) {
   const btn = form.querySelector('button[type="submit"]');
@@ -1258,48 +1324,9 @@ function setSubmitting(form, isSubmitting) {
   btn.style.opacity = isSubmitting ? 0.6 : 1;
   btn.textContent = isSubmitting ? "Processing..." : "Place Order";
 }
-/* ---------------------------------------------------------------------
-   20. BESPOKE INQUIRY FORM (EmailJS)
-   --------------------------------------------------------------------- */
-document.getElementById("bespoke-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const status = document.getElementById("bespoke-status");
-  const data = Object.fromEntries(new FormData(form).entries());
-  if (!emailjsReady()) {
-    status.textContent = "Email isn't configured yet — see README for EmailJS setup.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    return;
-  }
-  try {
-    setSubmittingInquiry(form, true);
-    await emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.inquiryTemplateId, {
-      customer_name: data.name,
-      customer_contact: data.contact,
-      request_details: data.details,
-    });
-    status.textContent = "Inquiry sent! We'll reply within 48 hours.";
-    status.className = "text-sm text-center text-sage-deep";
-    status.classList.remove("hidden");
-    form.reset();
-  } catch (err) {
-    status.textContent = "Something went wrong sending your inquiry. Please try again.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-  } finally { setSubmittingInquiry(form, false); }
-});
-
-function setSubmittingInquiry(form, isSubmitting) {
-  const btn = form.querySelector('button[type="submit"]');
-  if (!btn) return;
-  btn.disabled = isSubmitting;
-  btn.style.opacity = isSubmitting ? 0.6 : 1;
-  btn.textContent = isSubmitting ? "Sending..." : "Send Inquiry";
-}
 
 /* ---------------------------------------------------------------------
-   21. HERO SLIDER — smooth crossfade with Ken Burns
+   20. HERO SLIDER
    --------------------------------------------------------------------- */
 function initHeroSlider() {
   const sliderEl = document.getElementById("hero-slider");
@@ -1364,7 +1391,7 @@ function initHeroSlider() {
 }
 
 /* ---------------------------------------------------------------------
-   22. SMOOTH PAGE TRANSITIONS & NAVIGATION
+   21. SMOOTH PAGE TRANSITIONS & NAVIGATION
    --------------------------------------------------------------------- */
 function initPageTransitions() {
   document.body.style.opacity = "0";
@@ -1401,28 +1428,179 @@ function initPageTransitions() {
     });
   });
 }
+/* ---------------------------------------------------------------------
+   FEEDBACK FORM - Star Rating System
+   --------------------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', function() {
+  // Star rating functionality
+  const starBtns = document.querySelectorAll('.star-btn');
+  const ratingInput = document.getElementById('rating-value');
+  
+  if (starBtns.length > 0) {
+    starBtns.forEach((btn, index) => {
+      btn.addEventListener('click', function() {
+        const value = parseInt(this.dataset.value);
+        ratingInput.value = value;
+        
+        // Update star colors
+        starBtns.forEach((star, i) => {
+          if (i < value) {
+            star.classList.add('text-gold');
+            star.classList.remove('text-ink/20');
+          } else {
+            star.classList.remove('text-gold');
+            star.classList.add('text-ink/20');
+          }
+        });
+      });
+      
+      // Hover effect
+      btn.addEventListener('mouseenter', function() {
+        const value = parseInt(this.dataset.value);
+        starBtns.forEach((star, i) => {
+          if (i < value) {
+            star.classList.add('text-gold/70');
+            star.classList.remove('text-ink/20');
+          }
+        });
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        const currentRating = parseInt(ratingInput.value);
+        starBtns.forEach((star, i) => {
+          if (i < currentRating) {
+            star.classList.add('text-gold');
+            star.classList.remove('text-gold/70');
+          } else {
+            star.classList.remove('text-gold');
+            star.classList.remove('text-gold/70');
+            star.classList.add('text-ink/20');
+          }
+        });
+      });
+    });
+  }
+});
+/* ---------------------------------------------------------------------
+   FEEDBACK FORM - WhatsApp Version (No EmailJS)
+   --------------------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', function() {
+  // Star rating functionality
+  const starBtns = document.querySelectorAll('.star-btn');
+  const ratingInput = document.getElementById('rating-value');
+  
+  if (starBtns.length > 0) {
+    starBtns.forEach((btn) => {
+      btn.addEventListener('click', function() {
+        const value = parseInt(this.dataset.value);
+        ratingInput.value = value;
+        
+        starBtns.forEach((star, i) => {
+          if (i < value) {
+            star.classList.add('text-gold');
+            star.classList.remove('text-ink/20');
+          } else {
+            star.classList.remove('text-gold');
+            star.classList.add('text-ink/20');
+          }
+        });
+      });
+      
+      btn.addEventListener('mouseenter', function() {
+        const value = parseInt(this.dataset.value);
+        starBtns.forEach((star, i) => {
+          if (i < value) {
+            star.classList.add('text-gold/70');
+          }
+        });
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        const currentRating = parseInt(ratingInput.value);
+        starBtns.forEach((star, i) => {
+          if (i < currentRating) {
+            star.classList.add('text-gold');
+            star.classList.remove('text-gold/70');
+          } else {
+            star.classList.remove('text-gold');
+            star.classList.remove('text-gold/70');
+            star.classList.add('text-ink/20');
+          }
+        });
+      });
+    });
+  }
+});
 
 /* ---------------------------------------------------------------------
-   23. INIT
+   FEEDBACK FORM - Submit via WhatsApp (No EmailJS)
    --------------------------------------------------------------------- */
-document.getElementById("year").textContent = new Date().getFullYear();
-
-const hero = document.getElementById("home");
-if (hero) {
-  const particlesDiv = document.createElement("div");
-  particlesDiv.id = "particles-container";
-  particlesDiv.style.cssText = `
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 2;
-  `;
-  hero.appendChild(particlesDiv);
-}
-
-// Initialize everything
+document.getElementById("feedback-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById("feedback-status");
+  const data = Object.fromEntries(new FormData(form).entries());
+  
+  // Validate rating
+  if (!data.rating || data.rating === "0") {
+    status.textContent = "Please select a rating.";
+    status.className = "text-sm text-center text-rose-deep";
+    status.classList.remove("hidden");
+    return;
+  }
+  
+  // Build stars string
+  const stars = '★'.repeat(parseInt(data.rating)) + '☆'.repeat(5 - parseInt(data.rating));
+  
+  // Build WhatsApp message
+  const message = `⭐ New Customer Feedback ⭐%0A%0A` +
+                  `Name: ${data.name}%0A` +
+                  `Product: ${data.product || 'Not specified'}%0A` +
+                  `Rating: ${data.rating} stars ${stars}%0A` +
+                  `Review: ${data.review}%0A%0A` +
+                  `Sent from Woolley Wonders website`;
+  
+  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${message}`;
+  
+  // Open WhatsApp
+  window.open(waUrl, "_blank");
+  
+  // Show success message
+  status.textContent = "Thank you for your feedback! Opening WhatsApp...";
+  status.className = "text-sm text-center text-sage-deep";
+  status.classList.remove("hidden");
+  
+  form.reset();
+  document.querySelectorAll('.star-btn').forEach(star => {
+    star.classList.remove('text-gold');
+    star.classList.add('text-ink/20');
+  });
+  document.getElementById('rating-value').value = "0";
+  
+  setTimeout(() => { 
+    status.classList.add("hidden"); 
+  }, 4000);
+});
+/* ---------------------------------------------------------------------
+   22. INIT
+   --------------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const hero = document.getElementById("home");
+  if (hero) {
+    const particlesDiv = document.createElement("div");
+    particlesDiv.id = "particles-container";
+    particlesDiv.style.cssText = `
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 2;
+    `;
+    hero.appendChild(particlesDiv);
+  }
+
   renderProducts();
   renderCategoryFilters();
   initHeroSlider();
@@ -1430,7 +1608,5 @@ document.addEventListener('DOMContentLoaded', function() {
   initParticles();
   initPageTransitions();
   
-  // Log to confirm
   console.log('Woolley Wonders initialized successfully!');
-  console.log('Cart items:', state.cart.length);
 });
