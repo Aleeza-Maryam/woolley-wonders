@@ -15,7 +15,7 @@ const CONFIG = {
     publicKey: "Hx8dn6Pv4dsFGK-rU",
     serviceId: "service_nmmhh7j",
     orderTemplateId: "template_7wdp8zy",
-    receiptTemplateId: "template_l24ztrn", // NEW
+    receiptTemplateId: "template_l24ztrn",
   },
 };
 
@@ -399,16 +399,22 @@ const fmt = (n) => `Rs. ${n.toFixed(2)}`;
    4. NAVBAR + MOBILE MENU
    --------------------------------------------------------------------- */
 const navbar = document.getElementById("navbar");
-window.addEventListener("scroll", () => {
-  navbar.classList.toggle("scrolled", window.scrollY > 40);
-});
+if (navbar) {
+  window.addEventListener("scroll", () => {
+    navbar.classList.toggle("scrolled", window.scrollY > 40);
+  });
+}
 
 const mobileToggle = document.getElementById("mobile-menu-toggle");
 const mobileMenu = document.getElementById("mobile-menu");
-mobileToggle.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
-document.querySelectorAll("#mobile-menu a").forEach((a) =>
-  a.addEventListener("click", () => mobileMenu.classList.add("hidden"))
-);
+if (mobileToggle) {
+  mobileToggle.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
+}
+if (mobileMenu) {
+  document.querySelectorAll("#mobile-menu a").forEach((a) =>
+    a.addEventListener("click", () => mobileMenu.classList.add("hidden"))
+  );
+}
 
 /* ---------------------------------------------------------------------
    5. STITCH SCROLL PROGRESS
@@ -418,23 +424,28 @@ function updateStitchThread() {
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-  const len = stitchFg.getTotalLength ? stitchFg.getTotalLength() : 300;
-  stitchFg.style.strokeDasharray = `${len}`;
-  stitchFg.style.strokeDashoffset = `${len * (1 - progress)}`;
+  const len = stitchFg ? (stitchFg.getTotalLength ? stitchFg.getTotalLength() : 300) : 300;
+  if (stitchFg) {
+    stitchFg.style.strokeDasharray = `${len}`;
+    stitchFg.style.strokeDashoffset = `${len * (1 - progress)}`;
+  }
 }
 window.addEventListener("scroll", updateStitchThread);
 window.addEventListener("resize", updateStitchThread);
 window.addEventListener("load", () => {
   const svg = document.getElementById("stitch-svg");
   const totalHeight = document.documentElement.scrollHeight;
-  svg.setAttribute("viewBox", `0 0 28 ${totalHeight}`);
+  if (svg) {
+    svg.setAttribute("viewBox", `0 0 28 ${totalHeight}`);
+  }
   let d = "M14,0 ";
   const loop = 60;
   for (let y = loop; y < totalHeight; y += loop) {
     d += `C24,${y - 40} 4,${y} 14,${y + 20} `;
   }
-  document.getElementById("stitch-path-bg").setAttribute("d", d);
-  stitchFg.setAttribute("d", d);
+  const bgPath = document.getElementById("stitch-path-bg");
+  if (bgPath) bgPath.setAttribute("d", d);
+  if (stitchFg) stitchFg.setAttribute("d", d);
   updateStitchThread();
 });
 
@@ -528,20 +539,26 @@ function attachTilt(card) {
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     const rotateX = -y * maxTilt * 2;
     const rotateY = x * maxTilt * 2;
-    inner.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(15px)`;
+    if (inner) {
+      inner.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(15px)`;
+    }
     if (image) {
       const imgX = x * 8;
       const imgY = y * 8;
       image.style.transform = `translate(${imgX}px, ${imgY}px) scale(1.05)`;
     }
-    const glowX = (x + 0.5) * 100;
-    const glowY = (y + 0.5) * 100;
-    inner.style.setProperty('--glow-x', `${glowX}%`);
-    inner.style.setProperty('--glow-y', `${glowY}%`);
+    if (inner) {
+      const glowX = (x + 0.5) * 100;
+      const glowY = (y + 0.5) * 100;
+      inner.style.setProperty('--glow-x', `${glowX}%`);
+      inner.style.setProperty('--glow-y', `${glowY}%`);
+    }
   });
   card.addEventListener("mouseleave", () => {
-    inner.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
-    inner.style.transform = "rotateY(0) rotateX(0) translateZ(0)";
+    if (inner) {
+      inner.style.transition = "transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
+      inner.style.transform = "rotateY(0) rotateX(0) translateZ(0)";
+    }
     if (image) {
       image.style.transition = "transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)";
       image.style.transform = "translate(0, 0) scale(1)";
@@ -552,9 +569,12 @@ function attachTilt(card) {
 /* ---------------------------------------------------------------------
    9. GSAP SCROLL REVEALS
    --------------------------------------------------------------------- */
-gsap.registerPlugin(ScrollTrigger);
+if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 function initReveals() {
+  if (typeof gsap === 'undefined') return;
   document.querySelectorAll("[data-reveal]").forEach((el) => {
     gsap.fromTo(el,
       { opacity: 0, y: 60, scale: 0.95, rotationX: 5 },
@@ -580,6 +600,7 @@ function initReveals() {
    10. 3D FLOATING BADGE EFFECT
    --------------------------------------------------------------------- */
 function initFloatingBadges() {
+  if (typeof gsap === 'undefined') return;
   document.querySelectorAll(".badge").forEach((badge) => {
     const randomDelay = Math.random() * 2;
     const randomDuration = 2 + Math.random() * 2;
@@ -602,7 +623,7 @@ function filterProductsByCategory(category) {
 }
 
 /* ---------------------------------------------------------------------
-   12. RENDER PRODUCT GRID
+   12. RENDER PRODUCT GRID (With No Return Policy)
    --------------------------------------------------------------------- */
 const badgeClassMap = {
   "Best Seller": "badge-bestseller",
@@ -612,6 +633,10 @@ const badgeClassMap = {
 
 function renderProducts(category = "All") {
   const grid = document.getElementById("product-grid");
+  if (!grid) {
+    console.error("Product grid element not found!");
+    return;
+  }
   const filtered = filterProductsByCategory(category);
   if (filtered.length === 0) {
     grid.innerHTML = `<div class="col-span-full text-center py-12 text-ink/50"><p class="text-lg">No products found in this category.</p></div>`;
@@ -621,7 +646,7 @@ function renderProducts(category = "All") {
     <div class="product-card" data-id="${p.id}">
       <div class="product-card-inner" style="--glow-x: 50%; --glow-y: 50%;">
         <div class="product-image-wrap">
-          <img src="${p.image}" alt="${p.name}" loading="lazy">
+          <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
           <div class="absolute top-3 left-3 flex flex-wrap gap-1.5 max-w-[80%]">
             ${p.badges.map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`).join("")}
           </div>
@@ -641,6 +666,7 @@ function renderProducts(category = "All") {
               </span>
             </div>
           ` : ''}
+        
           <div class="flex gap-2">
             <button class="btn-glow flex-1 justify-center !py-2.5 !text-xs" data-add-cart="${p.id}">
               <span>Add to Cart</span>
@@ -671,6 +697,10 @@ function renderProducts(category = "All") {
 
 function renderCategoryFilters() {
   const container = document.getElementById("category-filters");
+  if (!container) {
+    console.error("Category filters container not found!");
+    return;
+  }
   const categories = getCategories();
   container.innerHTML = categories.map(cat => `<button class="category-filter ${cat === "All" ? "active" : ""}" data-category="${cat}">${cat}</button>`).join("");
   container.querySelectorAll(".category-filter").forEach(btn => {
@@ -678,7 +708,7 @@ function renderCategoryFilters() {
       const category = btn.dataset.category;
       state.currentCategory = category;
       const cards = document.querySelectorAll(".product-card");
-      if (cards.length > 0) {
+      if (cards.length > 0 && typeof gsap !== 'undefined') {
         gsap.to(cards, { opacity: 0, y: 30, scale: 0.95, duration: 0.3, ease: "power2.in", onComplete: () => {
           container.querySelectorAll(".category-filter").forEach(b => b.classList.remove("active"));
           btn.classList.add("active");
@@ -712,10 +742,14 @@ function showNotification(message) {
     max-width: 90%;
   `;
   document.body.appendChild(toast);
-  gsap.to(toast, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", delay: 0.1 });
-  setTimeout(() => {
-    gsap.to(toast, { opacity: 0, y: -20, duration: 0.4, ease: "power3.in", onComplete: () => toast.remove() });
-  }, 2500);
+  if (typeof gsap !== 'undefined') {
+    gsap.to(toast, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", delay: 0.1 });
+    setTimeout(() => {
+      gsap.to(toast, { opacity: 0, y: -20, duration: 0.4, ease: "power3.in", onComplete: () => toast.remove() });
+    }, 2500);
+  } else {
+    setTimeout(() => toast.remove(), 3000);
+  }
 }
 
 /* ---------------------------------------------------------------------
@@ -788,9 +822,12 @@ function showMeasurementModal(product, event, opts = {}) {
       </div>
     `;
     document.body.appendChild(modal);
-    document.getElementById("measurement-close").addEventListener("click", () => {
-      modal.classList.remove("active");
-    });
+    const closeBtn = document.getElementById("measurement-close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+      });
+    }
   }
   
   modal.dataset.productId = product.id;
@@ -799,8 +836,8 @@ function showMeasurementModal(product, event, opts = {}) {
   
   const fieldsContainer = document.getElementById("measurement-fields");
   const guideContainer = document.getElementById("measurement-guide");
-  fieldsContainer.innerHTML = '';
-  guideContainer.innerHTML = '';
+  if (fieldsContainer) fieldsContainer.innerHTML = '';
+  if (guideContainer) guideContainer.innerHTML = '';
   
   const fieldConfigs = {
     length: {
@@ -822,7 +859,7 @@ function showMeasurementModal(product, event, opts = {}) {
   
   product.measurementFields.forEach(fieldName => {
     const config = fieldConfigs[fieldName];
-    if (config) {
+    if (config && guideContainer && fieldsContainer) {
       const li = document.createElement('li');
       li.innerHTML = `<span class="font-medium">${config.label.split(' ')[0]}:</span> ${config.guide}`;
       guideContainer.appendChild(li);
@@ -836,37 +873,34 @@ function showMeasurementModal(product, event, opts = {}) {
   });
   
   const form = document.getElementById("measurement-form");
-  const newForm = form.cloneNode(true);
-  form.parentNode.replaceChild(newForm, form);
-  
-  newForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    let measurementsText = '';
-    product.measurementFields.forEach(fieldName => {
-      const value = formData.get(fieldName);
-      if (value) {
-        let label = fieldName;
-        if (fieldName === 'length' && product.customLabel) {
-          label = 'Length';
-        } else {
-          label = fieldConfigs[fieldName]?.label.split(' ')[0] || fieldName;
+  if (form) {
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
+    newForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      let measurementsText = '';
+      product.measurementFields.forEach(fieldName => {
+        const value = formData.get(fieldName);
+        if (value) {
+          let label = fieldName;
+          if (fieldName === 'length' && product.customLabel) {
+            label = 'Length';
+          } else {
+            label = fieldConfigs[fieldName]?.label.split(' ')[0] || fieldName;
+          }
+          measurementsText += `${label}: ${value}", `;
         }
-        measurementsText += `${label}: ${value}", `;
-      }
+      });
+      measurementsText = measurementsText.replace(/, $/, '');
+      const notes = formData.get("notes") || "";
+      if (notes) measurementsText += `, Notes: ${notes}`;
+      modal.classList.remove("active");
+      const productId = modal.dataset.productId;
+      const color = modal.dataset.color;
+      addToCart(productId, event, { color: color, size: "Custom", measurements: measurementsText });
     });
-    measurementsText = measurementsText.replace(/, $/, '');
-    const notes = formData.get("notes") || "";
-    if (notes) measurementsText += `, Notes: ${notes}`;
-    modal.classList.remove("active");
-    const productId = modal.dataset.productId;
-    const color = modal.dataset.color;
-    addToCart(productId, event, { color: color, size: "Custom", measurements: measurementsText });
-  });
-  
-  document.getElementById("measurement-close").addEventListener("click", () => {
-    modal.classList.remove("active");
-  });
+  }
   
   modal.classList.add("active");
 }
@@ -894,11 +928,12 @@ function cartTotals() {
 function renderCart() {
   const container = document.getElementById("cart-items");
   const emptyState = document.getElementById("cart-empty");
+  if (!container) return;
   if (state.cart.length === 0) {
     container.innerHTML = "";
-    emptyState.classList.remove("hidden");
+    if (emptyState) emptyState.classList.remove("hidden");
   } else {
-    emptyState.classList.add("hidden");
+    if (emptyState) emptyState.classList.add("hidden");
     container.innerHTML = state.cart.map((i) => `
       <div class="cart-item" data-key="${i.key}">
         <img src="${i.image}" alt="${i.name}">
@@ -924,14 +959,18 @@ function renderCart() {
   container.querySelectorAll("[data-qty-minus]").forEach((b) => b.addEventListener("click", () => updateQty(b.dataset.qtyMinus, -1)));
   container.querySelectorAll("[data-remove]").forEach((b) => b.addEventListener("click", () => removeFromCart(b.dataset.remove)));
   const { subtotal, discountAmt, total } = cartTotals();
-  document.getElementById("cart-subtotal").textContent = fmt(subtotal);
-  document.getElementById("cart-discount").textContent = `-${fmt(discountAmt)}`;
-  document.getElementById("cart-total").textContent = fmt(total);
+  const subtotalEl = document.getElementById("cart-subtotal");
+  const discountEl = document.getElementById("cart-discount");
+  const totalEl = document.getElementById("cart-total");
+  if (subtotalEl) subtotalEl.textContent = fmt(subtotal);
+  if (discountEl) discountEl.textContent = `-${fmt(discountAmt)}`;
+  if (totalEl) totalEl.textContent = fmt(total);
   const totalItems = state.cart.reduce((sum, i) => sum + i.qty, 0);
-  cartCountEl.textContent = totalItems;
+  if (cartCountEl) cartCountEl.textContent = totalItems;
 }
 
 function pulseCartBadge() {
+  if (!cartCountEl) return;
   cartCountEl.classList.remove("pulse");
   void cartCountEl.offsetWidth;
   cartCountEl.classList.add("pulse");
@@ -940,6 +979,7 @@ function pulseCartBadge() {
 function flyToCart(event, imageSrc) {
   const flyLayer = document.getElementById("fly-layer");
   const cartBtn = document.getElementById("cart-toggle");
+  if (!flyLayer || !cartBtn) return;
   const startRect = event.currentTarget.getBoundingClientRect();
   const endRect = cartBtn.getBoundingClientRect();
   const img = document.createElement("img");
@@ -953,29 +993,47 @@ function flyToCart(event, imageSrc) {
   img.style.boxShadow = "0 20px 60px rgba(198, 161, 91, 0.5)";
   img.style.objectFit = "cover";
   flyLayer.appendChild(img);
-  gsap.to(img, {
-    left: endRect.left + endRect.width / 2 - 10,
-    top: endRect.top + endRect.height / 2 - 10,
-    width: 16, height: 16, opacity: 0.4, duration: 0.7, ease: "power2.in",
-    onComplete: () => { gsap.to(img, { scale: 1.3, duration: 0.2, onComplete: () => img.remove() }); }
+  if (typeof gsap !== 'undefined') {
+    gsap.to(img, {
+      left: endRect.left + endRect.width / 2 - 10,
+      top: endRect.top + endRect.height / 2 - 10,
+      width: 16, height: 16, opacity: 0.4, duration: 0.7, ease: "power2.in",
+      onComplete: () => { gsap.to(img, { scale: 1.3, duration: 0.2, onComplete: () => img.remove() }); }
+    });
+  } else {
+    setTimeout(() => img.remove(), 1000);
+  }
+}
+
+function openCart() { 
+  if (cartDrawer) cartDrawer.classList.add("active"); 
+  if (cartOverlay) cartOverlay.classList.add("active"); 
+}
+function closeCart() { 
+  if (cartDrawer) cartDrawer.classList.remove("active"); 
+  if (cartOverlay) cartOverlay.classList.remove("active"); 
+}
+
+const cartToggle = document.getElementById("cart-toggle");
+const cartClose = document.getElementById("cart-close");
+if (cartToggle) cartToggle.addEventListener("click", openCart);
+if (cartClose) cartClose.addEventListener("click", closeCart);
+if (cartOverlay) cartOverlay.addEventListener("click", () => { closeCart(); closeAllModals(); });
+
+const promoApply = document.getElementById("promo-apply");
+if (promoApply) {
+  promoApply.addEventListener("click", () => {
+    const input = document.getElementById("promo-input");
+    if (!input) return;
+    const code = input.value.trim().toUpperCase();
+    const validCodes = { WOOLLY10: 0.1, WELCOME15: 0.15 };
+    state.discount = validCodes[code] || 0;
+    renderCart();
   });
 }
 
-function openCart() { cartDrawer.classList.add("active"); cartOverlay.classList.add("active"); }
-function closeCart() { cartDrawer.classList.remove("active"); cartOverlay.classList.remove("active"); }
-document.getElementById("cart-toggle").addEventListener("click", openCart);
-document.getElementById("cart-close").addEventListener("click", closeCart);
-cartOverlay.addEventListener("click", () => { closeCart(); closeAllModals(); });
-
-document.getElementById("promo-apply").addEventListener("click", () => {
-  const code = document.getElementById("promo-input").value.trim().toUpperCase();
-  const validCodes = { WOOLLY10: 0.1, WELCOME15: 0.15 };
-  state.discount = validCodes[code] || 0;
-  renderCart();
-});
-
 /* ---------------------------------------------------------------------
-   15. QUICK VIEW MODAL
+   15. QUICK VIEW MODAL (With No Return Policy)
    --------------------------------------------------------------------- */
 const quickviewModal = document.getElementById("quickview-modal");
 
@@ -983,62 +1041,88 @@ function openQuickView(productId) {
   const p = PRODUCTS.find((pr) => pr.id === productId);
   if (!p) return;
   state.activeProduct = { ...p, selectedColor: p.colors[0], selectedSize: p.sizes[0] };
-  document.getElementById("qv-image").src = p.image;
-  document.getElementById("qv-image").alt = p.name;
-  document.getElementById("qv-title").textContent = p.name;
-  document.getElementById("qv-price").textContent = fmt(p.price);
-  document.getElementById("qv-desc").textContent = p.desc;
-  document.getElementById("qv-badges").innerHTML = p.badges.map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`).join("");
-  document.getElementById("qv-colors").innerHTML = p.colors.map((c, i) => `<span class="swatch ${i === 0 ? "active" : ""}" style="background:${c}" data-color="${c}"></span>`).join("");
+  const qvImage = document.getElementById("qv-image");
+  const qvTitle = document.getElementById("qv-title");
+  const qvPrice = document.getElementById("qv-price");
+  const qvDesc = document.getElementById("qv-desc");
+  const qvBadges = document.getElementById("qv-badges");
+  const qvColors = document.getElementById("qv-colors");
+  const qvSizes = document.getElementById("qv-sizes");
+  const qvReturnPolicy = document.getElementById("qv-return-policy");
   
-  const sizeContainer = document.getElementById("qv-sizes");
-  if (p.hasCustomSize) {
-    const fieldNames = p.measurementFields.map(f => {
-      if (f === 'length' && p.customLabel) return 'Length';
-      return f.charAt(0).toUpperCase() + f.slice(1);
-    }).join(', ');
-    sizeContainer.innerHTML = `
-      <div class="flex items-center gap-2">
-        <span class="text-sm font-medium text-ink/70">Custom Fit</span>
-        <span class="text-xs bg-ink/5 px-2 py-1 rounded-full text-ink/50">${fieldNames}</span>
+  if (qvImage) qvImage.src = p.image;
+  if (qvTitle) qvTitle.textContent = p.name;
+  if (qvPrice) qvPrice.textContent = fmt(p.price);
+  if (qvDesc) qvDesc.textContent = p.desc;
+  if (qvBadges) qvBadges.innerHTML = p.badges.map((b) => `<span class="badge ${badgeClassMap[b]}">${b}</span>`).join("");
+  
+  // Add return policy notice in quick view
+  if (qvReturnPolicy) {
+    qvReturnPolicy.innerHTML = `
+      <div class="mt-4 text-xs text-ink/40 bg-ink/5 px-3 py-2 rounded-lg text-center">
+        ⚠️ This item is handmade and cannot be returned.
       </div>
     `;
-  } else {
-    sizeContainer.innerHTML = p.sizes.map((s, i) => `<span class="size-pill ${i === 0 ? "active" : ""}" data-size="${s}">${s}</span>`).join("");
-    document.querySelectorAll("#qv-sizes .size-pill").forEach((el) =>
+  }
+  
+  if (qvColors) {
+    qvColors.innerHTML = p.colors.map((c, i) => `<span class="swatch ${i === 0 ? "active" : ""}" style="background:${c}" data-color="${c}"></span>`).join("");
+    qvColors.querySelectorAll(".swatch").forEach((el) =>
       el.addEventListener("click", () => {
-        document.querySelectorAll("#qv-sizes .size-pill").forEach((s) => s.classList.remove("active"));
+        qvColors.querySelectorAll(".swatch").forEach((s) => s.classList.remove("active"));
         el.classList.add("active");
-        state.activeProduct.selectedSize = el.dataset.size;
+        state.activeProduct.selectedColor = el.dataset.color;
       })
     );
   }
   
-  document.querySelectorAll("#qv-colors .swatch").forEach((el) =>
-    el.addEventListener("click", () => {
-      document.querySelectorAll("#qv-colors .swatch").forEach((s) => s.classList.remove("active"));
-      el.classList.add("active");
-      state.activeProduct.selectedColor = el.dataset.color;
-    })
-  );
+  if (qvSizes) {
+    if (p.hasCustomSize) {
+      const fieldNames = p.measurementFields.map(f => {
+        if (f === 'length' && p.customLabel) return 'Length';
+        return f.charAt(0).toUpperCase() + f.slice(1);
+      }).join(', ');
+      qvSizes.innerHTML = `
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-medium text-ink/70">Custom Fit</span>
+          <span class="text-xs bg-ink/5 px-2 py-1 rounded-full text-ink/50">${fieldNames}</span>
+        </div>
+      `;
+    } else {
+      qvSizes.innerHTML = p.sizes.map((s, i) => `<span class="size-pill ${i === 0 ? "active" : ""}" data-size="${s}">${s}</span>`).join("");
+      qvSizes.querySelectorAll(".size-pill").forEach((el) =>
+        el.addEventListener("click", () => {
+          qvSizes.querySelectorAll(".size-pill").forEach((s) => s.classList.remove("active"));
+          el.classList.add("active");
+          state.activeProduct.selectedSize = el.dataset.size;
+        })
+      );
+    }
+  }
+  
   openModal(quickviewModal);
 }
 
-document.getElementById("qv-add-cart").addEventListener("click", (e) => {
-  if (!state.activeProduct) return;
-  const product = state.activeProduct;
-  addToCart(product.id, e, { 
-    color: product.selectedColor,
-    size: product.hasCustomSize ? "Custom" : product.selectedSize
+const qvAddCart = document.getElementById("qv-add-cart");
+const qvCustom = document.getElementById("qv-custom");
+if (qvAddCart) {
+  qvAddCart.addEventListener("click", (e) => {
+    if (!state.activeProduct) return;
+    const product = state.activeProduct;
+    addToCart(product.id, e, { 
+      color: product.selectedColor,
+      size: product.hasCustomSize ? "Custom" : product.selectedSize
+    });
   });
-});
-
-document.getElementById("qv-custom").addEventListener("click", () => {
-  if (state.activeProduct) openCustomRequest(state.activeProduct);
-});
+}
+if (qvCustom) {
+  qvCustom.addEventListener("click", () => {
+    if (state.activeProduct) openCustomRequest(state.activeProduct);
+  });
+}
 
 /* ---------------------------------------------------------------------
-   16. CUSTOM REQUEST -> WhatsApp
+   16. CUSTOM REQUEST -> Instagram DM (Updated)
    --------------------------------------------------------------------- */
 const customRequestModal = document.getElementById("custom-request-modal");
 const customRequestPreview = document.getElementById("custom-request-preview");
@@ -1067,16 +1151,22 @@ function copyText(text) {
 
 function openCustomRequestModal(text) {
   pendingCustomRequestText = text;
-  customRequestPreview.textContent = text;
-  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
-  const instagramUrl = `https://www.instagram.com/${CONFIG.instagramHandle}/`;
+  if (customRequestPreview) customRequestPreview.textContent = text;
   
-  customRequestOpenDM.href = waUrl;
-  customRequestOpenDM.dataset.fallback = instagramUrl;
-  customRequestOpenDM.innerHTML = '<span>Open WhatsApp</span>';
+  const igDmUrl = `https://ig.me/m/${CONFIG.instagramHandle}`;
+  const profileUrl = `https://www.instagram.com/${CONFIG.instagramHandle}/`;
   
-  copyText(text).then(() => showNotification("Message copied to clipboard")).catch(() => showNotification("Couldn't auto-copy — you can copy it from the box below."));
-  openModal(customRequestModal);
+  if (customRequestOpenDM) {
+    customRequestOpenDM.href = igDmUrl;
+    customRequestOpenDM.dataset.fallback = profileUrl;
+    customRequestOpenDM.innerHTML = '<span>Open Instagram DM</span>';
+  }
+  
+  copyText(text)
+    .then(() => showNotification("Message copied to clipboard! Paste it in Instagram DM."))
+    .catch(() => showNotification("Couldn't auto-copy — you can copy it from the box below."));
+  
+  if (customRequestModal) openModal(customRequestModal);
 }
 
 function openCustomRequest(product) {
@@ -1084,24 +1174,30 @@ function openCustomRequest(product) {
   openCustomRequestModal(text);
 }
 
-document.getElementById("bespoke-cta").addEventListener("click", (e) => {
-  e.preventDefault();
-  const text = `Hi! I'd love to design a custom Woolley Wonders piece. `;
-  const url = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank");
-});
+// Bespoke CTA has been removed - replaced with SVG cartoon
+// Safe check if element exists (it shouldn't anymore)
+const bespokeCta = document.getElementById("bespoke-cta");
+if (bespokeCta) {
+  bespokeCta.style.display = "none";
+}
 
-customRequestOpenDM.addEventListener("click", (e) => {
-  e.preventDefault();
-  const newWindow = window.open(customRequestOpenDM.href, "_blank");
-  if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
-    window.open(customRequestOpenDM.dataset.fallback, "_blank");
-  }
-});
+if (customRequestOpenDM) {
+  customRequestOpenDM.addEventListener("click", (e) => {
+    e.preventDefault();
+    const newWindow = window.open(customRequestOpenDM.href, "_blank");
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+      window.open(customRequestOpenDM.dataset.fallback, "_blank");
+    }
+  });
+}
 
-customRequestCopyAgain.addEventListener("click", () => {
-  copyText(pendingCustomRequestText).then(() => showNotification("Copied again")).catch(() => showNotification("Copy failed — select the text manually."));
-});
+if (customRequestCopyAgain) {
+  customRequestCopyAgain.addEventListener("click", () => {
+    copyText(pendingCustomRequestText)
+      .then(() => showNotification("Copied again!"))
+      .catch(() => showNotification("Copy failed — select the text manually."));
+  });
+}
 
 /* ---------------------------------------------------------------------
    17. MODAL HELPERS
@@ -1125,189 +1221,195 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeAll
    18. CHECKOUT OPEN
    --------------------------------------------------------------------- */
 const checkoutModal = document.getElementById("checkout-modal");
+const checkoutOpen = document.getElementById("checkout-open");
 
-document.getElementById("checkout-open").addEventListener("click", function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  
-  if (state.cart.length === 0) {
-    showNotification("Your cart is empty!");
-    return;
-  }
-  
-  const { subtotal, total } = cartTotals();
-  const deliveryFee = 250;
-  const codTotal = Math.max(total + deliveryFee, 0);
-  
-  const subtotalEl = document.getElementById("checkout-subtotal");
-  const totalEl = document.getElementById("checkout-total");
-  
-  if (subtotalEl) subtotalEl.textContent = fmt(subtotal);
-  if (totalEl) totalEl.textContent = fmt(codTotal);
-  
-  openModal(checkoutModal);
-});
+if (checkoutOpen) {
+  checkoutOpen.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (state.cart.length === 0) {
+      showNotification("Your cart is empty!");
+      return;
+    }
+    
+    const { subtotal, total } = cartTotals();
+    const deliveryFee = 250;
+    const codTotal = Math.max(total + deliveryFee, 0);
+    
+    const subtotalEl = document.getElementById("checkout-subtotal");
+    const totalEl = document.getElementById("checkout-total");
+    
+    if (subtotalEl) subtotalEl.textContent = fmt(subtotal);
+    if (totalEl) totalEl.textContent = fmt(codTotal);
+    
+    openModal(checkoutModal);
+  });
+}
 
 /* ---------------------------------------------------------------------
-   19. CHECKOUT FORM -> Full COD with Email Receipt (FIXED)
+   19. CHECKOUT FORM -> Full COD with Email Receipt
    --------------------------------------------------------------------- */
-document.getElementById("checkout-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  
-  const form = e.target;
-  const status = document.getElementById("checkout-status");
-  const checkoutBtn = form.querySelector('button[type="submit"]');
-  
-  if (!status) {
-    console.error("Checkout status element not found");
-    alert("There was an error with the checkout form. Please try again.");
-    return;
-  }
-  
-  const formData = new FormData(form);
-  const data = {};
-  for (let [key, value] of formData.entries()) {
-    data[key] = value.trim();
-  }
-  
-  if (!data.name || !data.email || !data.phone || !data.address || !data.city || !data.province) {
-    status.textContent = "Please fill in all required fields.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    return;
-  }
-  
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(data.email)) {
-    status.textContent = "Please enter a valid email address.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    return;
-  }
-  
-  let subtotal = 0;
-  let discountAmt = 0;
-  let total = 0;
-  
-  try {
-    const totals = cartTotals();
-    subtotal = totals.subtotal;
-    discountAmt = totals.discountAmt;
-    total = totals.total;
-  } catch (err) {
-    console.error("Error calculating cart totals:", err);
-    status.textContent = "There was an error processing your cart. Please try again.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    return;
-  }
-  
-  if (state.cart.length === 0) {
-    status.textContent = "Your cart is empty. Please add items before checking out.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    return;
-  }
-  
-  const deliveryFee = 250;
-  const codTotal = Math.max(total + deliveryFee, 0);
-  
-  const itemsList = state.cart.map((i) => 
-    `${i.qty} x ${i.name}${i.color ? ` (${i.color})` : ""}${i.measurements ? ` [Measurements: ${i.measurements}]` : ""}${i.size && i.size !== "Custom" ? ` [${i.size}]` : ""} — Rs. ${(i.price * i.qty).toFixed(2)}`
-  ).join("\n");
-  
-  const orderPayload = {
-    customer_name: data.name,
-    customer_email: data.email,
-    customer_phone: data.phone,
-    customer_address: data.address,
-    customer_city: data.city,
-    customer_province: data.province,
-    items_list: itemsList,
-    subtotal: fmt(subtotal),
-    discount: fmt(discountAmt),
-    delivery_fee: `Rs. ${deliveryFee.toFixed(2)}`,
-    cod_total: `Rs. ${codTotal.toFixed(2)}`,
-    order_date: new Date().toLocaleString('en-PK', { timeZone: 'Asia/Karachi' }),
-    payment_method: "Cash on Delivery",
-    delivery_note: `Customer will pay Rs. ${codTotal.toFixed(2)} on delivery (Product total: Rs. ${total.toFixed(2)} + Delivery Fee: Rs. ${deliveryFee}). Delivery within 7-8 business days.`
-  };
-
-  if (!emailjsReady()) {
-    status.textContent = "Email service is not configured yet. Please contact us directly on WhatsApp.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    state.cart = [];
-    state.discount = 0;
-    renderCart();
-    form.reset();
-    setTimeout(() => { 
-      closeAllModals(); 
-      closeCart(); 
-      status.classList.add("hidden"); 
-    }, 4000);
-    return;
-  }
-
-  try {
-    if (checkoutBtn) {
-      checkoutBtn.disabled = true;
-      checkoutBtn.style.opacity = 0.6;
-      checkoutBtn.textContent = "Processing...";
+const checkoutForm = document.getElementById("checkout-form");
+if (checkoutForm) {
+  checkoutForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const form = e.target;
+    const status = document.getElementById("checkout-status");
+    const checkoutBtn = form.querySelector('button[type="submit"]');
+    
+    if (!status) {
+      console.error("Checkout status element not found");
+      alert("There was an error with the checkout form. Please try again.");
+      return;
     }
     
-    await emailjs.send(
-      CONFIG.emailjs.serviceId, 
-      CONFIG.emailjs.orderTemplateId, 
-      orderPayload
-    );
-    
-    await emailjs.send(
-      CONFIG.emailjs.serviceId, 
-      CONFIG.emailjs.receiptTemplateId, 
-      orderPayload
-    );
-    
-    status.textContent = "Order placed successfully! A receipt has been sent to your email. We will contact you within 24 hours to confirm delivery.";
-    status.className = "text-sm text-center text-sage-deep";
-    status.classList.remove("hidden");
-
-    state.cart = [];
-    state.discount = 0;
-    renderCart();
-    form.reset();
-
-    setTimeout(() => { 
-      closeAllModals(); 
-      closeCart(); 
-      status.classList.add("hidden"); 
-    }, 5000);
-    
-  } catch (err) {
-    console.error("EmailJS Error:", err);
-    status.textContent = "There was an issue sending your order. Please contact us on WhatsApp to complete your order.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    
-    state.cart = [];
-    state.discount = 0;
-    renderCart();
-    form.reset();
-    
-    setTimeout(() => { 
-      closeAllModals(); 
-      closeCart(); 
-      status.classList.add("hidden"); 
-    }, 5000);
-    
-  } finally { 
-    if (checkoutBtn) {
-      checkoutBtn.disabled = false;
-      checkoutBtn.style.opacity = 1;
-      checkoutBtn.textContent = "Place Order";
+    const formData = new FormData(form);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+      data[key] = value.trim();
     }
-  }
-});
+    
+    if (!data.name || !data.email || !data.phone || !data.address || !data.city || !data.province) {
+      status.textContent = "Please fill in all required fields.";
+      status.className = "text-sm text-center text-rose-deep";
+      status.classList.remove("hidden");
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      status.textContent = "Please enter a valid email address.";
+      status.className = "text-sm text-center text-rose-deep";
+      status.classList.remove("hidden");
+      return;
+    }
+    
+    let subtotal = 0;
+    let discountAmt = 0;
+    let total = 0;
+    
+    try {
+      const totals = cartTotals();
+      subtotal = totals.subtotal;
+      discountAmt = totals.discountAmt;
+      total = totals.total;
+    } catch (err) {
+      console.error("Error calculating cart totals:", err);
+      status.textContent = "There was an error processing your cart. Please try again.";
+      status.className = "text-sm text-center text-rose-deep";
+      status.classList.remove("hidden");
+      return;
+    }
+    
+    if (state.cart.length === 0) {
+      status.textContent = "Your cart is empty. Please add items before checking out.";
+      status.className = "text-sm text-center text-rose-deep";
+      status.classList.remove("hidden");
+      return;
+    }
+    
+    const deliveryFee = 250;
+    const codTotal = Math.max(total + deliveryFee, 0);
+    
+    const itemsList = state.cart.map((i) => 
+      `${i.qty} x ${i.name}${i.color ? ` (${i.color})` : ""}${i.measurements ? ` [Measurements: ${i.measurements}]` : ""}${i.size && i.size !== "Custom" ? ` [${i.size}]` : ""} — Rs. ${(i.price * i.qty).toFixed(2)}`
+    ).join("\n");
+    
+    const orderPayload = {
+      customer_name: data.name,
+      customer_email: data.email,
+      customer_phone: data.phone,
+      customer_address: data.address,
+      customer_city: data.city,
+      customer_province: data.province,
+      items_list: itemsList,
+      subtotal: fmt(subtotal),
+      discount: fmt(discountAmt),
+      delivery_fee: `Rs. ${deliveryFee.toFixed(2)}`,
+      cod_total: `Rs. ${codTotal.toFixed(2)}`,
+      order_date: new Date().toLocaleString('en-PK', { timeZone: 'Asia/Karachi' }),
+      payment_method: "Cash on Delivery",
+      delivery_note: `Customer will pay Rs. ${codTotal.toFixed(2)} on delivery (Product total: Rs. ${total.toFixed(2)} + Delivery Fee: Rs. ${deliveryFee}). Delivery within 7-8 business days.`
+    };
+
+    if (!emailjsReady()) {
+      status.textContent = "Email service is not configured yet. Please contact us directly on WhatsApp.";
+      status.className = "text-sm text-center text-rose-deep";
+      status.classList.remove("hidden");
+      state.cart = [];
+      state.discount = 0;
+      renderCart();
+      form.reset();
+      setTimeout(() => { 
+        closeAllModals(); 
+        closeCart(); 
+        status.classList.add("hidden"); 
+      }, 4000);
+      return;
+    }
+
+    try {
+      if (checkoutBtn) {
+        checkoutBtn.disabled = true;
+        checkoutBtn.style.opacity = 0.6;
+        checkoutBtn.textContent = "Processing...";
+      }
+      
+      await emailjs.send(
+        CONFIG.emailjs.serviceId, 
+        CONFIG.emailjs.orderTemplateId, 
+        orderPayload
+      );
+      
+      await emailjs.send(
+        CONFIG.emailjs.serviceId, 
+        CONFIG.emailjs.receiptTemplateId, 
+        orderPayload
+      );
+      
+      status.textContent = "Order placed successfully! A receipt has been sent to your email. We will contact you within 24 hours to confirm delivery.";
+      status.className = "text-sm text-center text-sage-deep";
+      status.classList.remove("hidden");
+
+      state.cart = [];
+      state.discount = 0;
+      renderCart();
+      form.reset();
+
+      setTimeout(() => { 
+        closeAllModals(); 
+        closeCart(); 
+        status.classList.add("hidden"); 
+      }, 5000);
+      
+    } catch (err) {
+      console.error("EmailJS Error:", err);
+      status.textContent = "There was an issue sending your order. Please contact us on WhatsApp to complete your order.";
+      status.className = "text-sm text-center text-rose-deep";
+      status.classList.remove("hidden");
+      
+      state.cart = [];
+      state.discount = 0;
+      renderCart();
+      form.reset();
+      
+      setTimeout(() => { 
+        closeAllModals(); 
+        closeCart(); 
+        status.classList.add("hidden"); 
+      }, 5000);
+      
+    } finally { 
+      if (checkoutBtn) {
+        checkoutBtn.disabled = false;
+        checkoutBtn.style.opacity = 1;
+        checkoutBtn.textContent = "Place Order";
+      }
+    }
+  });
+}
 
 function emailjsReady() {
   return window.emailjs && 
@@ -1315,14 +1417,6 @@ function emailjsReady() {
          CONFIG.emailjs.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY" &&
          CONFIG.emailjs.serviceId && 
          CONFIG.emailjs.serviceId !== "YOUR_EMAILJS_SERVICE_ID";
-}
-
-function setSubmitting(form, isSubmitting) {
-  const btn = form.querySelector('button[type="submit"]');
-  if (!btn) return;
-  btn.disabled = isSubmitting;
-  btn.style.opacity = isSubmitting ? 0.6 : 1;
-  btn.textContent = isSubmitting ? "Processing..." : "Place Order";
 }
 
 /* ---------------------------------------------------------------------
@@ -1344,9 +1438,11 @@ function initHeroSlider() {
   let timer = null;
   let animating = false;
 
-  gsap.set(slideEls, { opacity: 0, scale: 1.08 });
-  gsap.set(slideEls[0], { opacity: 1 });
-  gsap.to(slideEls[0], { scale: 1, duration: 6, ease: "sine.out" });
+  if (typeof gsap !== 'undefined') {
+    gsap.set(slideEls, { opacity: 0, scale: 1.08 });
+    gsap.set(slideEls[0], { opacity: 1 });
+    gsap.to(slideEls[0], { scale: 1, duration: 6, ease: "sine.out" });
+  }
 
   function goTo(index) {
     const next = (index + HERO_SLIDES.length) % HERO_SLIDES.length;
@@ -1356,12 +1452,19 @@ function initHeroSlider() {
     const prevEl = slideEls[current];
     const nextEl = slideEls[next];
 
-    gsap.killTweensOf([prevEl, nextEl]);
-    gsap.set(nextEl, { scale: 1.08, zIndex: 2 });
-    gsap.set(prevEl, { zIndex: 1 });
-    gsap.to(prevEl, { opacity: 0, duration: 1, ease: "power2.inOut" });
-    gsap.to(nextEl, { opacity: 1, duration: 1, ease: "power2.inOut", onComplete: () => { animating = false; } });
-    gsap.to(nextEl, { scale: 1, duration: 6, ease: "sine.out" });
+    if (typeof gsap !== 'undefined') {
+      gsap.killTweensOf([prevEl, nextEl]);
+      gsap.set(nextEl, { scale: 1.08, zIndex: 2 });
+      gsap.set(prevEl, { zIndex: 1 });
+      gsap.to(prevEl, { opacity: 0, duration: 1, ease: "power2.inOut" });
+      gsap.to(nextEl, { opacity: 1, duration: 1, ease: "power2.inOut", onComplete: () => { animating = false; } });
+      gsap.to(nextEl, { scale: 1, duration: 6, ease: "sine.out" });
+    } else {
+      slideEls.forEach((el, i) => {
+        el.classList.toggle("active", i === next);
+      });
+      animating = false;
+    }
 
     dotEls.forEach((el, i) => el.classList.toggle("active", i === next));
     slideEls.forEach((el, i) => el.classList.toggle("active", i === next));
@@ -1394,6 +1497,10 @@ function initHeroSlider() {
    21. SMOOTH PAGE TRANSITIONS & NAVIGATION
    --------------------------------------------------------------------- */
 function initPageTransitions() {
+  if (typeof gsap === 'undefined') {
+    document.body.style.opacity = "1";
+    return;
+  }
   document.body.style.opacity = "0";
   gsap.to(document.body, {
     opacity: 1,
@@ -1428,68 +1535,15 @@ function initPageTransitions() {
     });
   });
 }
+
 /* ---------------------------------------------------------------------
    FEEDBACK FORM - Star Rating System
    --------------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function() {
-  // Star rating functionality
   const starBtns = document.querySelectorAll('.star-btn');
   const ratingInput = document.getElementById('rating-value');
   
-  if (starBtns.length > 0) {
-    starBtns.forEach((btn, index) => {
-      btn.addEventListener('click', function() {
-        const value = parseInt(this.dataset.value);
-        ratingInput.value = value;
-        
-        // Update star colors
-        starBtns.forEach((star, i) => {
-          if (i < value) {
-            star.classList.add('text-gold');
-            star.classList.remove('text-ink/20');
-          } else {
-            star.classList.remove('text-gold');
-            star.classList.add('text-ink/20');
-          }
-        });
-      });
-      
-      // Hover effect
-      btn.addEventListener('mouseenter', function() {
-        const value = parseInt(this.dataset.value);
-        starBtns.forEach((star, i) => {
-          if (i < value) {
-            star.classList.add('text-gold/70');
-            star.classList.remove('text-ink/20');
-          }
-        });
-      });
-      
-      btn.addEventListener('mouseleave', function() {
-        const currentRating = parseInt(ratingInput.value);
-        starBtns.forEach((star, i) => {
-          if (i < currentRating) {
-            star.classList.add('text-gold');
-            star.classList.remove('text-gold/70');
-          } else {
-            star.classList.remove('text-gold');
-            star.classList.remove('text-gold/70');
-            star.classList.add('text-ink/20');
-          }
-        });
-      });
-    });
-  }
-});
-/* ---------------------------------------------------------------------
-   FEEDBACK FORM - WhatsApp Version (No EmailJS)
-   --------------------------------------------------------------------- */
-document.addEventListener('DOMContentLoaded', function() {
-  // Star rating functionality
-  const starBtns = document.querySelectorAll('.star-btn');
-  const ratingInput = document.getElementById('rating-value');
-  
-  if (starBtns.length > 0) {
+  if (starBtns.length > 0 && ratingInput) {
     starBtns.forEach((btn) => {
       btn.addEventListener('click', function() {
         const value = parseInt(this.dataset.value);
@@ -1533,59 +1587,68 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /* ---------------------------------------------------------------------
-   FEEDBACK FORM - Submit via WhatsApp (No EmailJS)
+   FEEDBACK FORM - Submit via WhatsApp
    --------------------------------------------------------------------- */
-document.getElementById("feedback-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const status = document.getElementById("feedback-status");
-  const data = Object.fromEntries(new FormData(form).entries());
-  
-  // Validate rating
-  if (!data.rating || data.rating === "0") {
-    status.textContent = "Please select a rating.";
-    status.className = "text-sm text-center text-rose-deep";
-    status.classList.remove("hidden");
-    return;
-  }
-  
-  // Build stars string
-  const stars = '★'.repeat(parseInt(data.rating)) + '☆'.repeat(5 - parseInt(data.rating));
-  
-  // Build WhatsApp message
-  const message = `⭐ New Customer Feedback ⭐%0A%0A` +
-                  `Name: ${data.name}%0A` +
-                  `Product: ${data.product || 'Not specified'}%0A` +
-                  `Rating: ${data.rating} stars ${stars}%0A` +
-                  `Review: ${data.review}%0A%0A` +
-                  `Sent from Woolley Wonders website`;
-  
-  const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${message}`;
-  
-  // Open WhatsApp
-  window.open(waUrl, "_blank");
-  
-  // Show success message
-  status.textContent = "Thank you for your feedback! Opening WhatsApp...";
-  status.className = "text-sm text-center text-sage-deep";
-  status.classList.remove("hidden");
-  
-  form.reset();
-  document.querySelectorAll('.star-btn').forEach(star => {
-    star.classList.remove('text-gold');
-    star.classList.add('text-ink/20');
+const feedbackForm = document.getElementById("feedback-form");
+if (feedbackForm) {
+  feedbackForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const status = document.getElementById("feedback-status");
+    const data = {};
+    const formData = new FormData(form);
+    for (let [key, value] of formData.entries()) {
+      data[key] = value.trim();
+    }
+    
+    if (!data.rating || data.rating === "0") {
+      if (status) {
+        status.textContent = "Please select a rating.";
+        status.className = "text-sm text-center text-rose-deep";
+        status.classList.remove("hidden");
+      }
+      return;
+    }
+    
+    const stars = '★'.repeat(parseInt(data.rating)) + '☆'.repeat(5 - parseInt(data.rating));
+    
+    const message = `⭐ New Customer Feedback ⭐%0A%0A` +
+                    `Name: ${data.name}%0A` +
+                    `Product: ${data.product || 'Not specified'}%0A` +
+                    `Rating: ${data.rating} stars ${stars}%0A` +
+                    `Review: ${data.review}%0A%0A` +
+                    `Sent from Woolley Wonders website`;
+    
+    const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${message}`;
+    
+    window.open(waUrl, "_blank");
+    
+    if (status) {
+      status.textContent = "Thank you for your feedback! Opening WhatsApp...";
+      status.className = "text-sm text-center text-sage-deep";
+      status.classList.remove("hidden");
+    }
+    
+    form.reset();
+    document.querySelectorAll('.star-btn').forEach(star => {
+      star.classList.remove('text-gold');
+      star.classList.add('text-ink/20');
+    });
+    const ratingInput = document.getElementById('rating-value');
+    if (ratingInput) ratingInput.value = "0";
+    
+    setTimeout(() => { 
+      if (status) status.classList.add("hidden"); 
+    }, 4000);
   });
-  document.getElementById('rating-value').value = "0";
-  
-  setTimeout(() => { 
-    status.classList.add("hidden"); 
-  }, 4000);
-});
+}
+
 /* ---------------------------------------------------------------------
    22. INIT
    --------------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("year").textContent = new Date().getFullYear();
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   const hero = document.getElementById("home");
   if (hero) {
@@ -1610,3 +1673,18 @@ document.addEventListener('DOMContentLoaded', function() {
   
   console.log('Woolley Wonders initialized successfully!');
 });
+
+// Fallback: If DOMContentLoaded already fired, run init
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(function() {
+    const yearEl = document.getElementById("year");
+    if (yearEl && !yearEl.textContent) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+    if (document.getElementById("product-grid") && document.getElementById("product-grid").children.length === 0) {
+      renderProducts();
+      renderCategoryFilters();
+      renderCart();
+    }
+  }, 100);
+}
