@@ -1020,17 +1020,7 @@ if (cartToggle) cartToggle.addEventListener("click", openCart);
 if (cartClose) cartClose.addEventListener("click", closeCart);
 if (cartOverlay) cartOverlay.addEventListener("click", () => { closeCart(); closeAllModals(); });
 
-const promoApply = document.getElementById("promo-apply");
-if (promoApply) {
-  promoApply.addEventListener("click", () => {
-    const input = document.getElementById("promo-input");
-    if (!input) return;
-    const code = input.value.trim().toUpperCase();
-    const validCodes = { WOOLLY10: 0.1, WELCOME15: 0.15 };
-    state.discount = validCodes[code] || 0;
-    renderCart();
-  });
-}
+
 
 /* ---------------------------------------------------------------------
    15. QUICK VIEW MODAL (With No Return Policy)
