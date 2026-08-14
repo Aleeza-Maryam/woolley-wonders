@@ -669,14 +669,14 @@ function renderProducts(category = "All") {
           <div class="mb-1.5 sm:mb-3 text-[7px] sm:text-[10px] text-ink/40 bg-ink/5 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg text-center leading-tight">
             <span>No returns on handmade items</span>
           </div>
-          <div class="flex flex-col gap-1.5 sm:flex-row sm:gap-2">
+          <div class="flex flex-col gap-1.5">
             <button class="btn-glow w-full justify-center !py-2 sm:!py-2.5 !text-[11px] sm:!text-xs" data-add-cart="${p.id}">
               <span>Add to Cart</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 sm:w-3.5 sm:h-3.5 inline-block ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
             </button>
-            <button class="btn-outline w-full sm:w-auto justify-center !py-2 sm:!py-2.5 !px-3 sm:!px-3.5 !text-[11px] sm:!text-xs" data-custom-request="${p.id}" aria-label="Custom Request">
+            <button class="btn-outline w-full justify-center !py-2 sm:!py-2.5 !text-[11px] sm:!text-xs" data-custom-request="${p.id}" aria-label="Custom Request">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4 inline-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20l7-11-7-6-7 6 7 11z"/></svg>
-              <span class="sm:hidden ml-1">Custom</span>
+              <span class="ml-1">Custom</span>
             </button>
           </div>
         </div>
