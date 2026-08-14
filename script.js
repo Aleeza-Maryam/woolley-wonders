@@ -9,7 +9,7 @@
    --------------------------------------------------------------------- */
 const CONFIG = {
   instagramHandle: "woolley_wonderss",
-  whatsappNumber: "923308093981",
+  whatsappNumber: "923115243518",
 
   emailjs: {
     publicKey: "Hx8dn6Pv4dsFGK-rU",
