@@ -667,7 +667,7 @@ function renderProducts(category = "All") {
             </div>
           ` : ''}
           <div class="mb-1.5 sm:mb-3 text-[7px] sm:text-[10px] text-ink/40 bg-ink/5 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg text-center leading-tight">
-            <span>No returns on handmade items</span>
+           
           </div>
           <div class="flex flex-col gap-1.5">
             <button class="btn-glow w-full justify-center !py-2 sm:!py-2.5 !text-[11px] sm:!text-xs" data-add-cart="${p.id}">
