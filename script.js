@@ -57,7 +57,7 @@ const PRODUCTS = [
   {
     id: "p3",
     name: "Classic Knit Tie",
-    price: 1000,
+    price: 1200,
     image: "tie.jpeg",
     category: "Wearables",
     badges: ["Handmade"],
@@ -69,8 +69,8 @@ const PRODUCTS = [
   {
     id: "p4",
     name: "Mesh Tie",
-    price: 850,
-    image: "tie2.jpeg",
+    price: 1000,
+    image: "mesh_tie.jpg",
     category: "Wearables",
     badges: ["Customizable"],
     desc: "A lightweight mesh tie with open stitch work. Breathable and perfect for warmer days.",
@@ -108,7 +108,7 @@ const PRODUCTS = [
   {
     id: "p7",
     name: "Pink Tulip",
-    price: 350,
+    price: 450,
     image: "pink_tulip.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -120,7 +120,7 @@ const PRODUCTS = [
   {
     id: "p8",
     name: "3 Red Roses",
-    price: 800,
+    price: 850,
     image: "Roseee.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -132,7 +132,7 @@ const PRODUCTS = [
   {
     id: "p9",
     name: "Rose Pot",
-    price: 400,
+    price: 650,
     image: "red_rose2.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -144,7 +144,7 @@ const PRODUCTS = [
   {
     id: "p10",
     name: "Single Rose",
-    price: 300,
+    price: 350,
     image: "rose.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -156,7 +156,7 @@ const PRODUCTS = [
   {
     id: "p11",
     name: "Sunflower",
-    price: 300,
+    price: 350,
     image: "sunflower.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
@@ -170,7 +170,7 @@ const PRODUCTS = [
   {
     id: "p12",
     name: "Chick Keychain",
-    price: 350,
+    price: 390,
     image: "chick2_keychain.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -182,7 +182,7 @@ const PRODUCTS = [
   {
     id: "p13",
     name: "Mini Flower Bouquet",
-    price: 400,
+    price: 480,
     image: "keychain_bookeh.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -194,7 +194,7 @@ const PRODUCTS = [
   {
     id: "p14",
     name: "Mini Octopus Keychain",
-    price: 350,
+    price: 400,
     image: "octopus_keychain2.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -230,7 +230,7 @@ const PRODUCTS = [
   {
     id: "p17",
     name: "Mifi Keychain",
-    price: 500,
+    price: 550,
     image: "headphones_bunny.jpeg",
     category: "Keychains",
     badges: ["Handmade"],
@@ -244,7 +244,7 @@ const PRODUCTS = [
   {
     id: "p18",
     name: "Gajra - Traditional Garland",
-    price: 600,
+    price: 650,
     image: "gajra.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -284,7 +284,7 @@ const PRODUCTS = [
   {
     id: "p21",
     name: "Red Tulip Headband",
-    price: 500,
+    price: 550,
     image: "tulip_headband.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -308,7 +308,7 @@ const PRODUCTS = [
   {
     id: "p23",
     name: "Daisy Headband",
-    price: 500,
+    price: 550,
     image: "Daisy headband.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
@@ -322,7 +322,7 @@ const PRODUCTS = [
   {
     id: "p24",
     name: "Daisy Dream Bag",
-    price: 1200,
+    price: 1300,
     image: "Daisy Dream bag.jpeg",
     category: "Bags",
     badges: ["Handmade", "Customizable"],
