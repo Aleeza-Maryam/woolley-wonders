@@ -168,8 +168,7 @@
 <div id="category-filters" class="flex flex-wrap gap-2 md:gap-3 mb-10" data-reveal>
   <!-- Will be populated by JavaScript -->
 </div>
-    <div id="product-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-  </div>
+<div id="product-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8"></div>  </div>
 </section>
 <!-- ============ BESPOKE STUDIO + FEEDBACK ============ -->
 <!-- ============ BESPOKE STUDIO ============ -->
@@ -236,6 +235,97 @@
           Message on Instagram
         </a>
       </div>
+    </div>
+  </div>
+</section>
+<!-- ============ FEEDBACK / TESTIMONIALS SECTION ============ -->
+<section class="px-6 lg:px-10 py-16">
+  <div class="mx-auto max-w-7xl">
+    <div class="text-center mb-12" data-reveal>
+      <span class="eyebrow">Customer Feedback</span>
+      <h2 class="font-display text-4xl sm:text-5xl mt-3">What Our Customers Say</h2>
+      <p class="text-ink/60 max-w-md mx-auto mt-4">Real reviews from real customers who love their Woolley Wonders pieces.</p>
+    </div>
+
+    <!-- Existing Testimonials -->
+    <div id="testimonials-grid" class="grid md:grid-cols-3 gap-6 mb-16" data-reveal>
+      <!-- Testimonial 1 -->
+      <div class="bg-white/60 backdrop-blur rounded-2xl p-6 shadow-soft border border-ink/5">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-12 h-12 rounded-full bg-rose-deep/20 flex items-center justify-center text-rose-deep font-display text-xl">S</div>
+          <div>
+            <h4 class="font-semibold text-sm">Sarah Khan</h4>
+            <div class="flex text-gold text-sm">★★★★★</div>
+          </div>
+        </div>
+        <p class="text-ink/70 text-sm leading-relaxed">"The cardigan is absolutely beautiful! Fit perfectly and the quality is amazing. Will definitely order again."</p>
+        <p class="text-xs text-ink/40 mt-3">Verified Purchase · 2 weeks ago</p>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="bg-white/60 backdrop-blur rounded-2xl p-6 shadow-soft border border-ink/5">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center text-gold font-display text-xl">A</div>
+          <div>
+            <h4 class="font-semibold text-sm">Ahmed Raza</h4>
+            <div class="flex text-gold text-sm">★★★★★</div>
+          </div>
+        </div>
+        <p class="text-ink/70 text-sm leading-relaxed">"I ordered a custom bouquet for my mother and she loved it! The colors were exactly what I wanted."</p>
+        <p class="text-xs text-ink/40 mt-3">Verified Purchase · 1 month ago</p>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="bg-white/60 backdrop-blur rounded-2xl p-6 shadow-soft border border-ink/5">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-12 h-12 rounded-full bg-sage/20 flex items-center justify-center text-sage-deep font-display text-xl">F</div>
+          <div>
+            <h4 class="font-semibold text-sm">Fatima Zafar</h4>
+            <div class="flex text-gold text-sm">★★★★★</div>
+          </div>
+        </div>
+        <p class="text-ink/70 text-sm leading-relaxed">"The gloves arrived on time and are so soft and warm. Love the handmade touch and attention to detail."</p>
+        <p class="text-xs text-ink/40 mt-3">Verified Purchase · 3 weeks ago</p>
+      </div>
+    </div>
+
+    <!-- Feedback Form -->
+    <div class="max-w-2xl mx-auto bg-white/50 backdrop-blur rounded-2xl p-8 lg:p-10 shadow-soft border border-ink/5" data-reveal>
+      <h3 class="font-display text-2xl mb-2 text-center">Share Your Experience</h3>
+      <p class="text-ink/60 text-sm text-center mb-6">Have you purchased from us? We'd love to hear your feedback!</p>
+      
+      <form id="feedback-form" class="space-y-5">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="form-label">Your Name <span class="text-rose-deep">*</span></label>
+            <input required type="text" name="name" class="form-input" placeholder="Your full name">
+          </div>
+          <div>
+            <label class="form-label">Product Purchased</label>
+            <input type="text" name="product" class="form-input" placeholder="e.g. Cozy Knit Sweater">
+          </div>
+        </div>
+        
+        <div>
+          <label class="form-label">Rating <span class="text-rose-deep">*</span></label>
+          <div class="flex gap-2 text-3xl" id="star-rating">
+            <button type="button" class="star-btn text-ink/20 hover:text-gold transition-colors" data-value="1">★</button>
+            <button type="button" class="star-btn text-ink/20 hover:text-gold transition-colors" data-value="2">★</button>
+            <button type="button" class="star-btn text-ink/20 hover:text-gold transition-colors" data-value="3">★</button>
+            <button type="button" class="star-btn text-ink/20 hover:text-gold transition-colors" data-value="4">★</button>
+            <button type="button" class="star-btn text-ink/20 hover:text-gold transition-colors" data-value="5">★</button>
+          </div>
+          <input type="hidden" name="rating" id="rating-value" value="0" required>
+        </div>
+        
+        <div>
+          <label class="form-label">Your Review <span class="text-rose-deep">*</span></label>
+          <textarea required name="review" rows="3" class="form-input resize-none" placeholder="Share your experience with our products..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn-glow w-full justify-center">Submit Feedback</button>
+        <p id="feedback-status" class="text-sm text-center hidden"></p>
+      </form>
     </div>
   </div>
 </section>
