@@ -367,6 +367,18 @@ const PRODUCTS = [
     sizes: ["One Size"],
     hasCustomSize: false,
   },
+   {
+    id: "p28",
+    name: "Coffee tote bag",
+    price: 3500,
+    image: "totebag.jpeg",
+    category: "Bags",
+    badges: ["Best Seller", "Handmade"],
+    desc: "A charming bag featuring coffee beans and jellyfish details in rich brown. Sweet, stylish, and completely handmade.",
+    colors: ["#392020"],
+    sizes: ["One Size"],
+    hasCustomSize: false,
+  },
 ];
 
 /* ---------------------------------------------------------------------
