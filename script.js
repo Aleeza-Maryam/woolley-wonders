@@ -108,7 +108,7 @@ const PRODUCTS = [
   {
     id: "p7",
     name: "Pink Tulip",
-    price: 450,
+    price: 380,
     image: "pink_tulip.jpeg",
     category: "Floral Collection",
     badges: ["Handmade"],
