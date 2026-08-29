@@ -740,9 +740,7 @@ function renderCategoryFilters() {
   });
 }
 
-/* ---------------------------------------------------------------------
-   13. NOTIFICATION SYSTEM
-   --------------------------------------------------------------------- */
+
 function showNotification(message) {
   const existing = document.querySelector(".notification-toast");
   if (existing) existing.remove();
