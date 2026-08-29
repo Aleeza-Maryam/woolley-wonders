@@ -296,7 +296,7 @@ const PRODUCTS = [
   {
     id: "p22",
     name: "Hair Pins (Pair)",
-    price: 200,
+    price: 180,
     image: "pins.jpeg",
     category: "Accessories",
     badges: ["Handmade"],
