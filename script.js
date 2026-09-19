@@ -379,6 +379,18 @@ const PRODUCTS = [
     sizes: ["One Size"],
     hasCustomSize: false,
   },
+   {
+    id: "p29",
+    name: "3d Rose Bag",
+    price: 3000,
+    image: "rose_bag.jpeg",
+    category: "Bags",
+    badges: ["Handmade", "Customizable"],
+    desc: "A beautiful wine red crocheted 3d rose bag .",
+    colors: ["#58000d", "#e758cc"],
+    sizes: ["One Size"],
+    hasCustomSize: false,
+  }
 ];
 
 /* ---------------------------------------------------------------------
